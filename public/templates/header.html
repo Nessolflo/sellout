@@ -1,0 +1,179 @@
+<div class="top-bar">
+     <div class="menu-options"><span class="menu-action"><i></i></span></div>
+     <div class="admin-name-hello">
+          <span> <img src="images/avatar.png" width="72" /> </span>
+          <i>USUARIO</i>
+          <h3>{{usuario}}</h3>
+     </div>
+        
+</div><!-- Top bar -->
+<header class="side-header opened-menu">
+     <div id="header-scroll">
+          <div class="logo">
+               <a href="#/" title="">
+                    <span>Huawei</span>
+                    <p>Admin Dashboard</p>
+               </a>
+          </div>
+          <div class="admin-action-bar">
+               <div class="admin-image">
+                    <img src="images/avatar.png" width="72" />
+               </div>
+               <div class="admin-action-info">
+                    <span>Bienvenido</span>
+                    <h3>{{usuario}}</h3>
+                    <ul>
+                         <li><a data-toggle="tooltip" data-placement="bottom" title="Cerrar sesión" ng-click="cerrarSesion()"><i class="fa fa-lock"></i></a></li>
+                    </ul>
+               </div>
+               <!--<div class="quick-stats">
+                    <h5>Today Report</h5>
+                    <ul>
+                         <li><span>456<i>Sales</i></span></li>
+                         <li><span>2,345<i>Order</i></span></li>
+                         <li><span>$120<i>Revenue</i></span></li>
+                    </ul>
+               </div>-->
+          </div>
+          <nav class="side-menus">
+               <ul class="parent-menu">
+                    <li >
+                         <a href="#/"><i class="ti-desktop"></i><span>Dashboard</span></a>
+                    </li>
+                    <li >
+                         <a href="#/inventarios"><i class="fa fa-upload"></i><span>Cargar archivo</span></a>
+                    </li>
+                    <li >
+                         <a href="#/usuarios"><i class="ti-user"></i><span>Usuarios</span></a>
+                    </li>
+                    <li >
+                         <a href="#/permisos"><i class="fa fa-cog"></i><span>Permisos</span></a>
+                    </li>
+                    <li >
+                         <a href="#/categorias"><i class="fa fa-folder"></i><span>Categorias</span></a>
+                    </li>
+                    <li >
+                         <a href="#/paises"><i class="fa fa-flag"></i><span>Paises</span></a>
+                    </li>
+                    <li >
+                         <a href="#/modelos"><i class="fa fa-puzzle-piece"></i><span>Modelos</span></a>
+                    </li>
+                    
+                    <li >
+                         <a href="#/series"><i class="fa fa-barcode"></i><span>Series</span></a>
+                    </li>
+                    <li >
+                         <a href="#/sinonimos"><i class="fa fa-braille"></i><span>Sinonimos</span></a>
+                    </li>
+                    <li >
+                         <a href="#/puntosventas"><i class="fa fa-shopping-cart"></i><span>Puntos de venta</span></a>
+                    </li>
+                    <li >
+                         <a href="#/sucursales"><i class="fa fa-university"></i><span>Sucursales</span></a>
+                    </li>
+                    <!--<li class="menu-item-has-children">
+                         <a title=""><i class="ti-pencil"></i><span>Pages</span></a>
+                         <ul class="mega">
+                              <li><a href="#/pages/blank">Blank</a></li>
+                              <li><a href="#/pages/blog">Blog</a></li>
+                         </ul>
+                    </li>-->
+               </ul>
+          </nav>
+          <span class="footer-line">2016 Copyright Huawei by <a title="" href="http://researchmobile.co">Research Mobile</a></span>
+     </div>
+</header>
+<script type='text/javascript'>
+    $(document).ready(function(){ 
+
+    'use strict';
+    //***** Side Menu *****//
+     $('.side-menus li.menu-item-has-children > a').on('click',function(){
+          $(this).parent().siblings().children('ul').slideUp();
+          $(this).parent().siblings().removeClass('active');
+          $(this).parent().children('ul').slideToggle();
+          $(this).parent().toggleClass('active');
+          return false;
+     });
+
+     //***** Toggle Full Screen *****//
+      function goFullScreen() {
+        var
+            el = document.documentElement
+          , rfs =
+                 el.requestFullScreen
+              || el.webkitRequestFullScreen
+              || el.mozRequestFullScreen
+              || el.msRequestFullscreen
+
+      ;
+      rfs.call(el);
+      }
+      $("#toolFullScreen").on("click",function() {
+          goFullScreen();
+      });
+
+     //***** Clients lists Scroll *****//
+     $(function(){
+          $('#header-scroll').slimscroll({
+               height: '100%',
+               wheelStep: 10,
+               distance : '0px',
+               color:'#878787',
+               railOpacity : '0.1',
+               size: '2px'
+          });
+     });
+
+     //**** Message Dropdown ***//
+     $('.message-list.dropdown > a').click(function(e) {
+     $('.message.drop-list').stop(true, true).fadeIn('fast');
+     $('.notification.drop-list:visible').stop(true, true).fadeOut('fast');
+     $('.activity.drop-list:visible').stop(true, true).fadeOut('fast');
+     e.stopPropagation();
+     });
+          
+     $('body').click(function () {
+     $('.message.drop-list:visible').stop(true, true).fadeOut('fast');
+     });
+     
+     //**** Notification Dropdown ***//
+     $('.notification-list.dropdown > a').click(function(e) {
+     $('.notification.drop-list').stop(true, true).fadeIn('fast');
+     $('.message.drop-list:visible').stop(true, true).fadeOut('fast');
+     $('.activity.drop-list:visible').stop(true, true).fadeOut('fast');
+     e.stopPropagation();
+     });
+
+     $('body').click(function () {
+     $('.notification.drop-list:visible').stop(true, true).fadeOut('fast');
+     });
+     
+     //**** Activity Dropdown ***//
+     $('.activity-list.dropdown > a').click(function(e) {
+     $('.activity.drop-list').stop(true, true).fadeIn('fast');
+     $('.notification.drop-list:visible').stop(true, true).fadeOut('fast');
+     $('.message.drop-list:visible').stop(true, true).fadeOut('fast');
+     e.stopPropagation();
+     });
+     
+     $('body').click(function () {
+     $('.activity.drop-list:visible').stop(true, true).fadeOut('fast');
+     });
+     
+     //**** Profile Dropdown ***//
+     $('.profile.dropdown > a').click(function(e) {
+     $('.profile.drop-list').stop(true, true).fadeIn('fast');
+     e.stopPropagation();
+     });
+
+     //***** Side Menu Option *****//
+     $('.menu-options').on('click', function(){
+          $('.side-header.opened-menu').toggleClass('slide-menu');
+          $('.main-content').toggleClass('wide-content');
+          $('.top-bar').toggleClass('wide-bar');
+          $('.menu-options').toggleClass('active');
+     }); 
+
+    });
+</script>

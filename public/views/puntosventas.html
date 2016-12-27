@@ -1,0 +1,118 @@
+<div class="panel-content">
+	<div class="welcome-patti">
+		
+		<ul class="breadcrumbs">
+			<li><a href="#" title=""><i class="fa fa-home"></i></a></li>
+			<li><a href="#" title="">Puntos de venta</a></li>
+		</ul>
+	</div><!-- Welcome Patti -->
+	<div class="heading-sec">
+
+	</div><!-- Heading Sec -->
+	<div class="main-content-area">
+		<div class="row" ng-show="mostrar == 0">
+			<div class="col-md-12">
+				<div class="widget no-padding blank">
+					<button href="#" title="" class="c-btn medium green pop" ng-click="crear()">Crear</button>
+					<div class="panel panel-default work-progress-table">
+						<div class="panel-heading">
+							{{data.length}} Registros <i>Listado de puntos de venta</i>
+							<div class="dropdown rounded">
+								<div class="form-group">
+									<input type="text" placeholder="Buscar" class="form-control" ng-model="search.$">
+								</div>
+							</div>
+						</div>
+						<table id="dataTable" class="table table-striped">
+							<thead>
+							  <tr>
+								<th>#</th>
+								<th>Sucursal</th>
+								<th>Codigo</th>
+								<th>Nombre</th>
+								<th>Acciones</th>
+							  </tr>
+							</thead>
+							<tbody>
+							  <tr ng-repeat="item in data | filter:search">
+							  	<td>{{item.id}}</td>
+							  	<td>{{item.sucursal.nombre}}</td>
+							  	<td>{{item.codigo}}</td>
+							  	<td>{{item.nombre}}</td>
+							  	<td>
+							  		<button class="c-btn mini blue pop" ng-click="editar(item)"><i class="fa fa-edit blue"></i></button>
+							  		<button class="c-btn mini red pop" ng-click="eliminar(item)"><i class="fa fa-trash-o red"></i></button>
+							  	</td>
+							  </tr>
+							  <tr ng-if="data.length == 0">
+							  	<td>No hay registros</td>
+							  </tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>		
+		</div>
+
+		<div class="row" ng-show="mostrar == 1">
+			<div class="col-md-12">
+				<div class="widget with-padding">
+				<form name="form" class="form-validation">				 
+					<h4>{{settings.accion}} {{settings.singular}}</h4>
+					<div class="row" ng-show="settings.accion != 'Eliminar'">
+						
+
+						<div class="col-md-6">
+							<div class="inline-form">
+								<label class="c-label">Codigo</label><input class="input-style" type="text" placeholder="codigo" ng-model="item.codigo" required>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="inline-form">
+								<label class="c-label">Nombre</label><input class="input-style" type="text" placeholder="nombre" ng-model="item.nombre" required>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="inline-form">
+								<label class="c-label">Sucursal</label>
+								<select ng-model="item.idsucursal" ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales" required></select>
+							</div>
+						</div>
+						
+					</div>
+
+					<div class="row" ng-show="settings.accion == 'Eliminar'">
+						<div class="col-md-12 text-center">
+							<h5>Esta seguro de eliminar el registro ? Este proceso es irreversible</h5>
+						</div>
+					</div>
+					
+					<div class="row" style="margin-top: 30px;">
+						<div class="col-md-6" ng-show="msg.mostrar == 1">
+							<div class="notification">
+								<div role="alert" class="alert color" ng-class="msg.color">
+									<strong>{{msg.title}}</strong> {{msg.message}}
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 pull-right">
+							<button href="#" title="" class="c-btn large green pop pull-right" ng-click="guardar(item)" ng-disabled="form.$invalid">{{settings.accion!='Eliminar' ? 'Guardar' : 'Eliminar'}}</button>
+							<button href="#" title="" class="c-btn large red pop pull-right" ng-click="cancelar()">Cancelar</button>
+						</div>
+					</div>
+
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div><!-- Panel Content -->
+<script type="text/javascript">
+	$(document).ready(function(){
+    
+    'use strict';
+
+		
+	});
+</script>

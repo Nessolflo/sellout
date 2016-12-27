@@ -1,0 +1,980 @@
+@media (max-width: 1366px) {
+.carousal-widget > ul > li {
+    padding: 60px 30px;
+}
+
+
+}
+
+@media (max-width: 1200px) {
+.menu-options.active {
+    background: #444 none repeat scroll 0 0;
+    border-radius: 50%;
+    height: 41px;
+    left: 203px;
+    z-index: 2147483647;
+}  
+header.side-header {
+    left: -280px;
+}
+.menu-options {
+    background: #333333 none repeat scroll 0 0;
+    height: 41px;
+}
+.main-content {
+    padding: 0 0 40px;
+}
+.top-bar {
+    float: left;
+    margin-bottom: 1px;
+    position: static;
+    padding-left: 10px;
+    width: 100%;
+}
+header.side-header.slide-menu {
+    left: 0;
+}
+header.side-header.slide-menu {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+}
+
+@media (max-width:980px) {
+.quick-stats-boxes > .row > div {
+    float: left;
+    width: 50%;
+    margin-top: 2px;
+}
+.weather-widget {
+    background-size: cover;
+}
+.visitor-country {
+    display: block;
+}
+#vmap {
+    float: left;
+    width: 100%;
+}
+.all-mail {
+    float: left;
+    margin-top: 40px;
+    width: 100%;
+}
+.icons-container {
+    float: left;
+    width: 50%;
+}
+.wanna-touch {
+    float: left;
+    width: 100%;
+}
+.contact-form > form .row > div {
+    float: left;
+    width: 100%;
+}
+.team-sec > .row > div {
+    float: left;
+    width: 50%;
+}
+.square-services-sec > .row > div {
+    float: left;
+    width: 50%;
+}
+.service-circle-sec > .row > div {
+    float: left;
+    width: 50%;
+}
+.coupens-area .coupon {
+    float: left;
+    margin-right: 20px;
+}
+.cart-total-box {
+    margin-top: 20px;
+}
+.heading-profile {
+    margin-bottom: 20px;
+    text-align: center;
+}
+.top-bar-chart {
+    text-align: center;
+}
+.quick-report {
+    display: inline-block;
+    float: none;
+    padding: 0 20px;
+}
+.billing-sec .field {
+    float: left;
+    width: 100%;
+}
+
+
+
+}
+
+@media (max-width: 767px) {
+.admin-name-hello {
+    display: none;
+}
+blockquote {
+    padding: 40px 30px;
+}
+.invoice-billing .col-md-6 {
+    float: left;
+    width: 50%;
+}
+.description {
+    display: none;
+}
+.date {
+    width: 20%;
+}
+.invoice-number {
+    width: 20%;
+}
+.quantity {
+    width: 20%;
+}
+.vat {
+    width: 20%;
+}
+.total {
+    width: 20%;
+}
+.long-column {
+    width: 80%;
+}
+.msg {
+    float: left;
+    margin: 20px auto 0;
+    padding: 15px 51px;
+    text-align: center;
+    width: 100%;
+}
+.invoice-billing > .row > .col-md-6 {
+    float: left;
+    width: 50%;
+}
+.search-result > img {
+    float: left;
+    width: 100%;
+}
+.team-sec > .row > div {
+    float: left;
+    width: 100%;
+}
+.square-services-sec > .row > div {
+    float: left;
+    width: 100%;
+}
+.service-circle-sec > .row > div {
+    float: left;
+    width: 100%;
+}
+.profile-head > ul {
+    position: static;
+}
+.profile-head {
+     padding: 15px;
+}
+.profile-head .profile-avatar > span {
+    display: table;
+    float: none;
+    margin: 0 auto;
+    position: static;
+}
+.profile-head .profile-avatar {
+    padding: 0;
+}
+.profile-name {
+    text-align: center;
+}
+.profile-name .social-btns {
+    display: table;
+    float: none;
+    margin: 60px auto 0;
+    width: auto;
+}
+.profile-head > ul {
+    float: left;
+    position: static;
+    width: 100%;
+}
+.profile-count > li {
+    font-size: 15px;
+    margin-top: 20px;
+    width: 33.3334%;
+}
+.profile-count > li > i {
+    font-size: 11px;
+}
+.profile-connect > li {
+    float: left;
+    margin-left: 10px;
+}
+.profile-connect > li > a {
+    font-size: 11px;
+    margin-top: 10px;
+    padding: 3px 9px;
+}
+.fc-header-right {
+    display: table;
+    float: none;
+    margin: 0 auto;
+    text-align: left;
+    width: auto;
+}
+.fc-header-title h2 {
+    font-size: 18px;
+}
+.bheader > h2 {
+    font-size: 12px;
+
+}
+.bbody > form {
+    display: inline;
+    float: left;
+    width: 100%;
+}
+.image-crop input[type="file"] {
+    display: table;
+    float: none;
+    margin: 0 auto;
+    width: 180px;
+}
+.step2 > h2 {
+    font-size: 12px;
+    padding: 0 20px;
+}
+.image-crop label {
+    float: left;
+    margin: 0 5px;
+    width: 100%;
+    margin:0;
+}
+.info input {
+    float: left;
+    width: 100%;
+}
+.anchor > li {
+    margin-bottom: 15px;
+}
+.actionBar > a {
+    font-size: 11px;
+    padding: 5px 8px;
+}
+.inline-form > input, .inline-form > textarea {
+    font-size: 12px;
+}
+.actionBar .close {
+    display: none;
+}
+
+#upload_form > div {
+    display: inline;
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+#upload_form > h2 {
+    float: left;
+    font-size: 11px;
+    width: 100%;
+}
+.profile-avatar {
+    float: left;
+    padding: 30px 0 !important;
+    width: 100%;
+}
+.profile-connect {
+    text-align: center;
+}
+.profile-connect > li {
+    display: inline-block;
+    float: none;
+    margin-bottom: 40px;
+    margin-top: 10px;
+}
+.cart-thumb > span {
+    float: left;
+    width: 70px;
+}    
+.cart-total-box li {
+    padding-left: 20px;
+    padding-right: 20px;
+}    
+.coupens-area > input {
+    margin-top: 5px;
+}    
+.cart-thumb > p {
+    display: inline;
+    float: left;
+    width: 100%;
+}   
+.cart-thumb > p {
+    display: inline;
+}    
+.cart-item-quantity {
+    float: left;
+    padding: 41px 0;
+    width: 50%;
+}    
+.cart-lists > ul > li .c-input-number {
+    float: left;
+    margin-top: 30px;
+    width: 50%;
+}  
+.cart-thumb {
+    display: inherit;
+    float: left;
+    width: 100%;
+}   
+.cart-thumb > span {
+    float: left;
+    margin-bottom: 40px;
+    width: 100%;
+}
+.flat-btn {
+    font-size: 14px;
+    padding: 17px 18px;
+}
+.billing-sec .field {
+    float: left;
+    width: 100%;
+}
+#keywords thead tr th {
+    padding: 12px 10px;
+}
+.calculator #calculator > .row > .keys > div {
+    float: left;
+    padding: 0;
+    width: 100%;
+}
+.calculator > #calculator > .row > .top {
+    margin: 0 0 20px;
+}
+.calculator > #calculator > .row > .top > div {
+    float: left;
+    padding: 0;
+    width: 100%;
+}
+
+
+
+
+}
+
+@media (max-width: 480px)  {
+.vat {
+    display: none;
+}
+.invoice-number,
+.date,
+.quantity,
+.total {
+    width: 25%;
+}
+.invoice-number.long-column {
+    width: 75%;
+}
+.connected {
+    width: 100%;
+}
+#connected {
+    width: 100%;
+}
+#keywords thead tr th span {
+    font-size: 12px;
+    padding-right: 0;
+}
+#keywords tbody tr td {
+    font-size: 10px;
+    padding: 5px 0;
+}
+#keywords tbody tr td:last-child {
+    display: none;
+}
+#wrapper {
+    float: left;
+    overflow: hidden;
+    width: 100%;
+}
+#task-form input {
+    width: 70%;
+}
+#task-form button {
+    font-size: 12px;
+    width: 30%;
+}
+#task-container .nothing-message {
+    font-size: 15px;
+}
+.account-option > li a {
+    line-height: 20px;
+}
+.drop-list:before {
+    left: 6px;
+    right: auto;
+}
+.drop-list{
+    width: 200px !important;
+}
+.heading-sec {
+    padding: 30px;
+}
+.quick-report {
+    float: left;
+    margin-top: 22px;
+    width: 100%;
+}
+.quick-report:first-child {
+    margin: 0;
+}
+.main-content-area {
+    padding: 0 15px;
+}
+.quick-stats-boxes > .row > div {
+    float: left;
+    width: 100%;
+}
+header.side-header {
+    z-index: 2147483647;
+}
+.custom-dropdowns {
+    z-index: 2147483633;
+}
+header.side-header {
+    z-index: 2147483646;
+}
+.custom-dropdowns {
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+.custom-dropdowns .dropdown {
+    display: inline-block;
+    float: none;
+    text-align: left;
+}
+.drop-list {
+    left: 0;
+    right: auto;
+}
+
+.custom-dropdowns {
+    float: left;
+    margin-top: 20px;
+    padding: 0 68px;
+    text-align: center;
+    width: 100%;
+}
+.statistic-chart {
+    padding: 0 10px 38px;
+}
+.upper-chart-detail {
+    padding: 0;
+    text-align: center;
+}
+.upper-chart-detail > span {
+    float: left;
+    margin: 0 0 23px;
+    text-align: center;
+    width: 100%;
+}
+.upper-chart-detail > span > strong {
+    display: inline-block;
+    float: none;
+}
+.upper-chart-detail > ul {
+    float: left;
+    width: 100%;
+}
+.upper-chart-detail > ul > li {
+    display: inline-block;
+    float: none;
+    margin: 0 8px;
+}
+
+
+
+.widget-title {
+    font-size: 14px;
+}
+.tckt-status {
+    width: 50%;
+}
+.tckt-number {
+    width: 50%;
+}
+.ticket-info {
+    margin-top: 10px;
+    width: 100%;
+}
+.widget-tabs > .nav > li {
+    width: 50%;
+}
+.widget-tabs > .nav > li > a {
+    font-size: 11px;
+    padding: 14px 8px;
+    text-align: center;
+}
+.user-comments > li .user-avatar {
+    width: 40px;
+    height: 40px;
+}
+.user-comments > li .user-avatar span {
+    width: 40px;
+    height: 40px;
+}
+.user-comments > li {
+    padding: 20px 0 20px 58px;
+}
+.tab-content {
+    padding: 15px;
+}
+.panel.work-progress-table > .panel-heading {
+    font-size: 13px;
+    padding: 15px 15px 9px;
+}
+.dropdown.rounded > button {
+    font-size: 9px;
+    padding: 6px 10px;
+}
+.work-progress-table .table td {
+    font-family: Lato;
+    font-size: 11px;
+    letter-spacing: 0.3px;
+    padding: 7px 6px;
+}
+.task-graph-chart > i {
+    font-size: 9px;
+}
+.task-graph-chart > h3 {
+    font-size: 18px;
+}
+.social-activities > ul > li > i {
+    font-size: 12px;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+}
+.social-activities > ul > li {
+    padding-left: 37px;
+}
+.social-activities span {
+    font-size: 7px;
+}
+.server {
+    padding: 0 15px;
+}
+.server > span {
+    font-size: 12px;
+    margin-right: 13px;
+}
+.server > .btn-group {
+    margin-bottom: 13px;
+    margin-top: 20px;
+}
+.mini-profile-area > span {
+    border: 2px solid #adadad;
+    height: 40px;
+    width: 40px;
+     margin-top: 6px
+}
+.mini-profile-area > span img{
+    float: left;
+    width: 100%;
+}
+.mini-profile-area {
+    padding-left: 51px;
+}
+.mini-profile-area > h3 {
+    font-size: 13px;
+    margin: 10px 0 0;
+}
+.social-btns > li > a > i {
+    font-size: 13px;
+    height: 28px;
+    line-height: 28px;
+    width: 28px;
+}
+.mini-profile-widget {
+    padding: 15px;
+}
+.mini-profile-area > .social-btns {
+    float: left;
+    margin: 20px 0 0;
+}
+.timeline {
+    padding: 0;
+}
+.timeline-sec > ul:before {
+    display: none;
+}
+.user-timeline {
+    display: table;
+    float: none;
+    margin: 0 auto 20px;
+    position: relative;
+    text-align: center;
+    width: auto;
+}
+.user-timeline > span:before {
+    background: none repeat scroll 0 0 #f5f5f5;
+    content: "";
+    height: 30px;
+    left: 50%;
+    position: absolute;
+    top: 100%;
+    width: 1px;
+}
+.timeline-detail:before {
+    display: none;
+}
+.all-mail > h2 {
+    font-size: 20px;
+}
+.email > h3 {
+
+    width: auto;
+}
+.inbox-msg {
+    width: 100%;
+}
+.read-email {
+    width: 300px !important;
+}
+.close-reading {
+    background: none repeat scroll 0 0 #333;
+    color: #ffffff;
+    top: 141px;
+}
+.balance-widget > h2 {
+    font-size: 15px;
+}
+.doughnutSummaryNumber {
+    font-size: 20px;
+}
+.doughnutSummaryTitle {
+    font-size: 11px;
+}
+.post-date {
+    width: 50px;
+}
+.post {
+    padding-left: 60px;
+}
+.post h2 {
+    font-size: 14px;
+}
+.metas > h6 {
+    line-height: 20px;
+}
+.tags > li {
+    margin-bottom: 10px;
+}
+.comment-avatar {
+    float: left;
+    position: static;
+    width: 87px;
+}
+.user-comment {
+    width: 100%;
+}
+#comment > ul > li > ul > li > .comment > .user-comment {
+    width: 100%;
+}
+#comment > ul > li > ul {
+    padding: 0;
+}
+#comment > ul > li > ul > li > ul {
+    padding: 0;
+}
+#comment > ul > li > ul > li > ul > li .comment > .user-comment {
+    width: 100%;
+}
+.comment {
+    padding-left: 0;
+}
+.error-sec > h2 {
+    font-size: 150px;
+    font-weight: 900;
+}
+.error-sec > h4 {
+    margin: 10px 0 0;
+}
+.error-sec > h5 {
+    line-height: 22px;
+}
+.error-sec > h4 {
+    font-size: 14px;
+    line-height: 24px;
+}
+.vat {
+    display: none;
+}
+.invoice-number,
+.date,
+.quantity,
+.total {
+    width: 25%;
+}
+.invoice-number.long-column {
+    width: 75%;
+}
+.invoice li div p {
+    font-size: 9px;
+}
+.search-result h2 {
+    font-size: 14px;
+    line-height: 20px;
+}
+.search-result p {
+    width: 100%;
+}
+.search-form > span {
+    font-size: 13px;
+}
+.account-sec {
+    display: inherit;
+    float: left;
+    width: 100%;
+    padding: 0 10px;
+}
+.account-form > fieldset > input {
+    width: 200px;
+}
+.member-area > ul > li {
+    width: 100%;
+}
+.image-title > h3 {
+    font-size: 15px;
+}
+.image-title {
+    padding: 15px;
+}
+.profile-head > ul {
+    position: static;
+}
+.profile-head {
+     padding: 15px;
+}
+.profile-head .profile-avatar > span {
+    display: table;
+    float: none;
+    margin: 0 auto;
+    position: static;
+}
+.profile-head .profile-avatar {
+    padding: 0;
+}
+.profile-name {
+    text-align: center;
+}
+.profile-name .social-btns {
+    display: table;
+    float: none;
+    margin: 60px auto 0;
+    width: auto;
+}
+.profile-head > ul {
+    float: left;
+    position: static;
+    width: 100%;
+}
+.profile-count > li {
+    font-size: 15px;
+    margin-top: 20px;
+    width: 33.3334%;
+}
+.profile-count > li > i {
+    font-size: 11px;
+}
+.profile-connect > li {
+    float: left;
+    margin-left: 10px;
+}
+.profile-connect > li > a {
+    font-size: 11px;
+    margin-top: 10px;
+    padding: 3px 9px;
+}
+.fc-header-right {
+    display: table;
+    float: none;
+    margin: 0 auto;
+    text-align: left;
+    width: auto;
+}
+.fc-header-title h2 {
+    font-size: 18px;
+}
+.bheader > h2 {
+    font-size: 12px;
+
+}
+.bbody > form {
+    display: inline;
+    float: left;
+    width: 100%;
+}
+.image-crop input[type="file"] {
+    display: table;
+    float: none;
+    margin: 0 auto;
+    width: 180px;
+}
+.step2 > h2 {
+    font-size: 12px;
+    padding: 0 20px;
+}
+.image-crop label {
+    float: left;
+    margin: 0 5px;
+    width: 100%;
+    margin:0;
+}
+.info input {
+    float: left;
+    width: 100%;
+}
+.anchor > li {
+    margin-bottom: 15px;
+}
+.actionBar > a {
+    font-size: 11px;
+    padding: 5px 8px;
+}
+.inline-form > input, .inline-form > textarea {
+    font-size: 12px;
+}
+.actionBar .close {
+    display: none;
+}
+
+#upload_form > div {
+    display: inline;
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+#upload_form > h2 {
+    float: left;
+    font-size: 11px;
+    width: 100%;
+}
+.price-table > .price-package > h3 {
+    margin: 80px 0 40px;
+}
+.service-icon {
+    top: 202px;
+}
+.connected {
+    width: 100%;
+}
+#connected {
+    width: 100%;
+}
+#keywords thead tr th span {
+    font-size: 12px;
+    padding-right: 0;
+}
+#keywords tbody tr td {
+    font-size: 10px;
+    padding: 5px 0;
+}
+#keywords tbody tr td:last-child {
+    display: none;
+}
+#wrapper {
+    float: left;
+    overflow: hidden;
+    width: 100%;
+}
+#task-form input {
+    width: 70%;
+}
+#task-form button {
+    font-size: 12px;
+    width: 30%;
+}
+#task-container .nothing-message {
+    font-size: 15px;
+}
+.account-option > li a {
+    line-height: 20px;
+}
+.drop-list:before {
+    left: 6px;
+    right: auto;
+}
+.drop-list{
+    width: 200px !important;
+}
+.error-sec > i {
+    font-size: 33px;
+}
+.error-sec > p {
+    float: left;
+    margin-left: 10%;
+    margin-top: 20px;
+    width: 80%;
+}
+.wanna-touch-inner {
+    padding: 0 30px;
+}
+.contact-info-list > ul > li {
+    float: left;
+    width: 100%;
+}
+.countdown-sec ul.countdown > li {
+    margin: 0;
+    width: 70px;
+}
+.countdown-sec ul.countdown > li > span {
+    font-size: 19px;
+    margin-top: 21px;
+}
+.countdown-sec ul.countdown > li > p {
+    font-size: 12px;
+    margin-bottom: 17px;
+    width: 100%;
+}
+form.subscribtion > input {
+    width: 220px;
+}
+form.subscribtion > button {
+    padding: 15px 20px;
+}
+.widget.with-padding {
+    padding: 30px 30px;
+}
+.info input{
+    margin-left: 0;
+}
+.search-form input {
+    width: 140px;
+}
+.drop-list {
+    margin-left: -100px;
+    margin-top: 18px;
+}
+.drop-list::before {
+    left: 50%;
+}
+.welcome-patti > span {
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+.breadcrumbs {
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+
+
+
+
+}

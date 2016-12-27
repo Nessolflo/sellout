@@ -1,0 +1,75 @@
+<div class="panel-content">
+	<div class="welcome-patti">
+		
+		<ul class="breadcrumbs">
+			<li><a href="#" title=""><i class="fa fa-home"></i></a></li>
+			<li><a href="#" title="">Comprar servicio</a></li>
+		</ul>
+	</div><!-- Welcome Patti -->
+	<div class="heading-sec">
+		<div class="row">
+			<div class="col-md-4 column">
+				<div class="heading-profile">
+					<h2></h2>
+					
+				</div>
+			</div>
+		</div>
+	</div><!-- Heading Sec -->
+	<div class="main-content-area">
+
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="billing-sec">
+					<div class="row">
+					<form name="form" class="form-validation">	
+						<div class="col-md-12">
+							<div class="widget-title no-padding no-margin">
+								<h3>Comprar servicio</h3>
+								<p>Para adquirir tu servicio, debes elegir el tipo de vehículo que posees</p>
+							</div>
+						</div>
+						<div class="col-md-12 field">
+							<label>Tipo de Vehiculo  </label>
+							<select ng-model="item_vehiculo" ng-change="llenarServicios()" ng-options="tipo_vehiculo.nombre for tipo_vehiculo in tipos_vehiculos" required></select>
+						</div>
+						<div class="col-md-12 field" ng-show="mostrar_servicio == 1">
+							<label>Tipo de Servicio  </label>
+							<select ng-model="item_servicio" ng-change="llenarExtras()" ng-options="servicio.nombre +' (Q'+servicio.precio+')' for servicio in servicios" required></select>
+						</div>
+						<div class="col-md-12" ng-show="mostrar_extra == 1">
+							<label>Seleccione los extras que desee  </label>
+						</div>
+							
+						<div class="col-md-12" ng-repeat="extra in extras"> 
+						  <div class="checkbox pull-left" >
+							<label>
+							  <input type="checkbox" value="{{extra}}" ng-model="extra.selected" ng-click="calcular()">
+							  {{extra.nombre}} (Q{{extra.precio}})
+							</label>
+						  </div>
+						</div>
+						
+
+						<div class="col-md-12" style="margin-top: 30px;">
+							<label>TOTAL: Q {{total}} </label>
+						</div>
+
+
+						<div class="col-md-2">
+							<button class="green-skin" ng-click="comprar()" ng-disabled="form.$invalid">{{title}}</button>
+						</div>
+					</form>
+					</div>				
+
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+
+	</div>
+</div><!-- Panel Content -->
+<script type="text/javascript">
+
+</script>
