@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ventas extends Model 
 {
     protected $table = 'ventas';
-    protected $fillable = ['idsinonimo','idpuntoventa','idusuariocreo','sellout','inventory'];
+    protected $fillable = ['idsinonimo','idpuntoventa','idusuariocreo', 'semana','anio', 'sellout','inventory'];
     public function sinonimo(){
     	return $this->hasOne('App\Sinonimos','id','idsinonimo');
     }

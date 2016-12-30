@@ -29,6 +29,7 @@
   .when("/sinonimos", {templateUrl: "views/sinonimos.html", controller: "SinonimosController"})
   .when("/sucursales", {templateUrl: "views/sucursales.html", controller: "SucursalesController"})
   .when("/inventarios", {templateUrl: "views/inventarios.html", controller: "inventariosController"})
+  .when("/reportes", {templateUrl: "views/reportes.html", controller: "reportesController"})
   .when("/404", {templateUrl: "views/404.html"})
 
     // else 404
@@ -136,9 +137,71 @@ function loader()
 
 
     });
+app.controller('reportesController', function ($scope, $window, reportesService, localStorageService) {
+   $scope.data = [];
+   $scope.settings = {
+        singular: 'Reporte',
+        plural: 'Reportes',
+        accion: 'Filtrar'
+      }
+    $scope.msg = {
+        mostrar: 0,
+        title: "",
+        message: "",
+        color: ""
+      }
+       $scope.mostrar = 0;
 
-    app.controller('inventariosController', function ($scope, $window, usuariosService) {
+        $scope.cargar_datos = function()
+      {
+        $scope.mostrar = 0;
+        $scope.msg = {
+          mostrar: 0,
+          title: "",
+          message: "",
+          color: ""
+        }
+        //$scope.desde=new Date('2016-12-30');
+        var fecha=new Date('2016-12-30');
+        $scope.desde= fecha;
+        $scope.hasta= fecha;
+      }
 
+      $scope.cargar_datos();
+
+      reportesService.getSeries().then(function(dataResponse)
+      {
+        $scope.series = dataResponse.data.records;
+      });
+      reportesService.getPaises().then(function(dataResponse)
+      {
+        $scope.paises = dataResponse.data.records;
+      });
+
+      $scope.cargarcuentas= function (idpais){
+        alert(idpais);
+        reportesService.getSucursales().then(function(dataResponse)
+        {
+          $scope.sucursales = dataResponse.data.records;
+        });  
+      };
+      
+      reportesService.getPuntosVentas().then(function(dataResponse)
+      {
+        $scope.puntosventas = dataResponse.data.records;
+      });
+      reportesService.getCategorias().then(function(dataResponse)
+      {
+        $scope.categorias = dataResponse.data.records;
+      });
+      reportesService.getModelos().then(function(dataResponse)
+      {
+        $scope.modelos = dataResponse.data.records;
+      });
+
+
+});
+    app.controller('inventariosController', function ($scope, $window, inventariosService, localStorageService) {
       $scope.data = [];
       $scope.settings = {
         singular: 'Inventario',
@@ -152,14 +215,68 @@ function loader()
         color: ""
       }
       $scope.mostrar = 0;
+      $scope.cargar_datos = function()
+      {
+        $scope.mostrar = 0;
+        $scope.msg = {
+          mostrar: 0,
+          title: "",
+          message: "",
+          color: ""
+        }
+        inventariosService.getData("GET", {}).then(function(dataResponse)
+        {
+          $scope.data = dataResponse.data.records;
+        });
+      }
 
-       $scope.crear = function()
+      $scope.cargar_datos();
+      $scope.crear = function()
       {
         $scope.settings.accion = 'Crear';
         $scope.mostrar = 1;
         $scope.item = {};
       }
+      $scope.uploadFile = function(files) {
 
+        $scope.cargando = 1;
+
+        var fd = new FormData();
+        
+        fd.append("file", files[0]);
+        fd.append("idusuario", localStorageService.cookie.get('login').id);
+
+        inventariosService.upload(fd).then(function(dataResponse) {
+          if(dataResponse.data.result)
+          {
+            showAlert("green", "Exito!", dataResponse.data.message);
+            setTimeout(function(){ 
+              $scope.cargar_datos(); 
+              angular.element("input[type='file']").val(null);
+            }, 3000);
+          }
+          else
+          {
+            showAlert("red", "Espera!", dataResponse.data.message);
+          }
+        });
+
+      };
+      $scope.cancelar = function()
+      {
+        $scope.mostrar = 0;
+      }
+      
+
+      function showAlert(color, title, message)
+      {
+        $scope.msg = {
+          mostrar: 1,
+          title: title,
+          message: message,
+          color: color
+        }
+      }
     });
 
 

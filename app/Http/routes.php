@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 Route::group(['prefix'=>'ws'],function(){
 	Route::any('login', 'UsuariosController@login');
+	Route::post('upload', 'VentasController@ImportarExcel');
 	Route::resource('usuarios', 'UsuariosController');
 	Route::resource('tiposusuarios', 'TiposUsuariosController');
 	Route::resource('categorias', 'CategoriasController');
@@ -25,6 +26,6 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::resource('paises', 'PaisesController');
 	Route::resource('sucursales', 'SucursalesController');
 	Route::resource('puntosventas', 'PuntosVentasController');
-	Route::resource('ventas', 'VentasController');
+	Route::resource('inventarios', 'VentasController');
 	Route::resource('permisos', 'PermisosController');
 });

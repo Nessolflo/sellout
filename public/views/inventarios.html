@@ -1,122 +1,117 @@
-<div class="panel-content">
-	<div class="welcome-patti">
-		
-		<ul class="breadcrumbs">
-			<li><a href="#" title=""><i class="fa fa-upload"></i></a></li>
-			<li><a href="#" title="">Inventario</a></li>
-		</ul>
-	</div><!-- Welcome Patti -->
-	<div class="heading-sec">
+	<div class="panel-content">
+		<div class="welcome-patti">
+			
+			<ul class="breadcrumbs">
+				<li><a href="#" title=""><i class="fa fa-upload"></i></a></li>
+				<li><a href="#" title="">Inventario</a></li>
+			</ul>
+		</div><!-- Welcome Patti -->
+		<div class="heading-sec">
 
-	</div><!-- Heading Sec -->
-	<div class="main-content-area">
-		<div class="row" ng-show="mostrar == 0">
-			<div class="col-md-12">
-				<div class="widget no-padding blank">
-					<button href="#" title="" class="c-btn medium green pop" ng-click="crear()">Crear</button>
-					<div class="panel panel-default work-progress-table">
-						<div class="panel-heading">
-							{{data.length}} Registros <i>Listado de productos</i>
-							<div class="dropdown rounded">
-								<div class="form-group">
-									<input type="text" placeholder="Buscar" class="form-control" ng-model="search.$">
+		</div><!-- Heading Sec -->
+		<div class="main-content-area">
+			<div class="row" ng-show="mostrar == 0">
+				<div class="col-md-12">
+					<div class="widget no-padding blank">
+						<button href="#" title="" class="c-btn medium green pop" ng-click="crear()">Subir</button>
+						<div class="panel panel-default work-progress-table">
+							<div class="panel-heading">
+								{{data.length}} Registros <i>Listado de productos</i>
+								<div class="dropdown rounded">
+									<div class="form-group">
+										<input type="text" placeholder="Buscar" class="form-control" ng-model="search.$">
+									</div>
 								</div>
 							</div>
+							<table id="dataTable" class="table table-striped">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Year</th>
+										<th>Week</th>
+										<th>Store name</th>
+										<th>Retailer</th>
+										<th>Country</th>
+										<th>Model</th>
+										<th>Inventory</th>
+										<th>Sell Out</th>
+										<th>Series</th>
+										<th>Status</th>
+										<th>Tier</th>
+										<th>Category</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in data | filter:search">
+										<td>{{item.id}}</td>
+										<td>{{item.anio}}</td>
+										<td>{{item.semana}}</td>
+										<td>{{item.store_name}}</td>
+										<td>{{item.retailer}}</td>
+										<td>{{item.pais}}</td>
+										<td>{{item.modelo}}</td>
+										<td>{{item.inventory}}</td>
+										<td>{{item.sellout}}</td>
+										<td>{{item.serie}}</td>
+										<td>{{item.status}}</td>
+										<td>{{item.tier}}</td>
+										<td>{{item.categoria}}</td>
+									</tr>
+									<tr ng-if="data.length == 0">
+										<td>No hay registros</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
-						<table id="dataTable" class="table table-striped">
-							<thead>
-							  <tr>
-								<th>#</th>
-								<th>Year</th>
-								<th>Month</th>
-								<th>Week</th>
-								<th>Store name</th>
-								<th>Retailer</th>
-								<th>Country</th>
-								<th>Model</th>
-								<th>Inventory</th>
-								<th>Sell Out</th>
-								<th>DOS</th>
-								<th>Series</th>
-								<th>Status</th>
-								<th>Tier</th>
-								<th>Category</th>
-							  </tr>
-							</thead>
-							<tbody>
-							  <tr ng-repeat="item in data | filter:search">
-							  	<td>{{item.id}}</td>
-							  	<td>{{item.anio}}</td>
-							  	<td>{{item.mes}}</td>
-							  	<td>{{item.semana}}</td>
-							  	<td>{{item.pdv}}</td>
-							  	<td>{{item.sucursal}}</td>
-							  	<td>{{item.pais}}</td>
-							  	<td>{{item.modelo}}</td>
-							  	<td>{{item.inventory}}</td>
-							  	<td>{{item.sellout}}</td>
-							  	<td>{{item.dos}}</td>
-							  	<td>{{item.serie}}</td>
-							  	<td>{{item.status}}</td>
-							  	<td>{{item.tier}}</td>
-							  	<td>{{item.category}}</td>
-							  </tr>
-							  <tr ng-if="data.length == 0">
-							  	<td>No hay registros</td>
-							  </tr>
-							</tbody>
-						</table>
 					</div>
-				</div>
-			</div>		
-		</div>
+				</div>		
+			</div>
 
-		<div class="row" ng-show="mostrar == 1">
-			<div class="col-md-12">
-				<div class="widget with-padding">
-				<form name="form" class="form-validation">				 
-					<h4>{{settings.accion}} {{settings.singular}}</h4>
-					<div class="row" ng-show="settings.accion != 'Eliminar'">
-						
-						<div class="col-md-6">
-							<div class="inline-form">
-								<label class="c-label">Por favor seleccione el archivo</label><input type="file" name="image_file" id="image_file" onchange="fileSelectHandler()">
-							</div>
-						</div>
-					</div>
+			<div class="row" ng-show="mostrar == 1">
+				<div class="col-md-12">
+					<div class="widget with-padding">
+						<form name="form" class="form-validation">				 
+							<h4>{{settings.accion}} {{settings.singular}}</h4>
+							<div class="row" ng-show="settings.accion != 'Eliminar'">
 
-					<div class="row" ng-show="settings.accion == 'Eliminar'">
-						<div class="col-md-12 text-center">
-							<h5>Esta seguro de eliminar el registro ? Este proceso es irreversible</h5>
-						</div>
-					</div>
-					
-					<div class="row" style="margin-top: 30px;">
-						<div class="col-md-6" ng-show="msg.mostrar == 1">
-							<div class="notification">
-								<div role="alert" class="alert color" ng-class="msg.color">
-									<strong>{{msg.title}}</strong> {{msg.message}}
+								<div class="col-md-6">
+									<div class="inline-form">
+										<label class="c-label">Por favor seleccione el archivo</label><input type="file" accept=".xls, .xlsx" name="image_file" id="image_file" onchange="angular.element(this).scope().uploadFile(this.files)">
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-6 pull-right">
-							<button href="#" title="" class="c-btn large green pop pull-right" ng-click="guardar(item)" ng-disabled="form.$invalid">{{settings.accion!='Eliminar' ? 'Guardar' : 'Eliminar'}}</button>
-							<button href="#" title="" class="c-btn large red pop pull-right" ng-click="cancelar()">Cancelar</button>
-						</div>
-					</div>
 
-				</form>
+							<div class="row" ng-show="settings.accion == 'Eliminar'">
+								<div class="col-md-12 text-center">
+									<h5>Esta seguro de eliminar el registro ? Este proceso es irreversible</h5>
+								</div>
+							</div>
+
+							<div class="row" style="margin-top: 30px;">
+								<div class="col-md-6" ng-show="msg.mostrar == 1">
+									<div class="notification">
+										<div role="alert" class="alert color" ng-class="msg.color">
+											<strong>{{msg.title}}</strong> {{msg.message}}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 pull-right">
+									<button href="#" title="" class="c-btn large red pop pull-right" ng-click="cancelar()">Cancelar</button>
+								</div>
+							</div>
+
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-</div><!-- Panel Content -->
-<script type="text/javascript">
-	$(document).ready(function(){
-    
-    'use strict';
+	</div><!-- Panel Content -->
+	<script type="text/javascript">
+		$(document).ready(function(){
 
-		
-	});
-</script>
+			'use strict';
+
+			
+		});
+	</script>
