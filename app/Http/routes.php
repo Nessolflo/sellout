@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return Redirect::to("index.html");
 });
+Route::get('/reporte', function () {
+    return view("reporte");
+});
 Route::group(['prefix'=>'ws'],function(){
 	Route::any('login', 'UsuariosController@login');
 	Route::any('sucursalesporpais', 'SucursalesController@sucursales_por_pais');
@@ -21,6 +24,7 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::any('seriesporcategoria', 'SeriesController@series_por_categoria');
 	Route::any('modelosporserie','ModelosController@modelos_por_serie');
 	Route::any('filtro','VentasController@filtro');
+	Route::any('exportarexcel','VentasController@exportarexcel');
 	Route::post('upload', 'VentasController@ImportarExcel');
 	Route::resource('usuarios', 'UsuariosController');
 	Route::resource('tiposusuarios', 'TiposUsuariosController');

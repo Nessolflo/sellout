@@ -137,100 +137,110 @@ function loader()
 
 
     });
-app.controller('reportesController', function ($scope, $window, reportesService, localStorageService) {
-   $scope.data = [];
-   $scope.item = {};
-   $scope.settings = {
-        singular: 'Reporte',
-        plural: 'Reportes',
-        accion: 'Filtrar'
-      }
+    app.controller('reportesController', function ($scope, $window, reportesService, localStorageService) {
+     $scope.data = [];
+     $scope.item = {};
+     $scope.settings = {
+      singular: 'Reporte',
+      plural: 'Reportes',
+      accion: 'Filtrar'
+    }
     $scope.msg = {
+      mostrar: 0,
+      title: "",
+      message: "",
+      color: ""
+    }
+    $scope.mostrar = 0;
+
+    $scope.cargar_datos = function()
+    {
+      $scope.mostrar = 0;
+      $scope.msg = {
         mostrar: 0,
         title: "",
         message: "",
         color: ""
       }
-       $scope.mostrar = 0;
+      $scope.item.desde=1;
+      $scope.item.hasta=1;
+      $scope.item.aniodesde=2016;
+      $scope.item.aniohasta=2017;
+    }
 
-        $scope.cargar_datos = function()
+    $scope.cargar_datos();
+
+    $scope.exportarexcel= function(item){       
+      $window.open('ws/exportarexcel?'+serializeObj(item), '_blank');
+    };
+    function serializeObj(obj) {
+      var result = [];
+
+      for (var property in obj)
+        result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
+
+      return result.join("&");
+    }
+    reportesService.getPaises().then(function(dataResponse)
+    {
+      $scope.paises = dataResponse.data.records;
+    });
+
+    $scope.cargarcuentas= function (idpais){
+      reportesService.getSucursales(idpais).then(function(dataResponse)
       {
-        $scope.mostrar = 0;
-        $scope.msg = {
-          mostrar: 0,
-          title: "",
-          message: "",
-          color: ""
-        }
-        $scope.item.desde=1;
-        $scope.item.hasta=1;
-        $scope.item.aniodesde=2016;
-        $scope.item.aniohasta=2017;
-      }
+        $scope.sucursales = dataResponse.data.records;
+      });  
+    };
 
-      $scope.cargar_datos();
-
-      
-      reportesService.getPaises().then(function(dataResponse)
-      {
-        $scope.paises = dataResponse.data.records;
+    $scope.cargarpuntosventas= function(idsucursal){
+      reportesService.getPuntosVentas(idsucursal).then(function(dataResponse){
+        $scope.puntosventas= dataResponse.data.records;
       });
+    };
 
-      $scope.cargarcuentas= function (idpais){
-        reportesService.getSucursales(idpais).then(function(dataResponse)
+    $scope.cargarseries= function(idcategoria){
+      reportesService.getSeries(idcategoria).then(function(dataResponse){
+        $scope.series= dataResponse.data.records;
+      });
+    };
+    $scope.cargarmodelos= function(idserie){
+      reportesService.getModelos(idserie).then(function(dataResponse){
+        $scope.modelos= dataResponse.data.records;
+      });
+    };
+
+    reportesService.getCategorias().then(function(dataResponse)
+    {
+      $scope.categorias = dataResponse.data.records;
+    });
+
+    $scope.filtrar= function(item){
+      reportesService.getFiltro(item).then(function(dataResponse)
+      {
+        if(dataResponse.data.result)
         {
-          $scope.sucursales = dataResponse.data.records;
-        });  
-      };
-
-      $scope.cargarpuntosventas= function(idsucursal){
-        reportesService.getPuntosVentas(idsucursal).then(function(dataResponse){
-            $scope.puntosventas= dataResponse.data.records;
-        });
-      };
-
-      $scope.cargarseries= function(idcategoria){
-        reportesService.getSeries(idcategoria).then(function(dataResponse){
-            $scope.series= dataResponse.data.records;
-        });
-      };
-      $scope.cargarmodelos= function(idserie){
-        reportesService.getModelos(idserie).then(function(dataResponse){
-            $scope.modelos= dataResponse.data.records;
-        });
-      };
-
-      reportesService.getCategorias().then(function(dataResponse)
-      {
-        $scope.categorias = dataResponse.data.records;
-      });
-
-      $scope.filtrar= function(item){
-          reportesService.getFiltro(item).then(function(dataResponse)
-          {
-            if(dataResponse.data.result)
-            {
-              $scope.data = dataResponse.data.records;
-              showAlert("green", "Exito!", dataResponse.data.message);
-              setTimeout(function(){ $scope.cargar_datos(); }, 3000);
-            }
-            else
-            {
-              showAlert("red", "Espera!", dataResponse.data.message);
-            }
-          });
-      }
-      function showAlert(color, title, message)
-      {
-        $scope.msg = {
-          mostrar: 1,
-          title: title,
-          message: message,
-          color: color
+          $scope.data = dataResponse.data.records;
+          showAlert("green", "Exito!", dataResponse.data.message);
+          setTimeout(function(){ $scope.cargar_datos(); }, 3000);
         }
+        else
+        {
+          showAlert("red", "Espera!", dataResponse.data.message);
+        }
+      });
+    }
+    function showAlert(color, title, message)
+    {
+      $scope.msg = {
+        mostrar: 1,
+        title: title,
+        message: message,
+        color: color
       }
+    }
 
-});
+  });
     app.controller('inventariosController', function ($scope, $window, inventariosService, localStorageService) {
       $scope.data = [];
       $scope.settings = {
@@ -863,13 +873,13 @@ app.controller('CategoriasController', function ($scope, $window, categoriasServ
       
       $scope.cargarsucursales= function(idpais){
         permisosService.getSucursales(idpais).then(function(dataResponse){
-            $scope.sucursales= dataResponse.data.records;
+          $scope.sucursales= dataResponse.data.records;
         });
       };
 
       $scope.cargarpdv= function(idsucursal){
         permisosService.getPuntosVentas(idsucursal).then(function(dataResponse){
-            $scope.puntosventas= dataResponse.data.records;
+          $scope.puntosventas= dataResponse.data.records;
         });
       };
 

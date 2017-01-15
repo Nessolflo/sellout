@@ -395,4 +395,17 @@ class VentasController extends Controller
 			return response()->json($response, $this->statusCode);
 		}
 	}
+	public function exportarexcel(){
+		try{
+			\Excel::create('Reporte', function($excel) {
+
+				$excel->sheet('reporte', function($sheet) {
+
+					$sheet->loadView('reporte');
+
+				});
+
+			});
+		}catch(\Exception $e){echo $e->getMessage();}
+	}
 }
