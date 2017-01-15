@@ -1,6 +1,7 @@
 /vendor
 /node_modules
 /public/storage
+/public/excel/*
 Homestead.yaml
 Homestead.json
 .env
