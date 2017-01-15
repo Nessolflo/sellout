@@ -16,6 +16,11 @@ Route::get('/', function () {
 });
 Route::group(['prefix'=>'ws'],function(){
 	Route::any('login', 'UsuariosController@login');
+	Route::any('sucursalesporpais', 'SucursalesController@sucursales_por_pais');
+	Route::any('puntosventasporsucursal', 'PuntosVentasController@puntosventas_por_sucursal');
+	Route::any('seriesporcategoria', 'SeriesController@series_por_categoria');
+	Route::any('modelosporserie','ModelosController@modelos_por_serie');
+	Route::any('filtro','VentasController@filtro');
 	Route::post('upload', 'VentasController@ImportarExcel');
 	Route::resource('usuarios', 'UsuariosController');
 	Route::resource('tiposusuarios', 'TiposUsuariosController');

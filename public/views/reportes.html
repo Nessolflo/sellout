@@ -16,55 +16,60 @@
 					<form name="form" class="form-validation">
 						<h4>{{settings.accion}} {{settings.singular}}</h4>
 						<div class="row">
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<div class="inline-form">
-								<label class="c-label">Desde</label><input class="input-style" type="date" placeholder="Fecha desde" ng-model="item.desde"  required>
+								<label class="c-label">Semana desde</label><input class="input-style" type="text" placeholder="Semana desde" ng-model="item.desde"  >
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<div class="inline-form">
-								<label class="c-label">Hasta</label><input class="input-style" type="date" placeholder="Fecha hasta" ng-model="item.hasta"  required>
+								<label class="c-label">Año desde</label><input class="input-style" type="number" placeholder="Año desde" ng-model="item.aniodesde"  >
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<div class="inline-form">
-								<label class="c-label">Semana</label><input class="input-style" type="number" placeholder="Semana" ng-model="item.semana"  required>
+								<label class="c-label">Semana hasta</label><input class="input-style" type="number" placeholder="Semana hasta" ng-model="item.hasta"  >
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="inline-form">
+								<label class="c-label">Año hasta</label><input class="input-style" type="number" placeholder="Año hasta" ng-model="item.aniohasta"  >
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="inline-form">
 								<label class="c-label">Pais</label>
-								<select ng-model="item.idpais" ng-options="pais.id as pais.nombre for pais in paises" ng-change="cargarcuentas(item.idpais)" required></select>
+								<select ng-model="item.idpais" ng-options="pais.id as pais.nombre for pais in paises" ng-change="cargarcuentas(item.idpais)" ></select>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="inline-form">
 								<label class="c-label">Cuenta</label>
-								<select ng-model="item.idsucursal" ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales" required></select>
+								<select ng-model="item.idsucursal" ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales" ng-change="cargarpuntosventas(item.idsucursal)" ></select>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="inline-form">
 								<label class="c-label">Punto de venta</label>
-								<select ng-model="item.idpuntoventa" ng-options="puntoventa.id as puntoventa.nombre for puntoventa in puntosventas" required></select>
+								<select ng-model="item.idpuntoventa" ng-options="puntoventa.id as puntoventa.nombre for puntoventa in puntosventas"  ></select>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="inline-form">
 								<label class="c-label">Categoria</label>
-								<select ng-model="item.idcategoria" ng-options="categoria.id as categoria.nombre for categoria in categorias" required></select>
+								<select ng-model="item.idcategoria" ng-options="categoria.id as categoria.nombre for categoria in categorias" ng-change="cargarseries(item.idcategoria)" ></select>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="inline-form">
 								<label class="c-label">Series</label>
-								<select ng-model="item.idserie" ng-options="serie.id as serie.nombre for serie in series" required></select>
+								<select ng-model="item.idserie" ng-options="serie.id as serie.nombre for serie in series" ng-change="cargarmodelos(item.idserie)" ></select>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="inline-form">
 								<label class="c-label">Modelos</label>
-								<select ng-model="item.idmodelo" ng-options="modelo.id as modelo.nombre for modelo in modelos" required></select>
+								<select ng-model="item.idmodelo" ng-options="modelo.id as modelo.nombre for modelo in modelos" ></select>
 							</div>
 						</div>
 						</div>
@@ -77,7 +82,7 @@
 							</div>
 						</div>
 						<div class="col-md-6 pull-right">
-							<button href="#" title="" class="c-btn large blue pop pull-right" ng-click="cancelar()">Filtrar</button>
+							<button href="#" title="" class="c-btn large blue pop pull-right" ng-click="filtrar(item)" ng-disabled="form.$invalid">Filtrar</button>
 						</div>
 					</div>
 					</form>
@@ -85,55 +90,62 @@
 			</div>		
 		</div>
 
-		<div class="row" ng-show="mostrar == 1">
+		<div class="row" ng-show="mostrar == 0">
 			<div class="col-md-12">
-				<div class="widget with-padding">
-				<form name="form" class="form-validation">				 
-					<h4>{{settings.accion}} {{settings.singular}}</h4>
-					<div class="row" ng-show="settings.accion != 'Eliminar'">
-						
-						<div class="col-md-6">
-							<div class="inline-form">
-								<label class="c-label">Usuario</label><input class="input-style" type="text" placeholder="Usuario" ng-model="item.usuario" required>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="inline-form">
-								<label class="c-label">Password</label><input type="password" placeholder="Password" ng-model="item.password" ng-required="settings.accion == 'Crear'">
-							</div>
-						</div>
-						
-						<div class="col-md-6">
-							<div class="inline-form">
-								<label class="c-label">Tipo Usuario</label>
-								<select ng-model="item.idtipo" ng-options="tipo_usuario.id as tipo_usuario.nombre for tipo_usuario in tipos_usuarios" required></select>
-							</div>
-						</div>
-					</div>
-
-					<div class="row" ng-show="settings.accion == 'Eliminar'">
-						<div class="col-md-12 text-center">
-							<h5>Esta seguro de eliminar el registro ? Este proceso es irreversible</h5>
-						</div>
-					</div>
-					
-					<div class="row" style="margin-top: 30px;">
-						<div class="col-md-6" ng-show="msg.mostrar == 1">
-							<div class="notification">
-								<div role="alert" class="alert color" ng-class="msg.color">
-									<strong>{{msg.title}}</strong> {{msg.message}}
+					<div class="widget no-padding blank">
+						<button href="#" title="" class="c-btn medium green pop" ng-click="crear()">Exportar Excel</button>
+						<button href="#" title="" class="c-btn medium red pop" ng-click="crear()">Exportar PDF</button>
+						<div class="panel panel-default work-progress-table">
+							<div class="panel-heading">
+								{{data.length}} Registros <i>Listado de productos</i>
+								<div class="dropdown rounded">
+									<div class="form-group">
+										<input type="text" placeholder="Buscar" class="form-control" ng-model="search.$">
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-6 pull-right">
-							<button href="#" title="" class="c-btn large green pop pull-right" ng-click="guardar(item)" ng-disabled="form.$invalid">{{settings.accion!='Eliminar' ? 'Guardar' : 'Eliminar'}}</button>
-							<button href="#" title="" class="c-btn large red pop pull-right" ng-click="cancelar()">Cancelar</button>
+							<table id="dataTable" class="table table-striped">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Year</th>
+										<th>Week</th>
+										<th>Store name</th>
+										<th>Retailer</th>
+										<th>Country</th>
+										<th>Model</th>
+										<th>Inventory</th>
+										<th>Sell Out</th>
+										<th>Series</th>
+										<th>Status</th>
+										<th>Tier</th>
+										<th>Category</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in data | filter:search">
+										<td>{{item.id}}</td>
+										<td>{{item.anio}}</td>
+										<td>{{item.semana}}</td>
+										<td>{{item.puntoventa}}</td>
+										<td>{{item.sucursal}}</td>
+										<td>{{item.pais}}</td>
+										<td>{{item.modelo}}</td>
+										<td>{{item.inventory}}</td>
+										<td>{{item.sellout}}</td>
+										<td>{{item.serie}}</td>
+										<td>{{item.status}}</td>
+										<td>{{item.tier}}</td>
+										<td>{{item.categoria}}</td>
+									</tr>
+									<tr ng-if="data.length == 0">
+										<td>No hay registros</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
-
-				</form>
-				</div>
-			</div>
+				</div>	
 		</div>
 	</div>
 

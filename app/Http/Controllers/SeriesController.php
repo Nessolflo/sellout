@@ -131,4 +131,27 @@ class SeriesController extends Controller
 			return response()->json($response);
 		}
 	}
+	public function series_por_categoria(Request $request)
+	{
+		try
+		{
+			$registros= Series::where('idcategoria', $request->input('idcategoria'))->get();
+			$this->message = "Consulta exitosa";
+            $this->result = true;
+            $this->records= $registros;
+
+		}catch(\Exception $e)
+		{
+			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al cargar registros";
+			$this->result = false;
+		}finally{
+			$response = [
+				"message" => $this->message,
+				"result" => $this->result,
+				"records" => $this->records
+			];
+			return response()->json($response);
+		}
+	}
+	
 }

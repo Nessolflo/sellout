@@ -13,6 +13,9 @@ use App\Paises;
 use App\Modelos;
 use App\Series;
 use App\Categorias;
+use App\VistaVentas;
+use App\Permisos;
+use App\Usuarios;
 use DB;
 use Exception;
 class VentasController extends Controller
@@ -23,7 +26,10 @@ class VentasController extends Controller
 
 	public function index(){
 		try{
-			$tregistros= Ventas::with("sinonimo","puntoventa","usuariocreo")->get();
+			$fecha=date('Y-m-d');
+			$fechadesde=$fecha." 00:00:00";
+			$fechahasta=$fecha." 23:59:59";
+			$tregistros= Ventas::with("sinonimo","puntoventa","usuariocreo")->whereBetween('created_at', array($fechadesde,$fechahasta))->get();
 			$registros= array();
 			foreach ($tregistros as $key => $tregistro) {
 				$registro=[];
@@ -125,6 +131,98 @@ class VentasController extends Controller
 			return response()->json($response);
 		}
 	}
+	public function filtro(Request $request){
+		try{
+			$desde= $request->input('desde');
+			$hasta= $request->input('hasta');
+			$aniodesde= $request->input('aniodesde');
+			$aniohasta= $request->input('aniohasta');
+			$fechadesde= $this->getFecha($aniodesde, $desde);
+			$fechahasta= $this->getFecha($aniohasta, $hasta);
+			$pais= $request->input('idpais');
+			$sucursal= $request->input('idsucursal');
+			$puntoventa= $request->input('idpuntoventa');
+			$categoria= $request->input('idcategoria');
+			$serie= $request->input('idserie');
+			$modelo= $request->input('idmodelo');
+			$registros= Array();
+			//solo por pais
+			if($pais!=''&&$sucursal==''&&$puntoventa==''&&$categoria==''&&$serie==''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->get();
+			//pais, sucursal
+			else if($pais!=''&&$sucursal!=''&&$puntoventa==''&&$categoria==''&&$serie==''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idsucursal',$sucursal)->get();
+			//pais, sucursal, puntoventa
+			else if($pais!=''&&$sucursal!=''&&$puntoventa!=''&&$categoria==''&&$serie==''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idsucursal',$sucursal)->where('idpuntoventa',$puntoventa)->get();
+			//pais, categoria
+			else if($pais!=''&&$sucursal==''&&$puntoventa==''&&$categoria!=''&&$serie==''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idcategoria',$categoria)->get();
+			//pais, categoria, serie
+			else if($pais!=''&&$sucursal==''&&$puntoventa==''&&$categoria!=''&&$serie!=''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idcategoria',$categoria)->where('idserie',$serie)->get();
+			//pais, categoria, serie, modelo
+			else if($pais!=''&&$sucursal==''&&$puntoventa==''&&$categoria!=''&&$serie!=''&&$modelo!='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idcategoria',$categoria)->where('idserie',$serie)->where('idmodelo',$modelo)->get();
+			//02
+			//pais, sucursal, categoria
+			else if($pais!=''&&$sucursal!=''&&$puntoventa==''&&$categoria!=''&&$serie==''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idsucursal',$sucursal)->where('idcategoria',$categoria)->get();
+			//pais, sucursal, categoria, serie
+			else if($pais!=''&&$sucursal!=''&&$puntoventa==''&&$categoria!=''&&$serie!=''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idsucursal',$sucursal)->where('idcategoria',$categoria)->where('idserie',$serie)->get();
+			//pais, sucursal, categoria, serie, modelo
+			else if($pais!=''&&$sucursal!=''&&$puntoventa==''&&$categoria!=''&&$serie!=''&&$modelo!='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idsucursal',$sucursal)->where('idcategoria',$categoria)->where('idserie',$serie)->where('idmodelo',$modelo)->get();
+			//03
+			//pais, sucursal, puntoventa, categoria
+			else if($pais!=''&&$sucursal!=''&&$puntoventa!=''&&$categoria!=''&&$serie==''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idsucursal',$sucursal)->where('idpuntoventa',$puntoventa)->where('idcategoria',$categoria)->get();
+			//pais, sucursal, puntoventa, categoria, serie
+			else if($pais!=''&&$sucursal!=''&&$puntoventa!=''&&$categoria!=''&&$serie!=''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idsucursal',$sucursal)->where('idpuntoventa',$puntoventa)->where('idcategoria',$categoria)->where('idserie',$serie)->get();
+			//pais, sucursal, puntoventa, categoria, serie, modelo
+			else if($pais!=''&&$sucursal!=''&&$puntoventa!=''&&$categoria!=''&&$serie!=''&&$modelo!='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idpais',$pais)->where('idsucursal',$sucursal)->where('idpuntoventa',$puntoventa)->where('idcategoria',$categoria)->where('idserie',$serie)->where('idmodelo',$modelo)->get();
+			//04
+			//solo por categoria
+			else if($pais==''&&$sucursal==''&&$puntoventa==''&&$categoria!=''&&$serie==''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idcategoria',$categoria)->get();
+			//categoria, series
+			else if($pais==''&&$sucursal==''&&$puntoventa==''&&$categoria!=''&&$serie!=''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idcategoria',$categoria)->where('idserie',$serie)->get();
+			//categoria, serie, modelo
+			else if($pais==''&&$sucursal==''&&$puntoventa==''&&$categoria!=''&&$serie!=''&&$modelo!='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->where('idcategoria',$categoria)->where('idserie',$serie)->where('idmodelo',$modelo)->get();
+			//05
+			//solo por fecha
+			else if($pais==''&&$sucursal==''&&$puntoventa==''&&$categoria==''&&$serie==''&&$modelo=='')
+				$registros= VistaVentas::whereBetween('fecha', array($fechadesde,$fechahasta))->get();	
+			
+
+			$this->message = "consulta exitosa sucursal ";
+			$this->result = true;
+			$this->records = $registros;
+		}catch(\Exception $e){
+			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro";
+			$this->result = false;
+		}finally{
+			$response = [
+			"message" => $this->message,
+			"result" => $this->result,
+			"records" => $this->records
+			];
+			return response()->json($response);
+		}
+	}
+
+	public function getFecha($year, $week){
+		$anio= strval($year);
+		$semana= strval($week);
+		if(strlen($semana)==1)
+			$semana= "0".$semana;
+		return date("Y-m-d", strtotime($anio."W".$semana));
+	}
 	public function edit($id){}
 	public function update(Request $request, $id){
 		try{
@@ -191,7 +289,7 @@ class VentasController extends Controller
 				if( $se_subio )
 				{
 					$url_archivo = public_path() . "/excel/" . $nombre;
-					$contador = 0;
+					$contador = 2;
 					$descartados = 0;
 					
 					\Excel::selectSheets( "inventario" )->load( $url_archivo, function( $lectorExcel ) use ( &$contador, &$descartados, &$request )
@@ -212,22 +310,29 @@ class VentasController extends Controller
 								$tpdv= $tienda[2]." ".$tienda[3];
 
 								$pais= Paises::where('codigo',$tpais)->first();
-								$sucursal= Sucursales::where('codigo', $tsucursal)->Where('idpais',$pais->id)->first();
-								$puntoventa= PuntosVentas::where('idsucursal', $sucursal->id)->where('codigo',$tpdv)->first();
-								$sinonimo= Sinonimos::where('nombre', $fila->model)->first();
 								if(!$pais)
 									throw new \Exception("Verifica el nombre del pais, la linea ".$contador);
+								$sucursal= Sucursales::where('codigo', $tsucursal)->where('idpais',$pais->id)->first();
 								if(!$sucursal)
 									throw new \Exception("Verifica el nombre de la sucursal, la linea ".$contador);
+								$puntoventa= PuntosVentas::where('idsucursal', $sucursal->id)->where('codigo',$tpdv)->where('idsucursal',$sucursal->id)->first();
 								if(!$puntoventa)
 									throw new \Exception("Verifica el nombre del punto de venta, la linea ".$contador);
+								$sinonimo= Sinonimos::where('nombre', $fila->model)->first();
 								if(!$sinonimo)
 									throw new \Exception("Verifica el nombre del modelo, la linea ".$contador);
+								
 								$week= $fila->week;
 								if($week>52 && $week<1)
 									throw new \Exception("Verifica la semana, la linea ".$contador);
 
-
+								$tusuario=Usuarios::find($request->idusuario);
+								if($tusuario->idtipo!=1)
+								{
+									$permiso=Permisos::where('idusuario',$request->idusuario)->where('idpuntoventa',$puntoventa->id)->first();
+									if(!$permiso)
+										throw new \Exception("Este usuario no tiene permisos para subir info de este punto de venta, la linea ".$contador);
+								}
 								$registro = new Ventas;
 								$registro->anio= $fila->year;
 								$registro->semana= $fila->week;

@@ -78,7 +78,7 @@ class UsuariosController extends Controller
             });
 
  			$nuevoRegistro->tipoUsuario;
-            $this->message = "Registro creado";
+            $this->message = "Registro creado ";
             $this->result = true;
             $this->records = $nuevoRegistro;
         }

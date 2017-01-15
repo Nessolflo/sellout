@@ -134,4 +134,28 @@ class ModelosController extends Controller
 			return response()->json($response);
 		}
 	}
+	public function modelos_por_serie(Request $request)
+	{
+		try
+		{
+			$registros= Modelos::where('idserie', $request->input('idserie'))->get();
+			$this->message = "Consulta exitosa";
+            $this->result = true;
+            $this->records= $registros;
+
+
+		}catch(\Exception $e)
+		{
+			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al cargar registros";
+			$this->result = false;
+
+		}finally{
+			$response = [
+				"message" => $this->message,
+				"result" => $this->result,
+				"records" => $this->records
+			];
+			return response()->json($response);
+		}
+	}
 }

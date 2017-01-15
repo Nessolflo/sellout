@@ -52,6 +52,10 @@ class PermisosController extends Controller
             $this->records = $nuevoRegistro;
 		}catch(\Exception $e){
 			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al crear registros";
+			
+			if(strpos($e->getMessage(), "Integrity constraint violation")!==false)
+				$this->message = "El usuario ya tiene asignado este modulo";
+			
 			$this->result = false;
 		}finally{
 			$response = [

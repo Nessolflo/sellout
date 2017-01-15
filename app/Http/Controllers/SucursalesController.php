@@ -134,4 +134,29 @@ class SucursalesController extends Controller
 			return response()->json($response);
 		}
 	}
+
+	public function sucursales_por_pais(Request $request)
+	{
+		try
+		{
+			$registros= Sucursales::where('idpais', $request->input('idpais'))->get();
+			$this->message = "Consulta exitosa";
+            $this->result = true;
+            $this->records= $registros;
+
+
+		}catch(\Exception $e)
+		{
+			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al cargar registros";
+			$this->result = false;
+
+		}finally{
+			$response = [
+				"message" => $this->message,
+				"result" => $this->result,
+				"records" => $this->records
+			];
+			return response()->json($response);
+		}
+	}
 }

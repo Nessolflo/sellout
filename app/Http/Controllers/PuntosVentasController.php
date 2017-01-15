@@ -133,4 +133,23 @@ class PuntosVentasController extends Controller
 			return response()->json($response);
 		}
 	}
+	public function puntosventas_por_sucursal(Request $request){
+		try{
+			$registros= PuntosVentas::where('idsucursal', $request->input('idsucursal'))->get();
+			$this->message = "Consulta exitosa";
+            $this->result = true;
+            $this->records= $registros;
+		}catch(\Exception $e)
+		{
+			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al cargar registros";
+			$this->result = false;
+		}finally{
+			$response = [
+				"message" => $this->message,
+				"result" => $this->result,
+				"records" => $this->records
+			];
+			return response()->json($response);
+		}
+	}
 }

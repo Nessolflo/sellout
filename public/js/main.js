@@ -133,12 +133,13 @@ function loader()
 
     });
 
-    app.controller('DashboardController', function ($scope, $window, $http, APP, serviciosService) {
+    app.controller('DashboardController', function ($scope, $window, $http, APP) {
 
 
     });
 app.controller('reportesController', function ($scope, $window, reportesService, localStorageService) {
    $scope.data = [];
+   $scope.item = {};
    $scope.settings = {
         singular: 'Reporte',
         plural: 'Reportes',
@@ -161,44 +162,73 @@ app.controller('reportesController', function ($scope, $window, reportesService,
           message: "",
           color: ""
         }
-        //$scope.desde=new Date('2016-12-30');
-        var fecha=new Date('2016-12-30');
-        $scope.desde= fecha;
-        $scope.hasta= fecha;
+        $scope.item.desde=1;
+        $scope.item.hasta=1;
+        $scope.item.aniodesde=2016;
+        $scope.item.aniohasta=2017;
       }
 
       $scope.cargar_datos();
 
-      reportesService.getSeries().then(function(dataResponse)
-      {
-        $scope.series = dataResponse.data.records;
-      });
+      
       reportesService.getPaises().then(function(dataResponse)
       {
         $scope.paises = dataResponse.data.records;
       });
 
       $scope.cargarcuentas= function (idpais){
-        alert(idpais);
-        reportesService.getSucursales().then(function(dataResponse)
+        reportesService.getSucursales(idpais).then(function(dataResponse)
         {
           $scope.sucursales = dataResponse.data.records;
         });  
       };
-      
-      reportesService.getPuntosVentas().then(function(dataResponse)
-      {
-        $scope.puntosventas = dataResponse.data.records;
-      });
+
+      $scope.cargarpuntosventas= function(idsucursal){
+        reportesService.getPuntosVentas(idsucursal).then(function(dataResponse){
+            $scope.puntosventas= dataResponse.data.records;
+        });
+      };
+
+      $scope.cargarseries= function(idcategoria){
+        reportesService.getSeries(idcategoria).then(function(dataResponse){
+            $scope.series= dataResponse.data.records;
+        });
+      };
+      $scope.cargarmodelos= function(idserie){
+        reportesService.getModelos(idserie).then(function(dataResponse){
+            $scope.modelos= dataResponse.data.records;
+        });
+      };
+
       reportesService.getCategorias().then(function(dataResponse)
       {
         $scope.categorias = dataResponse.data.records;
       });
-      reportesService.getModelos().then(function(dataResponse)
-      {
-        $scope.modelos = dataResponse.data.records;
-      });
 
+      $scope.filtrar= function(item){
+          reportesService.getFiltro(item).then(function(dataResponse)
+          {
+            if(dataResponse.data.result)
+            {
+              $scope.data = dataResponse.data.records;
+              showAlert("green", "Exito!", dataResponse.data.message);
+              setTimeout(function(){ $scope.cargar_datos(); }, 3000);
+            }
+            else
+            {
+              showAlert("red", "Espera!", dataResponse.data.message);
+            }
+          });
+      }
+      function showAlert(color, title, message)
+      {
+        $scope.msg = {
+          mostrar: 1,
+          title: title,
+          message: message,
+          color: color
+        }
+      }
 
 });
     app.controller('inventariosController', function ($scope, $window, inventariosService, localStorageService) {
@@ -257,6 +287,9 @@ app.controller('reportesController', function ($scope, $window, reportesService,
           }
           else
           {
+            setTimeout(function(){ 
+              angular.element("input[type='file']").val(null);
+            }, 3000);
             showAlert("red", "Espera!", dataResponse.data.message);
           }
         });
@@ -267,6 +300,7 @@ app.controller('reportesController', function ($scope, $window, reportesService,
         $scope.mostrar = 0;
       }
       
+
 
       function showAlert(color, title, message)
       {
@@ -821,11 +855,23 @@ app.controller('CategoriasController', function ($scope, $window, categoriasServ
       {
         $scope.usuarios = dataResponse.data.records;
       });
-      permisosService.getPuntosVentas().then(function(dataResponse)
-      {
-        $scope.puntosventas = dataResponse.data.records;
-      });
 
+      permisosService.getPaises().then(function(dataResponse)
+      {
+        $scope.paises = dataResponse.data.records;
+      });
+      
+      $scope.cargarsucursales= function(idpais){
+        permisosService.getSucursales(idpais).then(function(dataResponse){
+            $scope.sucursales= dataResponse.data.records;
+        });
+      };
+
+      $scope.cargarpdv= function(idsucursal){
+        permisosService.getPuntosVentas(idsucursal).then(function(dataResponse){
+            $scope.puntosventas= dataResponse.data.records;
+        });
+      };
 
       $scope.crear = function()
       {

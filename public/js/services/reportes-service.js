@@ -14,9 +14,14 @@ app.service('reportesService',['$http', 'APP',  function($http, APP) {
         });
     };
 
-    this.getSeries = function(parametros)
+    this.getSeries = function(idcategoria)
     {
-        return $http.get(APP.api + 'series',parametros);
+        return $http.get(APP.api + 'seriesporcategoria?idcategoria='+idcategoria);
+    }
+
+    this.getModelos = function(idserie)
+    {
+        return $http.get(APP.api + 'modelosporserie?idserie='+idserie);
     }
 
     this.getCategorias = function()
@@ -24,24 +29,26 @@ app.service('reportesService',['$http', 'APP',  function($http, APP) {
         return $http.get(APP.api + 'categorias');
     }
 
-    this.getModelos = function()
-    {
-        return $http.get(APP.api + 'modelos');
-    }
+    
 
     this.getPaises = function()
     {
         return $http.get(APP.api + 'paises');
     }
 
-    this.getSucursales = function()
+    this.getSucursales = function(idpais)
     {
-        return $http.get(APP.api + 'sucursales');
+        return $http.get(APP.api + 'sucursalesporpais?idpais='+idpais);
     }
 
-    this.getPuntosVentas = function()
+    this.getPuntosVentas = function(idsucursal)
     {
-        return $http.get(APP.api + 'puntosventas');
+        return $http.get(APP.api + 'puntosventasporsucursal?idsucursal='+idsucursal);
+    }
+
+    this.getFiltro = function(parametros)
+    {
+        return $http.post(APP.api + 'filtro',parametros);
     }
 
 }]);

@@ -66,6 +66,18 @@
 						</div>
 						<div class="col-md-6">
 							<div class="inline-form">
+								<label class="c-label">Paises</label>
+								<select ng-model="item.idpais" ng-options="pais.id as pais.nombre for pais in paises" ng-change="cargarsucursales(item.idpais)" required></select>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="inline-form">
+								<label class="c-label">Sucursal</label>
+								<select ng-model="item.idsucursal" ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales" ng-change="cargarpdv(item.idsucursal)" required></select>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="inline-form">
 								<label class="c-label">Punto de venta</label>
 								<select ng-model="item.idpuntoventa" ng-options="puntoventa.id as puntoventa.nombre for puntoventa in puntosventas" required></select>
 							</div>

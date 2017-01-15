@@ -36,4 +36,18 @@ app.service('permisosService',['$http', 'APP',  function($http, APP) {
         return $http.post(APP.api + 'permisos', parametros);
     };
 
+    this.getPaises = function()
+    {
+        return $http.get(APP.api + 'paises');
+    }
+
+    this.getSucursales = function(idpais)
+    {
+        return $http.get(APP.api + 'sucursalesporpais?idpais='+idpais);
+    }
+
+    this.getPuntosVentas = function(idsucursal)
+    {
+        return $http.get(APP.api + 'puntosventasporsucursal?idsucursal='+idsucursal);
+    }
 }]);
