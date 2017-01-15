@@ -405,7 +405,7 @@ class VentasController extends Controller
 
 				});
 
-			});
+			})->export('xls');
 		}catch(\Exception $e){echo $e->getMessage();}
 	}
 }
