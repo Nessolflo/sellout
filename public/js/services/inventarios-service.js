@@ -13,7 +13,9 @@ app.service('inventariosService',['$http', 'APP',  function($http, APP) {
             }
         });
     };
-
+    this.getRegistros = function(parametros) {
+        return $http.post(APP.api + 'obtenerregistros', parametros);
+    };
     this.delete = function(id) {
         return $http.delete(APP.api + 'inventarios/' + id);
     };

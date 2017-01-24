@@ -14,6 +14,9 @@ use App\Modelos;
 use App\Series;
 use App\Categorias;
 use App\VistaVentas;
+use App\VistaSellOutPuntoVenta;
+use App\VistaVentasPorSemana;
+use App\VentasPendientes;
 use App\Permisos;
 use App\Usuarios;
 use DB;
@@ -30,6 +33,59 @@ class VentasController extends Controller
 			$fechadesde=$fecha." 00:00:00";
 			$fechahasta=$fecha." 23:59:59";
 			$tregistros= Ventas::with("sinonimo","puntoventa","usuariocreo")->whereBetween('created_at', array($fechadesde,$fechahasta))->get();
+			$registros= array();
+			foreach ($tregistros as $key => $tregistro) {
+				$registro=[];
+				$registro['anio']=$tregistro->anio;
+				$registro['semana']=$tregistro->semana;
+				$tsucursal=Sucursales::find($tregistro->puntoventa->idsucursal);
+				$codigosucursal= $tsucursal->codigo;
+				$pais= Paises::find($tsucursal->idpais);
+				$codigopais=$pais->codigo;
+				$tstorename= $codigosucursal." ".$codigopais." ".$tregistro->puntoventa->codigo." ".$tregistro->puntoventa->nombre;
+				$registro['store_name']=$tstorename;
+				$registro['retailer']=$tsucursal->nombre;
+				$registro['pais']=$pais->nombre;
+				$modelo= Modelos::find($tregistro->sinonimo->idmodelo);
+				$serie= Series::find($modelo->idserie);
+				$categoria= Categorias::find($serie->idcategoria);
+				$registro['modelo']= $modelo->nombre;
+				$registro['serie']=$serie->nombre;
+				$registro['categoria']=$categoria->nombre;
+				$registro['tier']=$modelo->tier;
+				$registro['status']=$modelo->status;
+				$registro['inventory']=$tregistro->inventory;
+				$registro['sellout']=$tregistro->sellout;
+				array_push($registros, $registro);
+			}
+			$this->message = "Consulta exitosa";
+			$this->result = true;
+			$this->records = $registros;
+		}catch(\Exception $e){
+			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
+			$this->result = false;
+		}finally{
+			$response = [
+			"message" => $this->message,
+			"result" => $this->result,
+			"records" => $this->records
+			];
+			return response()->json($response);
+		}
+	}
+	public function obtenerregistros(Request $request){
+		try{
+			$usuario=$request->input("idusuario");
+			$tipousuario= $request->input("idtipo");
+			$fecha=date('Y-m-d');
+			$fechadesde=$fecha." 00:00:00";
+			$fechahasta=$fecha." 23:59:59";
+			$tregistros= array();
+			if($tipousuario==1)
+				$tregistros= Ventas::with("sinonimo","puntoventa","usuariocreo")->whereBetween('created_at', array($fechadesde,$fechahasta))->get();
+			else if($tipousuario==2)		
+				$tregistros= Ventas::with("sinonimo","puntoventa","usuariocreo")->whereBetween('created_at', array($fechadesde,$fechahasta))->where('idusuariocreo', $usuario)->get();
+
 			$registros= array();
 			foreach ($tregistros as $key => $tregistro) {
 				$registro=[];
@@ -119,6 +175,53 @@ class VentasController extends Controller
 				$this->message = "El registro no existe";
 				$this->result = false;
 			}
+		}catch(\Exception $e){
+			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro";
+			$this->result = false;
+		}finally{
+			$response = [
+			"message" => $this->message,
+			"result" => $this->result,
+			"records" => $this->records
+			];
+			return response()->json($response);
+		}
+	}
+	public function ventas_por_semana(){
+		try{
+			
+			$this->message = "Consulta exitosa";
+			$this->result = true;
+			$this->records = VistaVentasPorSemana::orderBy('fecha', 'desc')->get();
+			
+		}catch(\Exception $e){
+			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro";
+			$this->result = false;
+		}finally{
+			$response = [
+			"message" => $this->message,
+			"result" => $this->result,
+			"records" => $this->records
+			];
+			return response()->json($response);
+		}
+	}
+	public function sell_out_punto_ventas(Request $request){
+		try{
+			
+			$orden= $request->input('orden');
+			$registros= array();
+			if($orden==1)
+				$registros=VistaSellOutPuntoVenta::orderBy('sellout', 'desc')->get();
+			else if($orden==2)
+				$registros=VistaSellOutPuntoVenta::orderBy('sellout', 'asc')->get();
+			else
+				$registros=VistaSellOutPuntoVenta::get();
+
+			$this->message = "Consulta exitosa";
+			$this->result = true;
+			$this->records = $registros;
+			
 		}catch(\Exception $e){
 			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro";
 			$this->result = false;
@@ -274,6 +377,106 @@ class VentasController extends Controller
 			return response()->json($response);
 		}
 	}
+	public function agregarItem(Request $request){
+		\DB::beginTransaction();
+		try {
+			$store_name= $request->input('store_name');
+			$year= $request->input('anio');
+			$week= $request->input('semana');
+			$model= $request->input('model');
+			$inventory= $request->input('inventory');
+			$sell_out= $request->input('sell_out');
+			$idusuario= $request->input('idusuario');
+            $idventapendiente=$request->input('id');
+
+			$mensajeerror='';
+			$existeerror=false;
+
+			$tienda= explode(" ", $store_name);
+			$tsucursal= $tienda[0];
+			$tpais= $tienda[1];
+			$tpdv= $tienda[2]." ".$tienda[3];
+
+			$pais= Paises::where('codigo',$tpais)->first();
+            $sinonimo=null;
+            $puntoventa=null;
+            $contador=1;
+			if(!$pais){
+				$mensajeerror.=" Verifica el nombre del pais, la linea ".$contador;
+				$existeerror=true;
+			}else{ //Si existe el pais
+				$sucursal= Sucursales::where('codigo', $tsucursal)->where('idpais',$pais->id)->first();
+				if(!$sucursal){
+					$mensajeerror.=" Verifica el nombre de la sucursal, la linea ".$contador;
+					$existeerror=true;
+				}else{ //Si existe la sucursal
+					$puntoventa= PuntosVentas::where('idsucursal', $sucursal->id)->where('codigo',$tpdv)->where('idsucursal',$sucursal->id)->first();
+					if(!$puntoventa){
+						$mensajeerror.=" Verifica el nombre del punto de venta, la linea ".$contador;
+						$existeerror=true;
+
+					}else{//Si existe el punto de venta
+						$sinonimo= Sinonimos::where('nombre',$model)->first();
+						if(!$sinonimo){
+							$mensajeerror.=" Verifica el nombre del modelo, la linea ".$contador;
+							$existeerror=true;
+
+						}
+					}
+				}
+			}
+			if($week>52 && $week<1){
+				$mensajeerror.=" Verifica la semana, la linea ".$contador;
+				$existeerror=true;
+				//throw new \Exception("Verifica la semana, la linea ".$contador);
+			}
+
+			$tusuario=Usuarios::find($idusuario);
+			if($tusuario->idtipo!=1)
+			{
+				$permiso=Permisos::where('idusuario',$idusuario)->where('idpuntoventa',$puntoventa->id)->first();
+				if(!$permiso)
+					throw new \Exception("Este usuario no tiene permisos para subir info de este punto de venta, la linea ".$contador);
+			}
+
+			if(!$existeerror)
+			{
+
+				$registro = new Ventas;
+				$registro->anio= $year;
+				$registro->semana= $week;
+				$registro->idsinonimo = $sinonimo->id;
+				$registro->idpuntoventa = $puntoventa->id;
+				$registro->idusuariocreo = $idusuario;
+				$registro->sellout = $sell_out;
+				$registro->inventory = $inventory;
+				$registro->save();
+                VentasPendientes::destroy($idventapendiente);
+			}else{
+                throw new \Exception($mensajeerror);
+            }
+
+            $this->message = "Registro creado";
+            $this->result = true;
+            $this->statusCode = 200;
+		} catch (\Exception $e) {
+			\DB::rollback();
+			$this->statusCode = 	200;
+			$this->message	= 	env('APP_DEBUG')?$e->getMessage():'Registro no se actualizo';
+			$this->result  	= 	false;
+		}
+		finally
+		{
+			\DB::commit();
+			$response = 
+			[
+			'message'  	=> 	$this->message,
+			'result'  	=> 	$this->result
+			];
+
+			return response()->json($response, $this->statusCode);
+		}
+	}
 
 	public function ImportarExcel(Request $request)
 	{
@@ -291,7 +494,7 @@ class VentasController extends Controller
 					$url_archivo = public_path() . "/excel/" . $nombre;
 					$contador = 2;
 					$descartados = 0;
-					
+
 					\Excel::selectSheets( "inventario" )->load( $url_archivo, function( $lectorExcel ) use ( &$contador, &$descartados, &$request )
 					{	
 						$lectorExcel->ignoreEmpty();
@@ -304,27 +507,45 @@ class VentasController extends Controller
 								& strlen($fila->sell_out) > 0 
 								& strlen($fila->sell_out_usd) > 0)
 							{
+								$mensajeerror='';
+								$existeerror=false;
+
 								$tienda= explode(" ", $fila->store_name);
 								$tsucursal= $tienda[0];
 								$tpais= $tienda[1];
 								$tpdv= $tienda[2]." ".$tienda[3];
 
 								$pais= Paises::where('codigo',$tpais)->first();
-								if(!$pais)
-									throw new \Exception("Verifica el nombre del pais, la linea ".$contador);
-								$sucursal= Sucursales::where('codigo', $tsucursal)->where('idpais',$pais->id)->first();
-								if(!$sucursal)
-									throw new \Exception("Verifica el nombre de la sucursal, la linea ".$contador);
-								$puntoventa= PuntosVentas::where('idsucursal', $sucursal->id)->where('codigo',$tpdv)->where('idsucursal',$sucursal->id)->first();
-								if(!$puntoventa)
-									throw new \Exception("Verifica el nombre del punto de venta, la linea ".$contador);
-								$sinonimo= Sinonimos::where('nombre', $fila->model)->first();
-								if(!$sinonimo)
-									throw new \Exception("Verifica el nombre del modelo, la linea ".$contador);
-								
+								if(!$pais){
+									$mensajeerror.=" Verifica el nombre del pais, la linea ".$contador;
+									$existeerror=true;
+								}else
+								{ //Si existe el pais
+									$sucursal= Sucursales::where('codigo', $tsucursal)->where('idpais',$pais->id)->first();
+									if(!$sucursal){
+										$mensajeerror.=" Verifica el nombre de la sucursal, la linea ".$contador;
+										$existeerror=true;
+									}else{ //Si existe la sucursal
+										$puntoventa= PuntosVentas::where('idsucursal', $sucursal->id)->where('codigo',$tpdv)->where('idsucursal',$sucursal->id)->first();
+										if(!$puntoventa){
+											$mensajeerror.=" Verifica el nombre del punto de venta, la linea ".$contador;
+											$existeerror=true;
+										}else{//Si existe el punto de venta
+											$sinonimo= Sinonimos::where('nombre', $fila->model)->first();
+											if(!$sinonimo){
+												$mensajeerror.=" Verifica el nombre del modelo, la linea ".$contador;
+												$existeerror=true;
+
+											}
+										}
+									}
+								}
 								$week= $fila->week;
-								if($week>52 && $week<1)
-									throw new \Exception("Verifica la semana, la linea ".$contador);
+								if($week>52 && $week<1){
+									$mensajeerror.=" Verifica la semana, la linea ".$contador;
+									$existeerror=true;
+								//throw new \Exception("Verifica la semana, la linea ".$contador);
+								}
 
 								$tusuario=Usuarios::find($request->idusuario);
 								if($tusuario->idtipo!=1)
@@ -333,21 +554,41 @@ class VentasController extends Controller
 									if(!$permiso)
 										throw new \Exception("Este usuario no tiene permisos para subir info de este punto de venta, la linea ".$contador);
 								}
-								$registro = new Ventas;
-								$registro->anio= $fila->year;
-								$registro->semana= $fila->week;
-								$registro->idsinonimo = $sinonimo->id;
-								$registro->idpuntoventa = $puntoventa->id;
-								$registro->idusuariocreo = $request->idusuario;
-								$registro->sellout = $fila->sell_out;
-								$registro->inventory = $fila->inventory;
-								$registro->save();
+
+								if($existeerror)
+								{
+									$error= new VentasPendientes();
+									$error->anio=$fila->year;
+									
+									$error->semana=$week;
+									$error->store_name=$fila->store_name;
+									$error->model=$fila->model;
+									$error->inventory= $fila->inventory;
+									$error->sell_out= $fila->sell_out;
+									$error->mensaje= $mensajeerror;
+									
+									$error->save();
+									$descartados++;
+									
+								}else
+								{
+									$registro = new Ventas;
+									$registro->anio= $fila->year;
+									$registro->semana= $fila->week;
+									$registro->idsinonimo = $sinonimo->id;
+									$registro->idpuntoventa = $puntoventa->id;
+									$registro->idusuariocreo = $request->idusuario;
+									$registro->sellout = $fila->sell_out;
+									$registro->inventory = $fila->inventory;
+									$registro->save();
+								}
 
 								$contador++;
+							}//fin if validaciones
+							else{
+									$descartados++;
 							}
-							else
-								{$descartados++;}
-						}
+						}//fin For
 					});
 
 					if( $contador == 0 )
@@ -357,7 +598,7 @@ class VentasController extends Controller
 					}
 					else
 					{
-						$this->message = "Registros creados ".$contador.", descartados ".$descartados;
+						$this->message = "Registros creados ".($contador-$descartados).", descartados ".$descartados;
 						$this->result = true;
 					}
 				}
@@ -395,6 +636,7 @@ class VentasController extends Controller
 			return response()->json($response, $this->statusCode);
 		}
 	}
+
 	public function exportarexcel(){
 		try{
 			\Excel::create('Reporte', function($excel) {

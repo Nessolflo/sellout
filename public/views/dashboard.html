@@ -1,24 +1,24 @@
-<div class="panel-content">
-	<div class="welcome-patti">
-		
-		<ul class="breadcrumbs">
-			<li><a href="#" title=""><i class="fa fa-home"></i></a></li>
-			<li><a href="#" title="">Dashboard</a></li>
-		</ul>
-	</div><!-- Welcome Patti -->
-	<div class="heading-sec">
-		<div class="row">
-			<div class="col-md-4 column">
-				<div class="heading-profile">
-					<h2>Dashboard</h2>
+	<div class="panel-content">
+		<div class="welcome-patti">
+			
+			<ul class="breadcrumbs">
+				<li><a href="#" title=""><i class="fa fa-home"></i></a></li>
+				<li><a href="#" title="">Dashboard</a></li>
+			</ul>
+		</div><!-- Welcome Patti -->
+		<div class="heading-sec">
+			<div class="row">
+				<div class="col-md-4 column">
+					<div class="heading-profile">
+						<h2>Dashboard</h2>
 
+					</div>
 				</div>
 			</div>
-		</div>
-	</div><!-- Heading Sec -->
-	<div class="main-content-area">
-		<div class="row">
-			<div class="col-md-8">
+		</div><!-- Heading Sec -->
+		<div class="main-content-area">
+			<div class="row">
+				
 				<div class="quick-stats-boxes">
 					<div class="row">
 						<div class="col-md-6">
@@ -28,24 +28,11 @@
 								</div><!-- Widget Controls -->
 								<i class="red fa fa-usd"></i>
 								<div class="quick-total-ern-info">
-									<i>TOTAL EARNING</i>
-									<h5>$24,678.00</h5>
-									<div class="progress">
-			                            <div class="progress-bar red" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 70%;">
-			                            	70%
-			                            </div>
-			                        </div>
-			                        <span>TODAY : $44.00</span>
+									<i>PDV: {{maxNombrePDV}}</i>
+									<h5>Total: {{maxSellOutPDV}}</h5>
+									<span>PDV con mayor recaudación</span>
 								</div>
 							</div><!-- Quick Total Earning -->
-						</div>
-						<div class="col-md-6">
-							<div class="quick-order-box">
-								<div class="this-stats">20+ <i class="fa fa-sort-asc"></i></div>
-								<h3>6,878.00</h3>
-								<i>NEW ORDERS</i>
-								<span class="bar3" style="display: none;">3,6,3,8,9,7,10,6,5,4,7,5,4,3,4,6,6,9,4,2,3,7,4</span><svg class="peity" height="50px" width="200px"><rect fill="#ffffff" x="0.8695652173913043" y="35" width="6.956521739130435" height="15"></rect><rect fill="#ffffff" x="9.56521739130435" y="20" width="6.956521739130432" height="30"></rect><rect fill="#ffffff" x="18.26086956521739" y="35" width="6.956521739130434" height="15"></rect><rect fill="#ffffff" x="26.956521739130434" y="10" width="6.956521739130434" height="40"></rect><rect fill="#ffffff" x="35.65217391304348" y="5" width="6.956521739130444" height="45"></rect><rect fill="#ffffff" x="44.347826086956516" y="15" width="6.956521739130437" height="35"></rect><rect fill="#ffffff" x="53.04347826086956" y="0" width="6.956521739130437" height="50"></rect><rect fill="#ffffff" x="61.73913043478261" y="20" width="6.956521739130437" height="30"></rect><rect fill="#ffffff" x="70.43478260869566" y="25" width="6.956521739130437" height="25"></rect><rect fill="#ffffff" x="79.1304347826087" y="30" width="6.956521739130423" height="20"></rect><rect fill="#ffffff" x="87.82608695652173" y="15" width="6.956521739130437" height="35"></rect><rect fill="#ffffff" x="96.52173913043478" y="25" width="6.956521739130437" height="25"></rect><rect fill="#ffffff" x="105.21739130434783" y="30" width="6.956521739130437" height="20"></rect><rect fill="#ffffff" x="113.91304347826087" y="35" width="6.956521739130423" height="15"></rect><rect fill="#ffffff" x="122.6086956521739" y="30" width="6.956521739130437" height="20"></rect><rect fill="#ffffff" x="131.30434782608697" y="20" width="6.956521739130437" height="30"></rect><rect fill="#ffffff" x="140.00000000000003" y="20" width="6.95652173913038" height="30"></rect><rect fill="#ffffff" x="148.69565217391306" y="5" width="6.956521739130409" height="45"></rect><rect fill="#ffffff" x="157.3913043478261" y="30" width="6.956521739130409" height="20"></rect><rect fill="#ffffff" x="166.08695652173915" y="40" width="6.95652173913038" height="10"></rect><rect fill="#ffffff" x="174.7826086956522" y="35" width="6.956521739130409" height="15"></rect><rect fill="#ffffff" x="183.47826086956522" y="15" width="6.956521739130437" height="35"></rect><rect fill="#ffffff" x="192.17391304347825" y="30" width="6.956521739130437" height="20"></rect></svg>
-							</div><!-- Quick Order Box -->
 						</div>
 						<div class="col-md-6">
 							<div class="quick-total-earning widget">
@@ -54,38 +41,36 @@
 								</div><!-- Widget Controls -->
 								<i class="red fa fa-usd"></i>
 								<div class="quick-total-ern-info">
-									<i>TOTAL EARNING</i>
-									<h5>$24,678.00</h5>
-									<div class="progress">
-			                            <div class="progress-bar red" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 70%;">
-			                            	70%
-			                            </div>
-			                        </div>
-			                        <span>TODAY : $44.00</span>
+									<i>PDV: {{minNombrePDV}}</i>
+									<h5>Total: {{minSellOutPDV}}</h5>
+									<span>PDV con menor recaudación</span>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-6">
-							<div class="quick-visitor-box">
-								<div class="this-stats">20+ <i class="fa fa-sort-asc"></i></div>
-								<div class="quick-visitor-text new">
-									<i>RETURNING</i>
-									<span class="number">8</span>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+						<div class="widget">
+								<div class="widget-title">
+									<h3>Ventas por semana</h3>
 								</div>
-								<div class="quick-visitor-text total">
-									<i>TOTAL</i>
-									<span>1,244,00</span>
+								<div class="widget-controls">
+									<span class="close-content"><i class="fa fa-trash-o"></i></span>
+									<span class="expand-content"><i class="fa fa-expand"></i></span>
+									<span class="refresh-content"><i class="fa fa-refresh"></i></span>
+								</div><!-- Widget Controls -->
+								<div class="statistic-chart">
+									<canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"></canvas>
 								</div>
-								<span class="line" style="display: none;">4,0,3,3,1,5,1,0,1,1,5,3,2,4,1,2</span><svg class="peity" height="60px" width="300px"><polygon fill="#f3f4f8" points="0 59.5 0 12.299999999999997 33.443733333333334 59.5 66.88746666666667 24.1 100.3312 24.1 133.77493333333334 47.7 167.21866666666668 0.5 200.6624 47.7 234.10613333333333 59.5 267.5498666666667 47.7 300.9936 47.7 334.43733333333336 0.5 367.8810666666667 24.1 401.3248 35.9 434.7685333333333 12.299999999999997 468.21226666666666 47.7 501.656 35.9 501.656 59.5"></polygon><polyline fill="none" points="0 12.299999999999997 33.443733333333334 59.5 66.88746666666667 24.1 100.3312 24.1 133.77493333333334 47.7 167.21866666666668 0.5 200.6624 47.7 234.10613333333333 59.5 267.5498666666667 47.7 300.9936 47.7 334.43733333333336 0.5 367.8810666666667 24.1 401.3248 35.9 434.7685333333333 12.299999999999997 468.21226666666666 47.7 501.656 35.9" stroke="#e7eaf1" stroke-width="1" stroke-linecap="square"></polyline></svg>
-							</div><!-- Quick Visitor text -->
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>	
-			
+				
+				
+			</div>
 		</div>
-	</div>
-</div><!-- Panel Content -->
-<script type="text/javascript">
+	</div><!-- Panel Content -->
+	<script type="text/javascript">
 
-</script>
+	</script>

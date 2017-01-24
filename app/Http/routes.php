@@ -25,6 +25,9 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::any('modelosporserie','ModelosController@modelos_por_serie');
 	Route::any('filtro','VentasController@filtro');
 	Route::any('exportarexcel','VentasController@exportarexcel');
+	Route::any('obtenerregistros', 'VentasController@obtenerregistros');
+	Route::any('obtenerselloutpuntoventa','VentasController@sell_out_punto_ventas');
+	Route::any('actualizarregistro','VentasController@agregarItem');
 	Route::post('upload', 'VentasController@ImportarExcel');
 	Route::resource('usuarios', 'UsuariosController');
 	Route::resource('tiposusuarios', 'TiposUsuariosController');
@@ -37,4 +40,5 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::resource('puntosventas', 'PuntosVentasController');
 	Route::resource('inventarios', 'VentasController');
 	Route::resource('permisos', 'PermisosController');
+	Route::resource('ventaspendientes', 'VentasPendientesController');
 });
