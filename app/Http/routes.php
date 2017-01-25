@@ -27,6 +27,7 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::any('exportarexcel','VentasController@exportarexcel');
 	Route::any('obtenerregistros', 'VentasController@obtenerregistros');
 	Route::any('obtenerselloutpuntoventa','VentasController@sell_out_punto_ventas');
+	Route::any('obtenerventasporsemana','VentasController@ventas_por_semana');
 	Route::any('actualizarregistro','VentasController@agregarItem');
 	Route::post('upload', 'VentasController@ImportarExcel');
 	Route::resource('usuarios', 'UsuariosController');

@@ -192,7 +192,7 @@ class VentasController extends Controller
 			
 			$this->message = "Consulta exitosa";
 			$this->result = true;
-			$this->records = VistaVentasPorSemana::orderBy('fecha', 'desc')->get();
+			$this->records = VistaVentasPorSemana::orderBy('fecha', 'asc')->get();
 			
 		}catch(\Exception $e){
 			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro";

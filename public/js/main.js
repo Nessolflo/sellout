@@ -162,8 +162,13 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
         dashboardService.getSellOutPDV(1).then(function (dataResponse) {
             if (dataResponse.data.result) {
                 $records = dataResponse.data.records;
-                $scope.maxNombrePDV = $records[0].nombre;
-                $scope.maxSellOutPDV = $records[0].sellout;
+                if ($records.length > 0) {
+                    $scope.maxNombrePDV = $records[0].nombre;
+                    $scope.maxSellOutPDV = $records[0].sellout;
+                } else {
+                    $scope.maxNombrePDV = "Sin datos";
+                    $scope.maxSellOutPDV = "0";
+                }
             }
             else {
                 showAlert("red", "Espera!", dataResponse.data.message);
@@ -172,8 +177,13 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
         dashboardService.getSellOutPDV(2).then(function (dataResponse) {
             if (dataResponse.data.result) {
                 $records = dataResponse.data.records;
-                $scope.minNombrePDV = $records[0].nombre;
-                $scope.minSellOutPDV = $records[0].sellout;
+                if ($records.length > 0) {
+                    $scope.minNombrePDV = $records[0].nombre;
+                    $scope.minSellOutPDV = $records[0].sellout;
+                } else {
+                    $scope.minNombrePDV = "Sin datos";
+                    $scope.minSellOutPDV = "0";
+                }
             }
             else {
                 showAlert("red", "Espera!", dataResponse.data.message);
@@ -181,7 +191,39 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
         });
     }
     $scope.cargar_datos();
+    $scope.cargar_grafica = function () {
+        dashboardService.getVentasPorSemana().then(function (dataResponse) {
+            if (dataResponse.data.result) {
+                records = dataResponse.data.records;
+                if (records.length > 0) {
+                    $scope.labels = [];//semanas
+                    $scope.series = ['Sellout'];//serie
+                    $scope.data = [];//datos
+                    data = [];
+                    for (var record in records) {
+                        $scope.labels.push('Semana ' + records[record].semana);
+                        data.push(records[record].sellout);
+                    }
+                    $scope.data.push(data);
+                    $scope.datasetOverride = [{yAxisID: 'y-axis-1'}];
+                    $scope.options = {
+                        scales: {
+                            yAxes: [
+                                {
+                                    id: 'y-axis-1',
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'left'
+                                }
+                            ]
+                        }
+                    };
 
+                }
+            }
+        });
+    }//Fin function cargar_grafica
+    $scope.cargar_grafica();
 });
 app.controller('reportesController', function ($scope, $window, reportesService, localStorageService) {
     $scope.data = [];
@@ -478,11 +520,11 @@ app.controller('UsuariosController', function ($scope, $window, usuariosService)
 
 });
 app.controller('ventasPendientesController', function ($scope, $window, ventaspendientesService, localStorageService) {
-    $scope.data=[];
-    $scope.settings={
-        singular:'Venta',
-        plural:'Ventas',
-        accion:'Crear'
+    $scope.data = [];
+    $scope.settings = {
+        singular: 'Venta',
+        plural: 'Ventas',
+        accion: 'Crear'
     };
     $scope.msg = {
         mostrar: 0,
@@ -515,32 +557,32 @@ app.controller('ventasPendientesController', function ($scope, $window, ventaspe
         $scope.mostrar = 1;
         $scope.item = item;
     }
-    $scope.cancelar= function () {
-        $scope.mostrar=0;
+    $scope.cancelar = function () {
+        $scope.mostrar = 0;
     }
-    $scope.guardar=function (item) {
-        if($scope.settings.accion=='Editar'){
-            item.idusuario=localStorageService.cookie.get('login').id;
+    $scope.guardar = function (item) {
+        if ($scope.settings.accion == 'Editar') {
+            item.idusuario = localStorageService.cookie.get('login').id;
             ventaspendientesService.update(item).then(function (dataResponse) {
-                if(dataResponse.data.result){
-                    showAlert("green","Exito!", dataResponse.data.message);
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
                     setTimeout(function () {
                         $scope.cargar_datos();
-                    },3000);
-                }else{
-                    showAlert("red","Espera!", dataResponse.data.message);
+                    }, 3000);
+                } else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
                 }
             });
-        }else if($scope.settings.accion=='Eliminar'){
+        } else if ($scope.settings.accion == 'Eliminar') {
             ventaspendientesService.delete(item.id).then(function (dataResponse) {
-               if(dataResponse.data.result){
-                   showAlert("green","Exito!", dataResponse.data.message);
-                   setTimeout(function () {
-                       $scope.cargar_datos();
-                   },3000);
-               }else{
-                   showAlert("red","Espera!", dataResponse.data.message);
-               }
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
+                    setTimeout(function () {
+                        $scope.cargar_datos();
+                    }, 3000);
+                } else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
+                }
             });
         }
     };
@@ -1358,8 +1400,8 @@ app.controller('SucursalesController', function ($scope, $window, sucursalesServ
 
     $scope.data = [];
     $scope.settings = {
-        singular: 'Sucursal',
-        plural: 'Sucursales',
+        singular: 'Cuenta',
+        plural: 'Cuentas',
         accion: 'Crear'
     }
     $scope.msg = {

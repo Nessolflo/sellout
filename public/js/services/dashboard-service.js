@@ -5,6 +5,10 @@ app.service('dashboardService',['$http', 'APP',  function($http, APP) {
     this.getSellOutPDV = function(orden) {
         return $http.post(APP.api + 'obtenerselloutpuntoventa?orden='+orden);
     };
+
+    this.getVentasPorSemana = function() {
+        return $http.post(APP.api + 'obtenerventasporsemana');
+    };
     
 
 }]);
