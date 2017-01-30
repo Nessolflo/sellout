@@ -48,7 +48,78 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="widget no-padding blank">
+                        <div class="panel panel-default work-progress-table">
+                            <div class="panel-heading">
+                                TOP 15 <i>Modelos</i>
+                                <div class="dropdown rounded">
+                                    <div class="form-group">
+                                        <input type="text" placeholder="Buscar" class="form-control"
+                                               ng-model="search.$">
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="dataTableModel" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Modelo</th>
+                                    <th>$</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in datatopmodelsellout | filter:search">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{item.modelo}}</td>
+                                    <td>{{item.sellout}}</td>
+                                </tr>
+                                <tr ng-if="datatopmodelsellout.length == 0">
+                                    <td>No hay registros</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- Quick Total Earning -->
+                </div>
+                <div class="col-md-6">
+                    <div class="widget no-padding blank">
+                        <div class="panel panel-default work-progress-table">
+                            <div class="panel-heading">
+                                TOP 15  <i>Puntos de venta</i>
+                                <div class="dropdown rounded">
+                                    <div class="form-group">
+                                        <input type="text" placeholder="Buscar" class="form-control"
+                                               ng-model="search.$">
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="dataTablePuntoVenta" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Sucursal</th>
+                                    <th>Punto de venta</th>
+                                    <th>$</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in datatoppdvsellout | filter:search">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{item.sucursal}}</td>
+                                    <td>{{item.puntoventa}}</td>
+                                    <td>{{item.sellout}}</td>
+                                </tr>
+                                <tr ng-if="datatoppdvsellout.length == 0">
+                                    <td>No hay registros</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- Quick Total Earning -->
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -59,7 +130,8 @@
                         <div class="statistic-chart">
                             <div class="graph-container">
                                 <div id="chart" style="height:290px">
-                                    <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels"
+                                    <canvas id="line" class="chart chart-line" chart-data="data"
+                                            chart-labels="labels"
                                             chart-series="series" chart-options="options"
                                             chart-dataset-override="datasetOverride"
                                             chart-click="onClick"></canvas>
@@ -76,5 +148,4 @@
 </div>
 </div><!-- Panel Content -->
 <script type="text/javascript">
-
 </script>

@@ -42,4 +42,6 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::resource('inventarios', 'VentasController');
 	Route::resource('permisos', 'PermisosController');
 	Route::resource('ventaspendientes', 'VentasPendientesController');
+	Route::resource('top15modelsellout', 'Top15ModelSelloutController');
+	Route::resource('top15pdvsellout', 'Top15PDVSelloutController');
 });

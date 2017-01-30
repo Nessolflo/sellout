@@ -9,6 +9,12 @@ app.service('dashboardService',['$http', 'APP',  function($http, APP) {
     this.getVentasPorSemana = function() {
         return $http.post(APP.api + 'obtenerventasporsemana');
     };
-    
+
+    this.getTop15ModelSellout= function () {
+        return $http.get(APP.api +'top15modelsellout');
+    }
+    this.getTop15PDVSellout= function () {
+        return $http.get(APP.api +'top15pdvsellout');
+    }
 
 }]);

@@ -139,6 +139,7 @@ app.controller('MainController', function ($scope, $window, localStorageService)
 app.controller('DashboardController', function ($scope, $window, dashboardService, $http, APP) {
     $scope.data = [];
     $scope.item = {};
+    $scope.contador=0;
     $scope.settings = {
         singular: 'Reporte',
         plural: 'Reportes',
@@ -151,6 +152,7 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
         color: ""
     }
     $scope.mostrar = 0;
+
     $scope.cargar_datos = function () {
         $scope.mostrar = 0;
         $scope.msg = {
@@ -188,6 +190,12 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
             else {
                 showAlert("red", "Espera!", dataResponse.data.message);
             }
+        });
+        dashboardService.getTop15ModelSellout().then(function (dataResponse) {
+            $scope.datatopmodelsellout = dataResponse.data.records;
+        });
+        dashboardService.getTop15PDVSellout().then(function (dataResponse) {
+            $scope.datatoppdvsellout = dataResponse.data.records;
         });
     }
     $scope.cargar_datos();
