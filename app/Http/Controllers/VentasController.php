@@ -27,6 +27,7 @@ class VentasController extends Controller
     public $message = "houston tenemos un problema!";
     public $result = false;
     public $records = [];
+    public $count = 0;
 
     public function index()
     {
@@ -34,7 +35,8 @@ class VentasController extends Controller
             $fecha = date('Y-m-d');
             $fechadesde = $fecha . " 00:00:00";
             $fechahasta = $fecha . " 23:59:59";
-            $tregistros = Ventas::with("sinonimo", "puntoventa", "usuariocreo")->whereBetween('created_at', array($fechadesde, $fechahasta))->get();
+            $count = Ventas::with("sinonimo", "puntoventa", "usuariocreo")->whereBetween('created_at', array($fechadesde, $fechahasta))->count();
+            $tregistros = Ventas::with("sinonimo", "puntoventa", "usuariocreo")->whereBetween('created_at', array($fechadesde, $fechahasta))->limit(30)->offset(($this->count) - 31)->get();
             $registros = array();
             foreach ($tregistros as $key => $tregistro) {
                 $registro = [];
@@ -62,6 +64,7 @@ class VentasController extends Controller
             }
             $this->message = "Consulta exitosa";
             $this->result = true;
+            $this->count= $count;
             $this->records = $registros;
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
@@ -70,6 +73,7 @@ class VentasController extends Controller
             $response = [
                 "message" => $this->message,
                 "result" => $this->result,
+                "count"=>$this->count,
                 "records" => $this->records
             ];
             return response()->json($response);
@@ -85,11 +89,14 @@ class VentasController extends Controller
             $fechadesde = $fecha . " 00:00:00";
             $fechahasta = $fecha . " 23:59:59";
             $tregistros = array();
-            if ($tipousuario == 1)
+            $count=0;
+            if ($tipousuario == 1) {
                 $tregistros = Ventas::with("sinonimo", "puntoventa", "usuariocreo")->whereBetween('created_at', array($fechadesde, $fechahasta))->get();
-            else if ($tipousuario == 2)
+                $count = Ventas::with("sinonimo", "puntoventa", "usuariocreo")->whereBetween('created_at', array($fechadesde, $fechahasta))->count();
+            }else if ($tipousuario == 2) {
                 $tregistros = Ventas::with("sinonimo", "puntoventa", "usuariocreo")->whereBetween('created_at', array($fechadesde, $fechahasta))->where('idusuariocreo', $usuario)->get();
-
+                $count= Ventas::with("sinonimo", "puntoventa", "usuariocreo")->whereBetween('created_at', array($fechadesde, $fechahasta))->where('idusuariocreo', $usuario)->count();
+            }
             $registros = array();
             foreach ($tregistros as $key => $tregistro) {
                 $registro = [];
@@ -117,6 +124,7 @@ class VentasController extends Controller
             }
             $this->message = "Consulta exitosa";
             $this->result = true;
+            $this->count= $count;
             $this->records = $registros;
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
@@ -125,6 +133,7 @@ class VentasController extends Controller
             $response = [
                 "message" => $this->message,
                 "result" => $this->result,
+                "count" => $this->count,
                 "records" => $this->records
             ];
             return response()->json($response);
@@ -419,51 +428,26 @@ class VentasController extends Controller
             $mensajeerror = '';
             $existeerror = false;
 
-            $tienda = explode(" ", $store_name);
-            $tsucursal = $tienda[0];
-            $tpais = $tienda[1];
-            $tpdv = $tienda[2] . " " . $tienda[3];
 
-            $pais = Paises::where('codigo', $tpais)->first();
-            $sinonimo = null;
-            $puntoventa = null;
-            $contador = 1;
-            if (!$pais) {
-                $mensajeerror .= " Verifica el nombre del pais, la linea " . $contador;
+            $puntoventa = PuntosVentas::where('nombre', $store_name)->first();
+            if (!$puntoventa) {
+                $mensajeerror .= " Verifica el nombre del punto de venta, la linea " . $contador;
                 $existeerror = true;
-            } else { //Si existe el pais
-                $sucursal = Sucursales::where('codigo', $tsucursal)->where('idpais', $pais->id)->first();
-                if (!$sucursal) {
-                    $mensajeerror .= " Verifica el nombre de la sucursal, la linea " . $contador;
-                    $existeerror = true;
-                } else { //Si existe la sucursal
-                    $puntoventa = PuntosVentas::where('idsucursal', $sucursal->id)->where('codigo', $tpdv)->where('idsucursal', $sucursal->id)->first();
-                    if (!$puntoventa) {
-                        $mensajeerror .= " Verifica el nombre del punto de venta, la linea " . $contador;
-                        $existeerror = true;
 
-                    } else {//Si existe el punto de venta
-                        $sinonimo = Sinonimos::where('nombre', $model)->first();
-                        if (!$sinonimo) {
-                            $mensajeerror .= " Verifica el nombre del modelo, la linea " . $contador;
-                            $existeerror = true;
-
-                        }
-                    }
-                }
             }
+            $sinonimo = Sinonimos::where('nombre', $model)->first();
+            if (!$sinonimo) {
+                $mensajeerror .= " Verifica el nombre del modelo, la linea " . $contador;
+                $existeerror = true;
+
+            }
+
             if ($week > 52 && $week < 1) {
                 $mensajeerror .= " Verifica la semana, la linea " . $contador;
                 $existeerror = true;
                 //throw new \Exception("Verifica la semana, la linea ".$contador);
             }
 
-            $tusuario = Usuarios::find($idusuario);
-            if ($tusuario->idtipo != 1) {
-                $permiso = Permisos::where('idusuario', $idusuario)->where('idpuntoventa', $puntoventa->id)->first();
-                if (!$permiso)
-                    throw new \Exception("Este usuario no tiene permisos para subir info de este punto de venta, la linea " . $contador);
-            }
 
             if (!$existeerror) {
 

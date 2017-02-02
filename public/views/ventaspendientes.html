@@ -15,7 +15,7 @@
                 <div class="widget no-padding blank">
                     <div class="panel panel-default work-progress-table">
                         <div class="panel-heading">
-                            {{data.length}} Registros <i>Ventas pendientes</i>
+                            Mostrando los primeros {{data.length}} Registros de {{count}}  <i>Ventas pendientes</i>
                             <div class="dropdown rounded">
                                 <div class="form-group">
                                     <input type="text" placeholder="Buscar" class="form-control" ng-model="search.$">
@@ -38,7 +38,7 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="item in data | filter:search">
-                                <td>{{item.id}}</td>
+                                <td>{{$index + 1}}</td>
                                 <td>{{item.anio}}</td>
                                 <td>{{item.semana}}</td>
                                 <td>{{item.store_name}}</td>

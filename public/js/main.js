@@ -334,6 +334,7 @@ app.controller('reportesController', function ($scope, $window, reportesService,
 });
 app.controller('inventariosController', function ($scope, $window, inventariosService, localStorageService) {
     $scope.data = [];
+    $scope.count=0;
     $scope.settings = {
         singular: 'Inventario',
         plural: 'Inventarios',
@@ -360,7 +361,9 @@ app.controller('inventariosController', function ($scope, $window, inventariosSe
         $scope.item.idtipo = localStorageService.cookie.get('login').idtipo;
 
         inventariosService.getRegistros($scope.item).then(function (dataResponse) {
+
             $scope.data = dataResponse.data.records;
+            $scope.count= dataResponse.data.count;
         });
         /*inventariosService.getData("GET", {}).then(function(dataResponse)
          {
@@ -529,6 +532,7 @@ app.controller('UsuariosController', function ($scope, $window, usuariosService)
 });
 app.controller('ventasPendientesController', function ($scope, $window, ventaspendientesService, localStorageService) {
     $scope.data = [];
+    $scope.count=0;
     $scope.settings = {
         singular: 'Venta',
         plural: 'Ventas',
@@ -551,6 +555,7 @@ app.controller('ventasPendientesController', function ($scope, $window, ventaspe
         };
         ventaspendientesService.getData("GET", {}).then(function (dataResponse) {
             $scope.data = dataResponse.data.records;
+            $scope.count= dataResponse.data.count;
         });
     };
     $scope.cargar_datos();
