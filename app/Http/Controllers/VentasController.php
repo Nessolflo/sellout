@@ -24,6 +24,33 @@ use Exception;
 
 class VentasController extends Controller
 {
+    /**
+     * @var string
+     *
+    Filtro por años, mes por semana.
+    Dashboard de Sell out o de ventas
+
+
+    o   Tendencia de venta por:
+
+    o   Categoría
+
+    o   Serie
+
+    o   Total
+
+    o   Este dashboard se tiene que poder filtrar por país, cadena, punto de venta
+
+
+    Ultimo inventario recibido divido en las ultimas 4 semanas 20 Sellout.  Inventory se suma.
+
+    Dashboard de cobertura de inventorios Inventory Sacar porcentajes, y click en el porcentaje para saber cuales no tiene cobertura.
+    Exhibición 1 ó 0
+
+    Sell_out Unidades.
+    Sell_out_usd Vendido.
+    Inventory Inventery.
+     */
     public $message = "houston tenemos un problema!";
     public $result = false;
     public $records = [];
@@ -258,7 +285,6 @@ class VentasController extends Controller
             return response()->json($response);
         }
     }
-
     public function filtro(Request $request)
     {
         try {

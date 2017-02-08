@@ -34,6 +34,7 @@ var app = angular.module('myAppClient', [
             controller: "ventasPendientesController"
         })
         .when("/reportes", {templateUrl: "views/reportes.html", controller: "reportesController"})
+        .when("/dashsellout", {templateUrl: "views/dashsellout.html", controller: "dashselloutController"})
         .when("/404", {templateUrl: "views/404.html"})
 
         // else 404
@@ -139,7 +140,7 @@ app.controller('MainController', function ($scope, $window, localStorageService)
 app.controller('DashboardController', function ($scope, $window, dashboardService, $http, APP) {
     $scope.data = [];
     $scope.item = {};
-    $scope.contador=0;
+    $scope.contador = 0;
     $scope.settings = {
         singular: 'Reporte',
         plural: 'Reportes',
@@ -332,9 +333,145 @@ app.controller('reportesController', function ($scope, $window, reportesService,
     }
 
 });
+
+app.controller('dashselloutController', function ($scope, $window, dashselloutService, localStorageService) {
+    $scope.data = [];
+    $scope.item = {};
+    $scope.settings = {
+        singular: 'Reporte',
+        plural: 'Reportes',
+        accion: 'Filtrar'
+    }
+    $scope.msg = {
+        mostrar: 0,
+        title: "",
+        message: "",
+        color: ""
+    }
+    $scope.mostrar = 0;
+
+    $scope.cargar_datos = function () {
+        $scope.mostrar = 0;
+        $scope.msg = {
+            mostrar: 0,
+            title: "",
+            message: "",
+            color: ""
+        }
+        $scope.item.desde = 1;
+        $scope.item.hasta = 1;
+        $scope.item.aniodesde = 2016;
+        $scope.item.aniohasta = 2017;
+    }
+
+    $scope.cargar_datos();
+
+
+    dashselloutService.getPaises().then(function (dataResponse) {
+        $scope.paises = dataResponse.data.records;
+    });
+
+    $scope.cargarcuentas = function (idpais) {
+        dashselloutService.getSucursales(idpais).then(function (dataResponse) {
+            $scope.sucursales = dataResponse.data.records;
+        });
+    };
+
+    $scope.cargarpuntosventas = function (idsucursal) {
+        dashselloutService.getPuntosVentas(idsucursal).then(function (dataResponse) {
+            $scope.puntosventas = dataResponse.data.records;
+        });
+    };
+    $scope.filtrar = function (item) {
+        dashselloutService.getFiltroPorSerie(item).then(function (dataResponse) {
+            if (dataResponse.data.result) {
+                $scope.dataPorSerie = dataResponse.data.records;
+                records = dataResponse.data.records;
+
+                $scope.labelsSerie = [];//semanas
+                $scope.seriesSerie = ['Sellout'];//serie
+                $scope.dataSerie = [];//datos
+                data = [];
+                for (var record in records) {
+                    $scope.labelsSerie.push('Serie ' + records[record].serie);
+                    data.push(records[record].sellout);
+                }
+                $scope.dataSerie.push(data);
+                $scope.datasetOverrideSerie = [{yAxisID: 'y-axis-1'}];
+                $scope.optionsSerie = {
+                    scales: {
+                        yAxes: [
+                            {
+                                id: 'y-axis-1',
+                                type: 'linear',
+                                display: true,
+                                position: 'left'
+                            }
+                        ]
+                    }
+                };
+
+
+                setTimeout(function () {
+                    $scope.cargar_datos();
+                }, 3000);
+            }
+            else {
+                showAlert("red", "Espera!", dataResponse.data.message);
+            }
+        });
+
+        dashselloutService.getFiltroPorCategoria(item).then(function (dataResponse) {
+            if (dataResponse.data.result) {
+                $scope.dataPorCategoria = dataResponse.data.records;
+                records = dataResponse.data.records;
+
+                $scope.labelsCategoria = [];//semanas
+                $scope.seriesCategoria = ['Sellout'];//serie
+                $scope.dataCategoria = [];//datos
+                data = [];
+                for (var record in records) {
+                    $scope.labelsCategoria.push('Categoria ' + records[record].categoria);
+                    data.push(records[record].sellout);
+                }
+                $scope.dataCategoria.push(data);
+                $scope.datasetOverrideCategoria = [{yAxisID: 'y-axis-1'}];
+                $scope.optionsCategoria = {
+                    scales: {
+                        yAxes: [
+                            {
+                                id: 'y-axis-1',
+                                type: 'linear',
+                                display: true,
+                                position: 'left'
+                            }
+                        ]
+                    }
+                };
+
+
+                setTimeout(function () {
+                    $scope.cargar_datos();
+                }, 3000);
+            }
+            else {
+                showAlert("red", "Espera!", dataResponse.data.message);
+            }
+        });
+    }
+    function showAlert(color, title, message) {
+        $scope.msg = {
+            mostrar: 1,
+            title: title,
+            message: message,
+            color: color
+        }
+    }
+
+});
 app.controller('inventariosController', function ($scope, $window, inventariosService, localStorageService) {
     $scope.data = [];
-    $scope.count=0;
+    $scope.count = 0;
     $scope.settings = {
         singular: 'Inventario',
         plural: 'Inventarios',
@@ -363,7 +500,7 @@ app.controller('inventariosController', function ($scope, $window, inventariosSe
         inventariosService.getRegistros($scope.item).then(function (dataResponse) {
 
             $scope.data = dataResponse.data.records;
-            $scope.count= dataResponse.data.count;
+            $scope.count = dataResponse.data.count;
         });
         /*inventariosService.getData("GET", {}).then(function(dataResponse)
          {
@@ -532,7 +669,7 @@ app.controller('UsuariosController', function ($scope, $window, usuariosService)
 });
 app.controller('ventasPendientesController', function ($scope, $window, ventaspendientesService, localStorageService) {
     $scope.data = [];
-    $scope.count=0;
+    $scope.count = 0;
     $scope.settings = {
         singular: 'Venta',
         plural: 'Ventas',
@@ -555,7 +692,7 @@ app.controller('ventasPendientesController', function ($scope, $window, ventaspe
         };
         ventaspendientesService.getData("GET", {}).then(function (dataResponse) {
             $scope.data = dataResponse.data.records;
-            $scope.count= dataResponse.data.count;
+            $scope.count = dataResponse.data.count;
         });
     };
     $scope.cargar_datos();

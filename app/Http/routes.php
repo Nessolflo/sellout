@@ -29,6 +29,8 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::any('obtenerselloutpuntoventa','VentasController@sell_out_punto_ventas');
 	Route::any('obtenerventasporsemana','VentasController@ventas_por_semana');
 	Route::any('actualizarregistro','VentasController@agregarItem');
+	Route::any('tendenciaPorCategoria', 'DashboardSelloutVentasController@tendenciaPorCategoria');
+    Route::any('tendenciaPorSerie', 'DashboardSelloutVentasController@tendenciaPorSerie');
 	Route::post('upload', 'VentasController@ImportarExcel');
 	Route::resource('usuarios', 'UsuariosController');
 	Route::resource('tiposusuarios', 'TiposUsuariosController');
@@ -44,4 +46,5 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::resource('ventaspendientes', 'VentasPendientesController');
 	Route::resource('top15modelsellout', 'Top15ModelSelloutController');
 	Route::resource('top15pdvsellout', 'Top15PDVSelloutController');
+    Route::resource('dashboardSelloutVentas', 'DashboardSelloutVentasController');
 });
