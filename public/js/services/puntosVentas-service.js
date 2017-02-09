@@ -19,6 +19,9 @@ app.service('puntosVentasService',['$http', 'APP',  function($http, APP) {
     	return $http.get(APP.api + 'sucursales');
     }
 
+    this.getPuntosVentasPorSucursal= function (parametros) {
+        return $http.post(APP.api + 'puntosventasporsucursal', parametros);
+    }
 
     this.delete = function(id) {
         return $http.delete(APP.api + 'puntosventas/' + id);

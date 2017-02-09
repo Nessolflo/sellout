@@ -1205,7 +1205,7 @@ app.controller('PermisosController', function ($scope, $window, permisosService)
 });
 
 //Controlador puntosventas
-app.controller('PuntosVentasController', function ($scope, $window, puntosVentasService) {
+app.controller('PuntosVentasController', function ($scope, $window, puntosVentasService, NgTableParams, $filter) {
 
     $scope.data = [];
     $scope.settings = {
@@ -1230,7 +1230,16 @@ app.controller('PuntosVentasController', function ($scope, $window, puntosVentas
             color: ""
         }
         puntosVentasService.getData("GET", {}).then(function (dataResponse) {
-            $scope.data = dataResponse.data.records;
+
+                $scope.data = dataResponse.data.records;
+                $scope.dataTable= new NgTableParams({}, {
+                dataset: dataResponse.data.records
+                });
+            /*$scope.count = dataResponse.data.count;
+            $scope.dataTable= new NgTableParams({}, {
+                dataset: dataResponse.data.records
+            });
+            $scope.count = dataResponse.data.count;*/
         });
     }
 
@@ -1239,7 +1248,6 @@ app.controller('PuntosVentasController', function ($scope, $window, puntosVentas
     puntosVentasService.getSucursales().then(function (dataResponse) {
         $scope.sucursales = dataResponse.data.records;
     });
-
 
     $scope.crear = function () {
         $scope.settings.accion = 'Crear';

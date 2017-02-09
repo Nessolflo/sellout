@@ -1,0 +1,10 @@
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('COM-GT001','BODEGA CENTRAL',6,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('COM-GT002','CAYALA',6,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('COM-GT003','e-COMMERCE',6,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('COM-GT004','JUTIAPA',6,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('COM-GT005','NARANJO',6,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('COM-GT006','PORTALES 1',6,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('COM-GT007','PROCERES 1',6,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('COM-GT008','PROCERES 2',6,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('COM-GT009','SANTA AMELIA',6,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('COM-GT010','TRANSITO RECUPERABLE',6,NOW(), NOW(), NULL);

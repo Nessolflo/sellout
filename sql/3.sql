@@ -1,0 +1,17 @@
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT001','Gomovil Naranjo Mall',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT002','Gomovil Peri-Roosevelt',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT003','Gomovil Plaza Cemaco',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT004','Innomovil Fonta Bella',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT005','Innomovil Okland',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT006','Innomovil Plaza Cemaco.',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT007','Innomovil Portales',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT008','Movil One Arkadia',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT009','Movil One Portales',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT010','Movil One Proceres',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT011','Movil One San Cristobal',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT012','Newteck Miraflores',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT013','NEWTECK PORTALES',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT014','Newteck Pradera Concepcion',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT015','Smartcell Miraflores',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT016','Smartcell Peri-Roosevelt',7,NOW(), NOW(), NULL);
+INSERT INTO puntosventas (codigo, nombre, idsucursal, created_at, updated_at, deleted_at) values('TOP-GT017','Smartcell Pradera Concepcion',7,NOW(), NOW(), NULL);
