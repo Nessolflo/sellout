@@ -15,14 +15,32 @@
                 <div class="widget no-padding blank">
                     <div class="panel panel-default work-progress-table">
                         <div class="panel-heading">
-                            Mostrando los primeros {{data.length}} Registros de {{count}}  <i>Ventas pendientes</i>
+                            {{data}} Registros<i>Ventas pendientes</i>
                             <div class="dropdown rounded">
                                 <div class="form-group">
                                     <input type="text" placeholder="Buscar" class="form-control" ng-model="search.$">
                                 </div>
                             </div>
                         </div>
-                        <table id="dataTable" class="table table-striped">
+                        <table ng-table="dataTable" show-filter="true" class="table table-striped">
+                            <tr ng-repeat="item in $data">
+                                <td data-title="'#'">{{item.id}}</td>
+                                <td data-title="'Año'" filter="{ 'anio': 'text' }">{{ item.anio }}</td>
+                                <td data-title="'Semana'" filter="{ 'semana': 'text' }">{{ item.semana}}</td>
+                                <td data-title="'Store Name'" filter="{ 'store_name': 'text' }">{{ item.store_name}}</td>
+                                <td data-title="'Modelo'" filter="{ 'model': 'text' }">{{ item.model}}</td>
+                                <td data-title="'Inventory'" filter="{ 'inventory': 'text' }">{{ item.inventory}}</td>
+                                <td data-title="'Sello_out'" filter="{ 'sell_out': 'text' }">{{ item.sell_out}}</td>
+                                <td data-title="'Mensaje'" filter="{ 'mensaje': 'text' }">{{ item.mensaje}}</td>
+                                <td data-title="'Acciones'">
+                                    <button class="c-btn mini blue pop" ng-click="editar(item)"><i
+                                            class="fa fa-edit blue"></i></button>
+                                    <button class="c-btn mini red pop" ng-click="eliminar(item)"><i
+                                            class="fa fa-trash-o red"></i></button>
+                                </td>
+                            </tr>
+                        </table>
+                        <!--<table id="dataTable" class="table table-striped">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -57,7 +75,7 @@
                                 <td>No hay registros</td>
                             </tr>
                             </tbody>
-                        </table>
+                        </table>-->
                     </div>
                 </div>
             </div>

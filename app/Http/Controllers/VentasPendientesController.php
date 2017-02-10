@@ -19,8 +19,7 @@ class VentasPendientesController extends Controller
         try {
             $this->message = "Consulta exitosa";
             $this->result = true;
-            $this->count = VentasPendientes::count();
-            $this->records = VentasPendientes::limit(30)->get();
+            $this->records = VentasPendientes::all();
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
             $this->result = false;
@@ -28,7 +27,6 @@ class VentasPendientesController extends Controller
             $response = [
                 "message" => $this->message,
                 "result" => $this->result,
-                "count" => $this->count,
                 "records" => $this->records
             ];
             return response()->json($response);

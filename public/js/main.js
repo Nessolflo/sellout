@@ -349,6 +349,7 @@ app.controller('dashselloutController', function ($scope, $window, dashselloutSe
         color: ""
     }
     $scope.mostrar = 0;
+    $scope.mostrarDatos=0;
 
     $scope.cargar_datos = function () {
         $scope.mostrar = 0;
@@ -358,6 +359,9 @@ app.controller('dashselloutController', function ($scope, $window, dashselloutSe
             message: "",
             color: ""
         }
+        $scope.mostrarDatos=0;
+        $scope.item = {};
+        $scope.data = [];
         $scope.item.desde = 1;
         $scope.item.hasta = 1;
         $scope.item.aniodesde = 2016;
@@ -377,61 +381,42 @@ app.controller('dashselloutController', function ($scope, $window, dashselloutSe
         });
     };
 
+    dashselloutService.getCategorias().then(function (dataResponse) {
+        $scope.categorias = dataResponse.data.records;
+    });
+    $scope.cargarseries = function (idcategoria) {
+        dashselloutService.getSeries(idcategoria).then(function (dataResponse) {
+            $scope.series = dataResponse.data.records;
+        });
+    };
+
     $scope.cargarpuntosventas = function (idsucursal) {
         dashselloutService.getPuntosVentas(idsucursal).then(function (dataResponse) {
             $scope.puntosventas = dataResponse.data.records;
         });
     };
+
+
     $scope.filtrar = function (item) {
-        dashselloutService.getFiltroPorSerie(item).then(function (dataResponse) {
-            if (dataResponse.data.result) {
-                $scope.dataPorSerie = dataResponse.data.records;
-                records = dataResponse.data.records;
-
-                $scope.labelsSerie = [];//semanas
-                $scope.seriesSerie = ['Sellout'];//serie
-                $scope.dataSerie = [];//datos
-                data = [];
-                for (var record in records) {
-                    $scope.labelsSerie.push('Serie ' + records[record].serie);
-                    data.push(records[record].sellout);
-                }
-                $scope.dataSerie.push(data);
-                $scope.datasetOverrideSerie = [{yAxisID: 'y-axis-1'}];
-                $scope.optionsSerie = {
-                    scales: {
-                        yAxes: [
-                            {
-                                id: 'y-axis-1',
-                                type: 'linear',
-                                display: true,
-                                position: 'left'
-                            }
-                        ]
-                    }
-                };
-
-
-                setTimeout(function () {
-                    $scope.cargar_datos();
-                }, 3000);
-            }
-            else {
-                showAlert("red", "Espera!", dataResponse.data.message);
-            }
-        });
-
         dashselloutService.getFiltroPorCategoria(item).then(function (dataResponse) {
             if (dataResponse.data.result) {
                 $scope.dataPorCategoria = dataResponse.data.records;
                 records = dataResponse.data.records;
-
+                showAlert("green", "Exito!", dataResponse.data.message);
+                setTimeout(function () {
+                    $scope.msg = {
+                        mostrar: 0,
+                        title: "",
+                        message: "",
+                        color: ""
+                    }
+                }, 3000);
                 $scope.labelsCategoria = [];//semanas
                 $scope.seriesCategoria = ['Sellout'];//serie
                 $scope.dataCategoria = [];//datos
                 data = [];
                 for (var record in records) {
-                    $scope.labelsCategoria.push('Categoria ' + records[record].categoria);
+                    $scope.labelsCategoria.push('Semana ' + records[record].semana);
                     data.push(records[record].sellout);
                 }
                 $scope.dataCategoria.push(data);
@@ -448,11 +433,8 @@ app.controller('dashselloutController', function ($scope, $window, dashselloutSe
                         ]
                     }
                 };
+                $scope.mostrarDatos=1;
 
-
-                setTimeout(function () {
-                    $scope.cargar_datos();
-                }, 3000);
             }
             else {
                 showAlert("red", "Espera!", dataResponse.data.message);
@@ -467,6 +449,7 @@ app.controller('dashselloutController', function ($scope, $window, dashselloutSe
             color: color
         }
     }
+
 
 });
 app.controller('inventariosController', function ($scope, $window, inventariosService, localStorageService) {
@@ -667,7 +650,7 @@ app.controller('UsuariosController', function ($scope, $window, usuariosService)
 
 
 });
-app.controller('ventasPendientesController', function ($scope, $window, ventaspendientesService, localStorageService) {
+app.controller('ventasPendientesController', function ($scope, $window, ventaspendientesService, localStorageService, NgTableParams) {
     $scope.data = [];
     $scope.count = 0;
     $scope.settings = {
@@ -691,8 +674,10 @@ app.controller('ventasPendientesController', function ($scope, $window, ventaspe
             color: ""
         };
         ventaspendientesService.getData("GET", {}).then(function (dataResponse) {
-            $scope.data = dataResponse.data.records;
-            $scope.count = dataResponse.data.count;
+            $scope.data = dataResponse.data.records.length;
+            $scope.dataTable = new NgTableParams({}, {
+                dataset: dataResponse.data.records
+            });
         });
     };
     $scope.cargar_datos();
@@ -1231,15 +1216,11 @@ app.controller('PuntosVentasController', function ($scope, $window, puntosVentas
         }
         puntosVentasService.getData("GET", {}).then(function (dataResponse) {
 
-                $scope.data = dataResponse.data.records;
-                $scope.dataTable= new NgTableParams({}, {
-                dataset: dataResponse.data.records
-                });
-            /*$scope.count = dataResponse.data.count;
-            $scope.dataTable= new NgTableParams({}, {
+            $scope.data = dataResponse.data.records;
+            $scope.dataTable = new NgTableParams({}, {
                 dataset: dataResponse.data.records
             });
-            $scope.count = dataResponse.data.count;*/
+
         });
     }
 
@@ -1440,7 +1421,7 @@ app.controller('SeriesController', function ($scope, $window, seriesService) {
 
 });
 //Controlador sinonimos
-app.controller('SinonimosController', function ($scope, $window, sinonimosService) {
+app.controller('SinonimosController', function ($scope, $window, sinonimosService, NgTableParams) {
 
     $scope.data = [];
     $scope.settings = {
@@ -1465,7 +1446,10 @@ app.controller('SinonimosController', function ($scope, $window, sinonimosServic
             color: ""
         }
         sinonimosService.getData("GET", {}).then(function (dataResponse) {
-            $scope.data = dataResponse.data.records;
+            $scope.data = dataResponse.data.records.length;
+            $scope.dataTable = new NgTableParams({}, {
+                dataset: dataResponse.data.records
+            });
         });
     }
 

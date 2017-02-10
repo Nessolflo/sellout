@@ -135,7 +135,7 @@ class SeriesController extends Controller
 	{
 		try
 		{
-			$registros= Series::where('idcategoria', $request->input('idcategoria'))->get();
+			$registros= Series::where('idcategoria', $request->input('idcategoria'))->orderBy('id','asc')->get();
 			$this->message = "Consulta exitosa";
             $this->result = true;
             $this->records= $registros;

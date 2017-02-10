@@ -13,8 +13,8 @@ class DashboardSelloutVentasController extends Controller
     public $result = false;
     public $records = [];
 
-
-    public function tendenciaPorCategoria(Request $request){
+    /*
+     * public function tendenciaPorCategoria(Request $request){
         try{
             $desde = $request->input('desde');
             $hasta = $request->input('hasta');
@@ -29,46 +29,174 @@ class DashboardSelloutVentasController extends Controller
             //Solo por pais
             if($idpais!='' && $idsucursal=='' && $idpuntoventa==''){
                 $registros = VistaVentas::
-                selectRaw('categoria, idcategoria, sum(sellout) as sellout')
+                selectRaw('semana, categoria, idcategoria, sum(sellout) as sellout')
                     ->whereBetween('fecha', array($fechadesde, $fechahasta))
                     ->where('idpais', $idpais)
-                    ->groupBy('categoria')->groupBy('idcategoria')
+                    ->groupBy('semana')->groupBy('categoria')->groupBy('idcategoria')
                     ->orderBy('sellout','desc')
                     ->limit(15)
                     ->get();
             } //pais, sucursal
             else if($idpais!='' && $idsucursal!='' && $idpuntoventa==''){
                 $registros = VistaVentas::
-                selectRaw('categoria, idcategoria, sum(sellout) as sellout')
+                selectRaw('semana, categoria, idcategoria, sum(sellout) as sellout')
                     ->whereBetween('fecha', array($fechadesde, $fechahasta))
                     ->where('idpais', $idpais)
                     ->where('idsucursal', $idsucursal)
-                    ->groupBy('categoria')->groupBy('idcategoria')
+                    ->groupBy('semana')->groupBy('categoria')->groupBy('idcategoria')
                     ->orderBy('sellout','desc')
                     ->limit(15)
                     ->get();
             } //pais, sucursal, puntoventa
             else if($idpais!='' && $idsucursal!='' && $idpuntoventa!=''){
                 $registros = VistaVentas::
-                selectRaw('categoria, idcategoria, sum(sellout) as sellout')
+                selectRaw('semana, categoria, idcategoria, sum(sellout) as sellout')
                     ->whereBetween('fecha', array($fechadesde, $fechahasta))
                     ->where('idpais', $idpais)
                     ->where('idsucursal', $idsucursal)
                     ->where('idpuntoventa', $idpuntoventa)
-                    ->groupBy('categoria')->groupBy('idcategoria')
+                    ->groupBy('semana')->groupBy('categoria')->groupBy('idcategoria')
                     ->orderBy('sellout','desc')
                     ->limit(15)
                     ->get();
             } //solo fechas
             else{
                 $registros = VistaVentas::
-                selectRaw('categoria, idcategoria, sum(sellout) as sellout')
+                selectRaw('semana, categoria, idcategoria, sum(sellout) as sellout')
                     ->whereBetween('fecha', array($fechadesde, $fechahasta))
-                    ->groupBy('categoria')->groupBy('idcategoria')
+                    ->groupBy('semana')->groupBy('categoria')->groupBy('idcategoria')
                     ->orderBy('sellout','desc')
                     ->limit(15)
                     ->get();
             }
+            $this->message = "consulta exitosa sucursal ";
+            $this->result = true;
+            $this->records = $registros;
+        }catch (\Exception $e){
+            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
+            $this->result = false;
+        }finally{
+            $response = [
+                "message" => $this->message,
+                "result" => $this->result,
+                "records" => $this->records
+            ];
+            return response()->json($response);
+        }
+    }
+     */
+
+    public function tendenciaPorCategoria(Request $request){
+        try{
+            $desde = $request->input('desde');
+            $hasta = $request->input('hasta');
+            $aniodesde= $request->input('aniodesde');
+            $aniohasta= $request->input('aniohasta');
+            $fechadesde= $this->getFecha($aniodesde,$desde);
+            $fechahasta= $this->getFecha($aniohasta,$hasta);
+            $idpais= $request->input('idpais');
+            $idsucursal= $request->input('idsucursal');
+            $idpuntoventa= $request->input('idpuntoventa');
+            $idcategoria= $request->input('idcategoria');
+            $idserie= $request->input('idserie');
+            $registros= Array();
+            if($idpais!='' && $idsucursal=='' && $idpuntoventa=='' && $idcategoria=='' && $idserie==''){
+                $registros = VistaVentas::
+                selectRaw('semana, sum(sellout) as sellout')
+                    ->whereBetween('fecha', array($fechadesde, $fechahasta))
+                    ->where('idpais', $idpais)
+                    ->groupBy('semana')
+                    ->orderBy('sellout','desc')
+                    ->limit(15)
+                    ->get();
+            }else if($idpais!='' && $idsucursal!='' && $idpuntoventa=='' && $idcategoria=='' && $idserie==''){
+                $registros = VistaVentas::
+                selectRaw('semana, sum(sellout) as sellout')
+                    ->whereBetween('fecha', array($fechadesde, $fechahasta))
+                    ->where('idpais', $idpais)
+                    ->where('idsucursal', $idsucursal)
+                    ->groupBy('semana')
+                    ->orderBy('sellout','desc')
+                    ->limit(15)
+                    ->get();
+            }else if($idpais!='' && $idsucursal!='' && $idpuntoventa!='' && $idcategoria=='' && $idserie==''){
+                $registros = VistaVentas::
+                selectRaw('semana, sum(sellout) as sellout')
+                    ->whereBetween('fecha', array($fechadesde, $fechahasta))
+                    ->where('idpais', $idpais)
+                    ->where('idsucursal', $idsucursal)
+                    ->where('idpuntoventa', $idpuntoventa)
+                    ->groupBy('semana')
+                    ->orderBy('sellout','desc')
+                    ->limit(15)
+                    ->get();
+            }else
+             if($idpais!='' && $idsucursal!='' && $idpuntoventa!='' && $idcategoria!='' && $idserie==''){
+                $registros = VistaVentas::
+                selectRaw('semana, sum(sellout) as sellout')
+                    ->whereBetween('fecha', array($fechadesde, $fechahasta))
+                    ->where('idpais', $idpais)
+                    ->where('idsucursal', $idsucursal)
+                    ->where('idpuntoventa', $idpuntoventa)
+                    ->where('idcategoria', $idcategoria)
+                    ->groupBy('semana')
+                    ->orderBy('sellout','desc')
+                    ->limit(15)
+                    ->get();
+            }else if($idpais!='' && $idsucursal!='' && $idpuntoventa!='' && $idcategoria!='' && $idserie!=''){
+                 $registros = VistaVentas::
+                 selectRaw('semana, sum(sellout) as sellout')
+                     ->whereBetween('fecha', array($fechadesde, $fechahasta))
+                     ->where('idpais', $idpais)
+                     ->where('idsucursal', $idsucursal)
+                     ->where('idpuntoventa', $idpuntoventa)
+                     ->where('idcategoria', $idcategoria)
+                     ->where('idserie', $idserie)
+                     ->groupBy('semana')
+                     ->orderBy('sellout','desc')
+                     ->limit(15)
+                     ->get();
+             }else if($idpais!='' && $idsucursal=='' && $idpuntoventa=='' && $idcategoria!='' && $idserie==''){
+                 $registros = VistaVentas::
+                 selectRaw('semana, sum(sellout) as sellout')
+                     ->whereBetween('fecha', array($fechadesde, $fechahasta))
+                     ->where('idpais', $idpais)
+                     ->where('idcategoria', $idcategoria)
+                     ->groupBy('semana')
+                     ->orderBy('sellout','desc')
+                     ->limit(15)
+                     ->get();
+             }else if($idpais=='' && $idsucursal=='' && $idpuntoventa=='' && $idcategoria!='' && $idserie==''){
+                 $registros = VistaVentas::
+                 selectRaw('semana, sum(sellout) as sellout')
+                     ->whereBetween('fecha', array($fechadesde, $fechahasta))
+                     ->where('idcategoria', $idcategoria)
+                     ->groupBy('semana')
+                     ->orderBy('sellout','desc')
+                     ->limit(15)
+                     ->get();
+             }else if($idpais!='' && $idsucursal!='' && $idpuntoventa=='' && $idcategoria!='' && $idserie==''){
+                 $registros = VistaVentas::
+                 selectRaw('semana, sum(sellout) as sellout')
+                     ->whereBetween('fecha', array($fechadesde, $fechahasta))
+                     ->where('idcategoria', $idcategoria)
+                     ->where('idsucursal', $idsucursal)
+                     ->where('idpais', $idpais)
+                     ->groupBy('semana')
+                     ->orderBy('sellout','desc')
+                     ->limit(15)
+                     ->get();
+             }
+
+             else{
+                $mensaje="";
+                if($idpais=='')
+                    $mensaje.="Pais ";
+                if($idcategoria=='')
+                    $mensaje.="Categoria ";
+                 throw new \Exception($mensaje." obligatorio(s)");
+             }
+
             $this->message = "consulta exitosa sucursal ";
             $this->result = true;
             $this->records = $registros;

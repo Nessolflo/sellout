@@ -1,196 +1,173 @@
 <div class="panel-content">
-	<div class="welcome-patti">
-		
-		<ul class="breadcrumbs">
-			<li><a href="#" title=""><i class="fa fa-home"></i></a></li>
-			<li><a href="#" title="">Dashboard SellOut</a></li>
-		</ul>
-	</div><!-- Welcome Patti -->
-	<div class="heading-sec">
+    <div class="welcome-patti">
 
-	</div><!-- Heading Sec -->
-	<div class="main-content-area">
-		<div class="row" ng-show="mostrar == 0">
-			<div class="col-md-12">
-				<div class="widget with-padding">
-					<form name="form" class="form-validation">
-						<h4>{{settings.accion}} {{settings.singular}}</h4>
-						<div class="row">
-						<div class="col-md-3">
-							<div class="inline-form">
-								<label class="c-label">Semana desde</label><input class="input-style" type="text" placeholder="Semana desde" ng-model="item.desde"  >
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="inline-form">
-								<label class="c-label">Año desde</label><input class="input-style" type="number" placeholder="Año desde" ng-model="item.aniodesde"  >
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="inline-form">
-								<label class="c-label">Semana hasta</label><input class="input-style" type="number" placeholder="Semana hasta" ng-model="item.hasta"  >
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="inline-form">
-								<label class="c-label">Año hasta</label><input class="input-style" type="number" placeholder="Año hasta" ng-model="item.aniohasta"  >
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="inline-form">
-								<label class="c-label">Pais</label>
-								<select ng-model="item.idpais" ng-options="pais.id as pais.nombre for pais in paises" ng-change="cargarcuentas(item.idpais)" ></select>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="inline-form">
-								<label class="c-label">Cuenta</label>
-								<select ng-model="item.idsucursal" ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales" ng-change="cargarpuntosventas(item.idsucursal)" ></select>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="inline-form">
-								<label class="c-label">Punto de venta</label>
-								<select ng-model="item.idpuntoventa" ng-options="puntoventa.id as puntoventa.nombre for puntoventa in puntosventas"  ></select>
-							</div>
-						</div>
-						</div>
-						<div class="row" style="margin-top: 30px;">
-						<div class="col-md-6" ng-show="msg.mostrar == 1">
-							<div class="notification">
-								<div role="alert" class="alert color" ng-class="msg.color">
-									<strong>{{msg.title}}</strong> {{msg.message}}
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 pull-right">
-							<button href="#" title="" class="c-btn large blue pop pull-right" ng-click="filtrar(item)" ng-disabled="form.$invalid">Filtrar</button>
-						</div>
-					</div>
-					</form>
-				</div>
-			</div>		
-		</div>
+        <ul class="breadcrumbs">
+            <li><a href="#" title=""><i class="fa fa-home"></i></a></li>
+            <li><a href="#" title="">Dashboard SellOut</a></li>
+        </ul>
+    </div><!-- Welcome Patti -->
+    <div class="heading-sec">
 
-		<div class="row">
-			<div class="col-md-6">
-				<div class="widget">
-					<div class="widget-title">
-						<h3>Tendencia por categorias</h3>
-					</div>
-					<div class="statistic-chart">
-						<div class="graph-container">
-							<div id="chartCategorias" style="height:290px">
-								<canvas id="line" class="chart chart-line" chart-data="dataCategoria"
-										chart-labels="labelsCategoria"
-										chart-series="seriesCategoria" chart-options="optionsCategoria"
-										chart-dataset-override="datasetOverrideCategoria"
-										chart-click="onClick"></canvas>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="widget">
-					<div class="widget-title">
-						<h3>Tendencia por series</h3>
-					</div>
-					<div class="statistic-chart">
-						<div class="graph-container">
-							<div id="chartSeries" style="height:290px">
-								<canvas id="line" class="chart chart-line" chart-data="dataSerie"
-										chart-labels="labelsSerie"
-										chart-series="seriesSerie" chart-options="optionsSerie"
-										chart-dataset-override="datasetOverrideSerie"
-										chart-click="onClick"></canvas>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<div class="widget no-padding blank">
-					<div class="panel panel-default work-progress-table">
-						<div class="panel-heading">
-							Por Categoria <i>Tendencia Sellout</i>
-							<div class="dropdown rounded">
-								<div class="form-group">
-									<input type="text" placeholder="Buscar" class="form-control"
-										   ng-model="search.$">
-								</div>
-							</div>
-						</div>
-						<table id="dataTableModel" class="table table-striped">
-							<thead>
-							<tr>
-								<th>#</th>
-								<th>Categoria</th>
-								<th>$</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr ng-repeat="item in dataPorCategoria | filter:search">
-								<td>{{$index + 1}}</td>
-								<td>{{item.categoria}}</td>
-								<td>{{item.sellout}}</td>
-							</tr>
-							<tr ng-if="dataPorCategoria.length == 0">
-								<td>No hay registros</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-				</div><!-- Quick Total Earning -->
-			</div>
-			<div class="col-md-6">
-				<div class="widget no-padding blank">
-					<div class="panel panel-default work-progress-table">
-						<div class="panel-heading">
-							Por Serie <i>Tendencia Sellout</i>
-							<div class="dropdown rounded">
-								<div class="form-group">
-									<input type="text" placeholder="Buscar" class="form-control"
-										   ng-model="search.$">
-								</div>
-							</div>
-						</div>
-						<table id="dataTablePuntoVenta" class="table table-striped">
-							<thead>
-							<tr>
-								<th>#</th>
-								<th>Serie</th>
-								<th>$</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr ng-repeat="item in dataPorSerie | filter:search">
-								<td>{{$index + 1}}</td>
-								<td>{{item.serie}}</td>
-								<td>{{item.sellout}}</td>
-							</tr>
-							<tr ng-if="dataPorSerie.length == 0">
-								<td>No hay registros</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-				</div><!-- Quick Total Earning -->
-			</div>
-		</div>
+    </div><!-- Heading Sec -->
+    <div class="main-content-area">
+        <div class="row" ng-show="mostrar == 0">
+            <div class="col-md-12">
+                <div class="widget with-padding">
+                    <form name="form" class="form-validation">
+                        <h4>{{settings.accion}} {{settings.singular}}</h4>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="inline-form">
+                                    <label class="c-label">Semana desde</label><input class="input-style" type="text"
+                                                                                      placeholder="Semana desde"
+                                                                                      ng-model="item.desde">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="inline-form">
+                                    <label class="c-label">Año desde</label><input class="input-style" type="number"
+                                                                                   placeholder="Año desde"
+                                                                                   ng-model="item.aniodesde">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="inline-form">
+                                    <label class="c-label">Semana hasta</label><input class="input-style" type="number"
+                                                                                      placeholder="Semana hasta"
+                                                                                      ng-model="item.hasta">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="inline-form">
+                                    <label class="c-label">Año hasta</label><input class="input-style" type="number"
+                                                                                   placeholder="Año hasta"
+                                                                                   ng-model="item.aniohasta">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="inline-form">
+                                    <label class="c-label">Pais</label>
+                                    <select ng-model="item.idpais"
+                                            ng-options="pais.id as pais.nombre for pais in paises"
+                                            ng-change="cargarcuentas(item.idpais)"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="inline-form">
+                                    <label class="c-label">Cuenta</label>
+                                    <select ng-model="item.idsucursal"
+                                            ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales"
+                                            ng-change="cargarpuntosventas(item.idsucursal)"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="inline-form">
+                                    <label class="c-label">Punto de venta</label>
+                                    <select ng-model="item.idpuntoventa"
+                                            ng-options="puntoventa.id as puntoventa.nombre for puntoventa in puntosventas"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="inline-form">
+                                    <label class="c-label">Categoria</label>
+                                    <select ng-model="item.idcategoria" ng-options="categoria.id as categoria.nombre for categoria in categorias" ng-change="cargarseries(item.idcategoria)" ></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="inline-form">
+                                    <label class="c-label">Series</label>
+                                    <select ng-model="item.idserie" ng-options="serie.id as serie.nombre for serie in series"></select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row" style="margin-top: 30px;">
+                            <div class="col-md-6" ng-show="msg.mostrar == 1">
+                                <div class="notification">
+                                    <div role="alert" class="alert color" ng-class="msg.color">
+                                        <strong>{{msg.title}}</strong> {{msg.message}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pull-right">
+                                <button href="#" title="" class="c-btn large green pop pull-right"
+                                        ng-click="filtrar(item)" ng-disabled="form.$invalid">Filtrar
+                                </button>
+                                <button href="#" title="" class="c-btn large red pop pull-right"
+                                        ng-click="cargar_datos()" ng-disabled="form.$invalid">Limpiar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="mostrarDatos == 1">
+            <div class="col-md-6">
+                <div class="widget">
+                    <div class="widget-title">
+                        <h3>Tendencia</h3>
+                    </div>
+                    <div class="statistic-chart">
+                        <div class="graph-container">
+                            <div id="chartCategorias" style="height:290px">
+                                <canvas id="line" class="chart chart-line" chart-data="dataCategoria"
+                                        chart-labels="labelsCategoria"
+                                        chart-series="seriesCategoria" chart-options="optionsCategoria"
+                                        chart-dataset-override="datasetOverrideCategoria"
+                                        chart-click="onClick"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="widget no-padding blank">
+                    <div class="panel panel-default work-progress-table">
+                        <div class="panel-heading">
+                            Tendencia<i>Sellout</i>
+                            <div class="dropdown rounded">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Buscar" class="form-control"
+                                           ng-model="search.$">
+                                </div>
+                            </div>
+                        </div>
+                        <table id="dataTableModel" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Semana</th>
+                                <th>$</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in dataPorCategoria | filter:search">
+                                <td>{{$index + 1}}</td>
+                                <td>{{item.semana}}</td>
+                                <td>{{item.sellout}}</td>
+                            </tr>
+                            <tr ng-if="dataPorCategoria.length == 0">
+                                <td>No hay registros</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!-- Quick Total Earning -->
+            </div>
+
+        </div>
 
 
-
-	</div>
+    </div>
 
 </div><!-- Panel Content -->
 <script type="text/javascript">
-	$(document).ready(function(){
-    
-    'use strict';
+    $(document).ready(function () {
 
-		
-	});
+        'use strict';
+
+
+    });
 </script>
