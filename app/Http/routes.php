@@ -47,4 +47,7 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::resource('top15modelsellout', 'Top15ModelSelloutController');
 	Route::resource('top15pdvsellout', 'Top15PDVSelloutController');
     Route::resource('dashboardSelloutVentas', 'DashboardSelloutVentasController');
+    Route::resource('cuentas', 'CuentasController');
+    Route::resource('plantillas', 'PlantillasController');
+    Route::resource('categoriasPlantillas', 'CategoriasPlantillasController');
 });

@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Sucursales;
+use App\CategoriasPlantillas;
 use DB;
 use Exception;
 
-class SucursalesController extends Controller
+class CategoriasPlantillasController extends Controller
 {
     public $message = "houston tenemos un problema!";
     public $result = false;
@@ -20,7 +20,7 @@ class SucursalesController extends Controller
         try {
             $this->message = "Consulta exitosa";
             $this->result = true;
-            $this->records = Sucursales::with("pais")->with('cuenta')->get();
+            $this->records = CategoriasPlantillas::all();
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
             $this->result = false;
@@ -42,19 +42,16 @@ class SucursalesController extends Controller
     {
         try {
             $nuevoRegistro = DB::transaction(function () use ($request) {
-                $registro = Sucursales::create(
+                $registro = CategoriasPlantillas::create(
                     [
-                        "idpais" => $request->input("idpais"),
-                        "idcuenta" => $request->input("idcuenta"),
                         "nombre" => $request->input("nombre"),
-                        "codigo" => $request->input("codigo")
+                        "cantidad" => $request->input("cantidad")
                     ]);
                 if (!$registro)
                     throw new Exception("Ocurrio un problema al crear el registro");
                 else
                     return $registro;
             });
-            $nuevoRegistro->pais;
             $this->message = "Registro creado";
             $this->result = true;
             $this->records = $nuevoRegistro;
@@ -74,9 +71,8 @@ class SucursalesController extends Controller
     public function show($id)
     {
         try {
-            $registro = Sucursales::find($id);
+            $registro = CategoriasPlantillas::find($id);
             if ($registro) {
-                $registro->pais;
                 $this->message = "Consulta exitosa";
                 $this->result = true;
                 $this->records = $registro;
@@ -105,18 +101,16 @@ class SucursalesController extends Controller
     {
         try {
             $actualizarRegistro = DB::transaction(function () use ($request, $id) {
-                $registro = Sucursales::find($id);
+                $registro = CategoriasPlantillas::find($id);
                 if (!$registro) throw new Exception("El registro no existe");
                 else {
-                    $registro->idpais = $request->input("idpais", $registro->idpais);
-                    $registro->idcuenta = $request->input("idcuenta", $registro->idcuenta);
                     $registro->nombre = $request->input("nombre", $registro->nombre);
-                    $registro->codigo = $request->input("codigo", $registro->codigo);
+                    $registro->cantidad = $request->input("cantidad", $registro->cantidad);
                     $registro->save();
                     return $registro;
                 }
             });
-            $actualizarRegistro->pais;
+
             $this->message = "Registro actualizado";
             $this->result = true;
             $this->records = $actualizarRegistro;
@@ -138,7 +132,7 @@ class SucursalesController extends Controller
         try {
             $this->message = "Registro eliminado";
             $this->result = true;
-            $this->records = Sucursales::destroy($id);
+            $this->records = CategoriasPlantillas::destroy($id);
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al eliminar registros";
             $this->result = false;
@@ -152,26 +146,4 @@ class SucursalesController extends Controller
         }
     }
 
-    public function sucursales_por_pais(Request $request)
-    {
-        try {
-            $registros = Sucursales::where('idpais', $request->input('idpais'))->get();
-            $this->message = "Consulta exitosa";
-            $this->result = true;
-            $this->records = $registros;
-
-
-        } catch (\Exception $e) {
-            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al cargar registros";
-            $this->result = false;
-
-        } finally {
-            $response = [
-                "message" => $this->message,
-                "result" => $this->result,
-                "records" => $this->records
-            ];
-            return response()->json($response);
-        }
-    }
 }
