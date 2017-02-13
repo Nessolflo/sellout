@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\PuntosVentas;
+use App\CategoriasPlantillas;
 use DB;
 use Exception;
 
@@ -167,6 +168,27 @@ class PuntosVentasController extends Controller
                 "message" => $this->message,
                 "result" => $this->result,
                 "count" => $this->count,
+                "records" => $this->records
+            ];
+            return response()->json($response);
+        }
+    }
+
+    public function puntosventas_por_plantilla(Request $request)
+    {
+        try {
+            $plantilla= CategoriasPlantillas::find($request->input('id'));
+            $registros = PuntosVentas::where('idsucursal', $plantilla->idsucursal)->with("sucursal")->orderBy('id','asc')->get();
+            $this->message = "Consulta exitosa";
+            $this->result = true;
+            $this->records = $registros;
+        } catch (\Exception $e) {
+            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al cargar registros";
+            $this->result = false;
+        } finally {
+            $response = [
+                "message" => $this->message,
+                "result" => $this->result,
                 "records" => $this->records
             ];
             return response()->json($response);

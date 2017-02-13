@@ -17,7 +17,12 @@ app.service('sucursalesService',['$http', 'APP',  function($http, APP) {
     this.getPaises = function()
     {
     	return $http.get(APP.api + 'paises');
-    }
+    };
+
+    this.getCuentas = function()
+    {
+        return $http.get(APP.api + 'cuentas');
+    };
 
     this.delete = function(id) {
         return $http.delete(APP.api + 'sucursales/' + id);

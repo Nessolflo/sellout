@@ -146,4 +146,22 @@ class CategoriasPlantillasController extends Controller
         }
     }
 
+    public function obtener_categorias_por_sucursal(Request $request ){
+        try {
+            $this->message = "Consulta exitosa";
+            $this->result = true;
+            $this->records = CategoriasPlantillas::where('idsucursal',$request->input('idsucursal'))->get();
+        } catch (\Exception $e) {
+            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
+            $this->result = false;
+        } finally {
+            $response = [
+                "message" => $this->message,
+                "result" => $this->result,
+                "records" => $this->records
+            ];
+            return response()->json($response);
+        }
+    }
+
 }

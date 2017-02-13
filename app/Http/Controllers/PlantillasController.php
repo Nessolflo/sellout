@@ -21,9 +21,9 @@ class PlantillasController extends Controller
             $this->message = "Consulta exitosa";
             $this->result = true;
             $this->records = Plantillas::with('categoriasPlantillas')
-                ->with('sucursales')
                 ->with('puntosVentas')
-                ->with('sinonimos')
+                ->with('sucursales')
+                ->with('modelos')
                 ->get();
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
@@ -49,9 +49,8 @@ class PlantillasController extends Controller
                 $registro = Plantillas::create(
                     [
                         "idcategoria_plantilla" => $request->input("idcategoria_plantilla"),
-                        "idsucursal" => $request->input("idsucursal"),
                         "idpuntoventa" => $request->input("idpuntoventa"),
-                        "idsinonimo" => $request->input("idsinonimo")
+                        "idmodelo" => $request->input("idmodelo")
                     ]);
                 if (!$registro)
                     throw new Exception("Ocurrio un problema al crear el registro");
@@ -111,9 +110,8 @@ class PlantillasController extends Controller
                 if (!$registro) throw new Exception("El registro no existe");
                 else {
                     $registro->idcategoria_plantilla = $request->input("idcategoria_plantilla", $registro->idcategoria_plantilla);
-                    $registro->idsucursal = $request->input("idsucursal", $registro->idsucursal);
                     $registro->idpuntoventa = $request->input("idpuntoventa", $registro->idpuntoventa);
-                    $registro->idsinonimo = $request->input("idsinonimo", $registro->idsinonimo);
+                    $registro->idmodelo = $request->input("idmodelo", $registro->idmodelo);
                     $registro->save();
                     return $registro;
                 }

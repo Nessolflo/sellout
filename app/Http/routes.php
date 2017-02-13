@@ -21,6 +21,8 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::any('login', 'UsuariosController@login');
 	Route::any('sucursalesporpais', 'SucursalesController@sucursales_por_pais');
 	Route::any('puntosventasporsucursal', 'PuntosVentasController@puntosventas_por_sucursal');
+	Route::any('puntosventasporplantilla', 'PuntosVentasController@puntosventas_por_plantilla');
+
 	Route::any('seriesporcategoria', 'SeriesController@series_por_categoria');
 	Route::any('modelosporserie','ModelosController@modelos_por_serie');
 	Route::any('filtro','VentasController@filtro');
@@ -32,6 +34,8 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::any('tendenciaPorCategoria', 'DashboardSelloutVentasController@tendenciaPorCategoria');
     Route::any('tendenciaPorSerie', 'DashboardSelloutVentasController@tendenciaPorSerie');
 	Route::post('upload', 'VentasController@ImportarExcel');
+    Route::any('obtenercategoriasplantillasporsucursal', 'CategoriasPlantillasController@obtener_categorias_por_sucursal');
+    Route::any('calcularcobertura', 'DashCoberturaController@calcularCobertura');
 	Route::resource('usuarios', 'UsuariosController');
 	Route::resource('tiposusuarios', 'TiposUsuariosController');
 	Route::resource('categorias', 'CategoriasController');
@@ -49,5 +53,5 @@ Route::group(['prefix'=>'ws'],function(){
     Route::resource('dashboardSelloutVentas', 'DashboardSelloutVentasController');
     Route::resource('cuentas', 'CuentasController');
     Route::resource('plantillas', 'PlantillasController');
-    Route::resource('categoriasPlantillas', 'CategoriasPlantillasController');
+    Route::resource('categoriasplantillas', 'CategoriasPlantillasController');
 });

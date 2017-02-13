@@ -3,55 +3,50 @@
 
         <ul class="breadcrumbs">
             <li><a href="#" title=""><i class="fa fa-home"></i></a></li>
-            <li><a href="#" title="">Cuentas</a></li>
+            <li><a href="#" title="">Plantillas</a></li>
         </ul>
     </div><!-- Welcome Patti -->
     <div class="heading-sec">
 
     </div><!-- Heading Sec -->
     <div class="main-content-area">
+
         <div class="row" ng-show="mostrar == 0">
             <div class="col-md-12">
                 <div class="widget no-padding blank">
                     <button href="#" title="" class="c-btn medium green pop" ng-click="crear()">Crear</button>
                     <div class="panel panel-default work-progress-table">
                         <div class="panel-heading">
-                            {{data.length}} Registros <i>Listado de Cuentas</i>
-                            <div class="dropdown rounded">
+                            {{data.length}} Registros<i>Listado de plantillas</i>
+
+                            <!--<div class="dropdown rounded">
                                 <div class="form-group">
                                     <input type="text" placeholder="Buscar" class="form-control" ng-model="search.$">
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
-                        <table id="dataTable" class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Codigo</th>
-                                <th>Nombre</th>
-                                <th>Grupo</th>
-                                <th>Pais</th>
-                                <th>Acciones</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="item in data | filter:search">
-                                <td>{{item.id}}</td>
-                                <td>{{item.codigo}}</td>
-                                <td>{{item.nombre}}</td>
-                                <td>{{item.cuenta.nombre}}</td>
-                                <td>{{item.pais.nombre}}</td>
-                                <td>
+                        <table ng-table="dataTable" show-filter="true" class="table table-striped">
+                            <tr ng-repeat="item in $data">
+                                <td data-title="'#'">{{$index + 1}}</td>
+                                <td data-title="'Categoria'" filter="{ 'categorias_plantillas.nombre': 'text' }">{{
+                                    item.categorias_plantillas.nombre }}
+                                </td>
+                                <td data-title="'Sucursal'" filter="{ 'puntos_ventas.sucursal.nombre': 'text' }">{{
+                                    item.puntos_ventas.sucursal.nombre }}
+                                </td>
+                                <td data-title="'Punto de venta'" filter="{ 'puntos_ventas.nombre': 'text' }">{{
+                                    item.puntos_ventas.nombre }}
+                                </td>
+                                <td data-title="'Modelo'" filter="{ 'modelos.nombre': 'text' }">{{ item.modelos.nombre
+                                    }}
+                                </td>
+                                <td data-title="'Acciones'">
                                     <button class="c-btn mini blue pop" ng-click="editar(item)"><i
                                             class="fa fa-edit blue"></i></button>
                                     <button class="c-btn mini red pop" ng-click="eliminar(item)"><i
                                             class="fa fa-trash-o red"></i></button>
                                 </td>
                             </tr>
-                            <tr ng-if="data.length == 0">
-                                <td>No hay registros</td>
-                            </tr>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -64,33 +59,37 @@
                     <form name="form" class="form-validation">
                         <h4>{{settings.accion}} {{settings.singular}}</h4>
                         <div class="row" ng-show="settings.accion != 'Eliminar'">
-
                             <div class="col-md-6">
                                 <div class="inline-form">
-                                    <label class="c-label">Codigo</label><input class="input-style" type="text"
-                                                                                placeholder="Codigo"
-                                                                                ng-model="item.codigo" required>
+                                    <label class="c-label">Sucursal</label>
+                                    <select ng-model="item.puntos_ventas.sucursal.id"
+                                            ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales"
+                                            ng-change="cargarpdvycategorias(item.puntos_ventas.sucursal.id)"
+                                            ></select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="inline-form">
-                                    <label class="c-label">Nombre</label><input class="input-style" type="text"
-                                                                                placeholder="Nombre"
-                                                                                ng-model="item.nombre" required>
+                                    <label class="c-label">Categoria</label>
+                                    <select ng-model="item.idcategoria_plantilla"
+                                            ng-options="categoria.id as categoria.nombre for categoria in categoriasplantillas"
+                                            required></select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="inline-form">
-                                    <label class="c-label">Cuenta</label>
-                                    <select ng-model="item.idcuenta"
-                                            ng-options="cuenta.id as cuenta.nombre for cuenta in cuentas" required></select>
+                                    <label class="c-label">Punto de venta</label>
+                                    <select ng-model="item.idpuntoventa"
+                                            ng-options="puntoventa.id as puntoventa.nombre for puntoventa in puntosventas"
+                                            required></select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="inline-form">
-                                    <label class="c-label">Pais</label>
-                                    <select ng-model="item.idpais"
-                                            ng-options="pais.id as pais.nombre for pais in paises" required></select>
+                                    <label class="c-label">Modelo</label>
+                                    <select ng-model="item.idmodelo"
+                                            ng-options="modelo.id as modelo.nombre for modelo in modelos"
+                                            required></select>
                                 </div>
                             </div>
 
@@ -111,10 +110,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 pull-right">
-                                <button href="#" title="" class="c-btn large green pop pull-right"
-                                        ng-click="guardar(item)" ng-disabled="form.$invalid">
-                                    {{settings.accion!='Eliminar' ? 'Guardar' : 'Eliminar'}}
-                                </button>
+                                <button href="#" title="" class="c-btn large green pop pull-right" ng-click="guardar(item)" ng-disabled="form.$invalid">{{settings.accion!='Eliminar' ? 'Guardar' : 'Eliminar'}}</button>
                                 <button href="#" title="" class="c-btn large red pop pull-right" ng-click="cancelar()">
                                     Cancelar
                                 </button>
@@ -132,7 +128,6 @@
     $(document).ready(function () {
 
         'use strict';
-
 
     });
 </script>

@@ -28,7 +28,11 @@ var app = angular.module('myAppClient', [
         .when("/series", {templateUrl: "views/series.html", controller: "SeriesController"})
         .when("/sinonimos", {templateUrl: "views/sinonimos.html", controller: "SinonimosController"})
         .when("/sucursales", {templateUrl: "views/sucursales.html", controller: "SucursalesController"})
+        .when("/grupos", {templateUrl: "views/grupos.html", controller: "CuentasController"})
+        .when("/categoriasplantillas", {templateUrl: "views/categoriasplantillas.html", controller: "CategoriasPlantillasController"})
+        .when("/plantillas", {templateUrl: "views/plantillas.html", controller: "PlantillasController"})
         .when("/inventarios", {templateUrl: "views/inventarios.html", controller: "inventariosController"})
+        .when("/cobertura", {templateUrl: "views/coberturaespecial.html", controller: "coberturaEspecialController"})
         .when("/ventaspendientes", {
             templateUrl: "views/ventaspendientes.html",
             controller: "ventasPendientesController"
@@ -334,6 +338,200 @@ app.controller('reportesController', function ($scope, $window, reportesService,
 
 });
 
+app.controller('coberturaEspecialController', function ($scope, $window, dashcoberturaService, localStorageService) {
+    $scope.data = [];
+    $scope.item = {};
+    //variable para guardar el arreglo de los ids de los modelos seleccionados
+    $scope.idsmodelos=[];
+    //variable para guardar los objetos como tal de los modelos seleccionados.
+    $scope.nombresmodelos=[];
+    //variable para guardar los nombres de las columnas a partir de los modelos seleccionados.
+    $scope.columnas=[];
+    //variable para guardar temporalmente el valor de la columna inventario
+    $scope.inventario=0;
+    /**
+     *variable para guardar temporalmente el valor de la columna plantilla, junto con la anterior se restan para saber
+     * que producto comprar
+     */
+    $scope.plantilla=0;
+    $scope.settings = {
+        singular: 'Reporte',
+        plural: 'Reportes',
+        accion: 'Filtrar'
+    }
+    $scope.msg = {
+        mostrar: 0,
+        title: "",
+        message: "",
+        color: ""
+    }
+    $scope.mostrar = 0;
+    $scope.mostrarDatos=0;
+
+    $scope.cargar_datos = function () {
+        $scope.mostrar = 0;
+        $scope.msg = {
+            mostrar: 0,
+            title: "",
+            message: "",
+            color: ""
+        }
+        $scope.mostrarDatos=0;
+        $scope.item = {};
+        $scope.data = [];
+        $scope.item.semana = 1;
+        $scope.idsmodelos=[];
+        $scope.nombresmodelos=[];
+        $scope.columnas=[];
+        $scope.inventario=0;
+        $scope.plantilla=0;
+    }
+
+    /**
+     * Método para limpiar e inicializar las variables
+     */
+    $scope.cargar_datos();
+
+
+    /**
+     * Método para obtener los paises
+     */
+    dashcoberturaService.getPaises().then(function (dataResponse) {
+        $scope.paises = dataResponse.data.records;
+    });
+
+    $scope.cargarcuentas = function (idpais) {
+        dashcoberturaService.getSucursales(idpais).then(function (dataResponse) {
+            $scope.sucursales = dataResponse.data.records;
+        });
+    };
+
+    dashcoberturaService.getModelos().then(function (dataResponse) {
+        $scope.modelos = dataResponse.data.records;
+    });
+
+
+    $scope.cargarpuntosventas = function (idsucursal) {
+        dashcoberturaService.getPuntosVentas(idsucursal).then(function (dataResponse) {
+            $scope.puntosventas = dataResponse.data.records;
+        });
+    };
+
+    /**
+     * Método para calcular la operación por vender, las tiendas que tengan plantillas tienen un limite de inventario
+     * @param item El valor
+     * @param indice El indice de la columna
+     * @returns {*}
+     */
+    $scope.calcularsuma=function (item, indice) {
+
+        var temp= indice-1;
+
+        if(temp>=0) {
+            if($scope.columnas[temp].indexOf("Inventory ")!== -1){
+                $scope.inventario=item;
+            }else if ($scope.columnas[temp].indexOf("Plantilla ") !== -1) {
+                $scope.plantilla= item;
+            }
+            if ($scope.columnas[temp].indexOf("Vender ") !== -1) {
+                var comprar = $scope.plantilla- $scope.inventario;
+                if (comprar > 0)
+                    return comprar;
+                else
+                    return 0;
+            }
+        }
+        return item;
+    }
+
+
+    /**
+     * Método para agregar modelos a los arreglos.
+     */
+    $scope.agregarmodelo=function () {
+        var obModelo = $scope.modeloselected;
+        if(!$scope.buscarmodelo(obModelo.id)) {
+            obModelo['posicion'] = $scope.nombresmodelos.length;
+            $scope.nombresmodelos.push(obModelo);
+            $scope.idsmodelos.push($scope.modeloselected.id);
+        }
+    }
+    /**
+     * Método para eliminar un modelo del arreglo
+     * @param modelo
+     */
+    $scope.eliminarmodelo= function (modelo) {
+        $scope.nombresmodelos.splice(modelo.posicion,1);
+        $scope.idsmodelos.splice(modelo.posicion,1);
+    }
+
+    /**
+     * Método para buscar un modelo
+     * @param modelo_id
+     * @returns {boolean}
+     */
+    $scope.buscarmodelo=function(modelo_id) {
+        for (var i=0; i<$scope.idsmodelos.length; i++){
+            var idtemp=$scope.idsmodelos[i];
+            if(idtemp==modelo_id)
+                return true;
+            }
+        return false;
+    }
+    /**
+     * Método para agregar al arreglo las columnas de la tabla, generadas por medio de los modelos seleccionados
+     */
+    $scope.ordenarColumnas= function () {
+        for (var i=0; i<$scope.nombresmodelos.length; i++){
+            var idtemp=$scope.nombresmodelos[i];
+            $scope.columnas.push("Sell out "+idtemp.nombre);
+            $scope.columnas.push("Inventory "+idtemp.nombre);
+            $scope.columnas.push("Plantilla "+idtemp.nombre);
+            $scope.columnas.push("Vender "+idtemp.nombre);
+            $scope.columnas.push("Dias Exhibición "+idtemp.nombre);
+            $scope.columnas.push("Dias Venta "+idtemp.nombre);
+        }
+    }
+
+    $scope.filtrar = function (item) {
+        $scope.columnas=[];
+        item['modelos']=$scope.idsmodelos;
+        showAlert("green", "Consultando, ", "espera un momento por favor..");
+        dashcoberturaService.filtrar(item).then(function (dataResponse){
+            $scope.ordenarColumnas();
+            $scope.datoscobertura=dataResponse.data.records;
+            showAlert("green", "Exito!", dataResponse.data.message);
+            setTimeout(function () {
+                $scope.msg = {
+                    mostrar: 0,
+                    title: "",
+                    message: "",
+                    color: ""
+                }
+            }, 3000);
+            $scope.mostrarDatos=1;
+        });
+
+    };
+    function obtenerInfoVentas(pdvs, indice) {
+        if(indice<pdvs.length){
+            var puntoventa= pdvs[indice];
+            console.log(puntoventa.nombre);
+            var x=indice+1;
+            obtenerInfoVentas(pdvs, x);
+        }
+    }
+    function showAlert(color, title, message) {
+        $scope.msg = {
+            mostrar: 1,
+            title: title,
+            message: message,
+            color: color
+        }
+    }
+
+
+});
 app.controller('dashselloutController', function ($scope, $window, dashselloutService, localStorageService) {
     $scope.data = [];
     $scope.item = {};
@@ -1536,7 +1734,354 @@ app.controller('SinonimosController', function ($scope, $window, sinonimosServic
 
 
 });
+app.controller('PlantillasController', function ($scope, $window, plantillasService, NgTableParams) {
 
+    $scope.data = [];
+    $scope.settings = {
+        singular: 'Plantilla',
+        plural: 'Plantillas',
+        accion: 'Crear'
+    }
+    $scope.msg = {
+        mostrar: 0,
+        title: "",
+        message: "",
+        color: ""
+    }
+    $scope.mostrar = 0;
+
+    $scope.cargar_datos = function () {
+        $scope.mostrar = 0;
+        $scope.msg = {
+            mostrar: 0,
+            title: "",
+            message: "",
+            color: ""
+        }
+        plantillasService.getData("GET", {}).then(function (dataResponse) {
+            $scope.data = dataResponse.data.records;
+            $scope.dataTable = new NgTableParams({}, {
+                dataset: dataResponse.data.records
+            });
+        });
+    }
+
+    $scope.cargar_datos();
+
+    plantillasService.getSucursales().then(function (dataResponse) {
+        $scope.sucursales = dataResponse.data.records;
+    });
+
+    plantillasService.getModelos().then(function (dataResponse) {
+        $scope.modelos = dataResponse.data.records;
+    });
+
+    $scope.cargarpdvycategorias = function (idsucursal) {
+        plantillasService.getPuntosVentas(idsucursal).then(function (dataResponse) {
+            $scope.puntosventas = dataResponse.data.records;
+        });
+        plantillasService.getCategoriasPlantillas(idsucursal).then(function (dataResponse) {
+            $scope.categoriasplantillas = dataResponse.data.records;
+        });
+    }
+
+    $scope.crear = function () {
+        $scope.settings.accion = 'Crear';
+        $scope.mostrar = 1;
+        $scope.item = {};
+    }
+
+    $scope.editar = function (item) {
+        $scope.settings.accion = 'Editar';
+        $scope.mostrar = 1;
+        $scope.item = item;
+        $scope.cargarpdvycategorias(item.puntos_ventas.sucursal.id);
+    }
+
+    $scope.eliminar = function (item) {
+        $scope.settings.accion = 'Eliminar';
+        $scope.mostrar = 1;
+        $scope.item = item;
+    }
+
+    $scope.cancelar = function () {
+        $scope.mostrar = 0;
+    }
+
+    $scope.guardar = function (item) {
+        if ($scope.settings.accion == "Crear") {
+            plantillasService.create(item).then(function (dataResponse) {
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
+                    setTimeout(function () {
+                        $scope.cargar_datos();
+                    }, 3000);
+                }
+                else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
+                }
+            });
+        }
+        else if ($scope.settings.accion == "Editar") {
+
+            plantillasService.update(item).then(function (dataResponse) {
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
+                    setTimeout(function () {
+                        $scope.cargar_datos();
+                    }, 3000);
+                }
+                else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
+                }
+            });
+        }
+        else if($scope.settings.accion=="Eliminar") {
+
+            plantillasService.delete(item.id).then(function (dataResponse) {
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
+                    setTimeout(function () {
+                        $scope.cargar_datos();
+                    }, 3000);
+                }
+                else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
+                }
+            });
+        }
+    }
+
+
+    function showAlert(color, title, message) {
+        $scope.msg = {
+            mostrar: 1,
+            title: title,
+            message: message,
+            color: color
+        }
+    }
+
+
+});
+//PlantillasController
+app.controller('CategoriasPlantillasController', function ($scope, $window, categoriasPlantillasService) {
+
+    $scope.data = [];
+    $scope.settings = {
+        singular: 'Categoria',
+        plural: 'Categorias',
+        accion: 'Crear'
+    }
+    $scope.msg = {
+        mostrar: 0,
+        title: "",
+        message: "",
+        color: ""
+    }
+    $scope.mostrar = 0;
+
+    $scope.cargar_datos = function () {
+        $scope.mostrar = 0;
+        $scope.msg = {
+            mostrar: 0,
+            title: "",
+            message: "",
+            color: ""
+        }
+        categoriasPlantillasService.getData("GET", {}).then(function (dataResponse) {
+            $scope.data = dataResponse.data.records;
+        });
+    }
+
+    $scope.cargar_datos();
+
+
+    $scope.crear = function () {
+        $scope.settings.accion = 'Crear';
+        $scope.mostrar = 1;
+        $scope.item = {};
+    }
+
+    $scope.editar = function (item) {
+        $scope.settings.accion = 'Editar';
+        $scope.mostrar = 1;
+        $scope.item = item;
+    }
+
+    $scope.eliminar = function (item) {
+        $scope.settings.accion = 'Eliminar';
+        $scope.mostrar = 1;
+        $scope.item = item;
+    }
+
+    $scope.cancelar = function () {
+        $scope.mostrar = 0;
+    }
+
+    $scope.guardar = function (item) {
+        if ($scope.settings.accion == "Crear") {
+            categoriasPlantillasService.create(item).then(function (dataResponse) {
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
+                    setTimeout(function () {
+                        $scope.cargar_datos();
+                    }, 3000);
+                }
+                else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
+                }
+            });
+        }
+        else if ($scope.settings.accion == "Editar") {
+            categoriasPlantillasService.update(item).then(function (dataResponse) {
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
+                    setTimeout(function () {
+                        $scope.cargar_datos();
+                    }, 3000);
+                }
+                else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
+                }
+            });
+        }
+        else {
+            categoriasPlantillasService.delete(item.id).then(function (dataResponse) {
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
+                    setTimeout(function () {
+                        $scope.cargar_datos();
+                    }, 3000);
+                }
+                else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
+                }
+            });
+        }
+    }
+
+
+    function showAlert(color, title, message) {
+        $scope.msg = {
+            mostrar: 1,
+            title: title,
+            message: message,
+            color: color
+        }
+    }
+
+
+});
+//CuentasController
+app.controller('CuentasController', function ($scope, $window, cuentasService) {
+
+    $scope.data = [];
+    $scope.settings = {
+        singular: 'Grupo',
+        plural: 'Grupos',
+        accion: 'Crear'
+    }
+    $scope.msg = {
+        mostrar: 0,
+        title: "",
+        message: "",
+        color: ""
+    }
+    $scope.mostrar = 0;
+
+    $scope.cargar_datos = function () {
+        $scope.mostrar = 0;
+        $scope.msg = {
+            mostrar: 0,
+            title: "",
+            message: "",
+            color: ""
+        }
+        cuentasService.getData("GET", {}).then(function (dataResponse) {
+            $scope.data = dataResponse.data.records;
+        });
+    }
+
+    $scope.cargar_datos();
+
+
+    $scope.crear = function () {
+        $scope.settings.accion = 'Crear';
+        $scope.mostrar = 1;
+        $scope.item = {};
+    }
+
+    $scope.editar = function (item) {
+        $scope.settings.accion = 'Editar';
+        $scope.mostrar = 1;
+        $scope.item = item;
+    }
+
+    $scope.eliminar = function (item) {
+        $scope.settings.accion = 'Eliminar';
+        $scope.mostrar = 1;
+        $scope.item = item;
+    }
+
+    $scope.cancelar = function () {
+        $scope.mostrar = 0;
+    }
+
+    $scope.guardar = function (item) {
+        if ($scope.settings.accion == "Crear") {
+            cuentasService.create(item).then(function (dataResponse) {
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
+                    setTimeout(function () {
+                        $scope.cargar_datos();
+                    }, 3000);
+                }
+                else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
+                }
+            });
+        }
+        else if ($scope.settings.accion == "Editar") {
+            cuentasService.update(item).then(function (dataResponse) {
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
+                    setTimeout(function () {
+                        $scope.cargar_datos();
+                    }, 3000);
+                }
+                else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
+                }
+            });
+        }
+        else {
+            cuentasService.delete(item.id).then(function (dataResponse) {
+                if (dataResponse.data.result) {
+                    showAlert("green", "Exito!", dataResponse.data.message);
+                    setTimeout(function () {
+                        $scope.cargar_datos();
+                    }, 3000);
+                }
+                else {
+                    showAlert("red", "Espera!", dataResponse.data.message);
+                }
+            });
+        }
+    }
+
+
+    function showAlert(color, title, message) {
+        $scope.msg = {
+            mostrar: 1,
+            title: title,
+            message: message,
+            color: color
+        }
+    }
+
+
+});
 //Controlador sucursales
 app.controller('SucursalesController', function ($scope, $window, sucursalesService) {
 
@@ -1569,6 +2114,9 @@ app.controller('SucursalesController', function ($scope, $window, sucursalesServ
 
     $scope.cargar_datos();
 
+    sucursalesService.getCuentas().then(function (dataResponse) {
+        $scope.cuentas = dataResponse.data.records;
+    });
     sucursalesService.getPaises().then(function (dataResponse) {
         $scope.paises = dataResponse.data.records;
     });

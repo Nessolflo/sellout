@@ -9,21 +9,22 @@ class Plantillas extends Model
     protected $table = 'plantillas';
     protected $fillable = ['id',
         'idcategoria_plantilla',
-        'idsucursal',
         'idpuntoventa',
-        'idsinonimo'];
+        'idmodelo'];
 
     public function categoriasPlantillas(){
         return $this->hasOne('App\CategoriasPlantillas','id','idcategoria_plantilla');
     }
+    public function puntosVentas(){
+        return $this->hasOne('App\PuntosVentas','id','idpuntoventa')->with('sucursal');
+    }
+
     public function sucursales(){
         return $this->hasOne('App\Sucursales','id','idsucursal');
     }
-    public function puntosVentas(){
-        return $this->hasOne('App\PuntosVentas','id','idpuntoventa');
-    }
-    public function sinonimos(){
-        return $this->hasOne('App\Sinonimos','id','idsinonimo');
+
+    public function modelos(){
+        return $this->hasOne('App\Modelos','id','idmodelo');
     }
 
 }
