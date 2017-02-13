@@ -427,7 +427,7 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
 
         var temp= indice-1;
 
-        if(temp>=0) {
+        if(temp>=0 && temp<$scope.columnas.length) {
             if($scope.columnas[temp].indexOf("Inventory ")!== -1){
                 $scope.inventario=item;
             }else if ($scope.columnas[temp].indexOf("Plantilla ") !== -1) {
@@ -494,6 +494,7 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
     }
 
     $scope.filtrar = function (item) {
+        $scope.mostrarDatos=0;
         $scope.columnas=[];
         item['modelos']=$scope.idsmodelos;
         showAlert("green", "Consultando, ", "espera un momento por favor..");
