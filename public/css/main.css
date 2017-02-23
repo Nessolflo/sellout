@@ -20043,3 +20043,9 @@ span.online::before {background-color: #07bf29;}
 *:focus {
     outline: none;
 }
+
+.horizontal{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
