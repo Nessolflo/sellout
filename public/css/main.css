@@ -20046,6 +20046,6 @@ span.online::before {background-color: #07bf29;}
 
 .horizontal{
     width: 100%;
-    height: 100%;
+    height: 500px;
     overflow: auto;
 }
