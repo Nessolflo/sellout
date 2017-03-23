@@ -92,23 +92,25 @@
                                 </div>
                             </div>
                         </div>
-                        <table id="dataTableModel" class="table table-striped">
-                            <thead>
-                            <tr >
-                                <th>Punto de venta</th>
-                                <th ng-repeat="columna in columnas">{{columna}}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                        <div class="horizontal">
+	                        <table id="dataTableModel" class="table table-striped">
+	                            <thead>
+	                            <tr >
+	                                <th>Punto de venta</th>
+	                                <th ng-repeat="columna in columnas">{{columna}}</th>
+	                            </tr>
+	                            </thead>
+	                            <tbody>
 
-                            <tr  ng-repeat="fila in datoscobertura" >
-                                <td ng-repeat-start="item in fila" ng-repeat-end >{{calcularsuma(item, $index)}}</td>
-                            </tr>
-                            <tr ng-if="dataPorCategoria.length == 0">
-                                <td>No hay registros</td>
-                            </tr>
-                            </tbody>
-                        </table>
+	                            <tr  ng-repeat="fila in datoscobertura" >
+	                                <td ng-repeat-start="item in fila" ng-repeat-end >{{calcularsuma(item, $index)}}</td>
+	                            </tr>
+	                            <tr ng-if="dataPorCategoria.length == 0">
+	                                <td>No hay registros</td>
+	                            </tr>
+	                            </tbody>
+	                        </table>
+	                    </div>
                     </div>
                 </div><!-- Quick Total Earning -->
             </div>
