@@ -17,6 +17,9 @@ Route::get('/', function () {
 Route::get('/reporte', function () {
     return view("reporte");
 });
+Route::get('/reportecobertura', function () {
+    return view("reportecobertura");
+});
 Route::group(['prefix'=>'ws'],function(){
 	Route::any('login', 'UsuariosController@login');
 	Route::any('sucursalesporpais', 'SucursalesController@sucursales_por_pais');
@@ -36,6 +39,8 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::post('upload', 'VentasController@ImportarExcel');
     Route::any('obtenercategoriasplantillasporsucursal', 'CategoriasPlantillasController@obtener_categorias_por_sucursal');
     Route::any('calcularcobertura', 'DashCoberturaController@calcularCobertura');
+    Route::any('exportarexcelcobertura', 'DashCoberturaController@exportarexcel');
+    Route::any('obtenerTop5Model','Top15ModelSelloutController@obtenerTop5Model');
 	Route::resource('usuarios', 'UsuariosController');
 	Route::resource('tiposusuarios', 'TiposUsuariosController');
 	Route::resource('categorias', 'CategoriasController');

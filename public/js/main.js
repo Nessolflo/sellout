@@ -166,46 +166,26 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
             message: "",
             color: ""
         }
-        dashboardService.getSellOutPDV(1).then(function (dataResponse) {
-            if (dataResponse.data.result) {
-                $records = dataResponse.data.records;
-                if ($records.length > 0) {
-                    $scope.maxNombrePDV = $records[0].nombre;
-                    $scope.maxSellOutPDV = $records[0].sellout;
-                } else {
-                    $scope.maxNombrePDV = "Sin datos";
-                    $scope.maxSellOutPDV = "0";
-                }
-            }
-            else {
-                showAlert("red", "Espera!", dataResponse.data.message);
-            }
-        });
-        dashboardService.getSellOutPDV(2).then(function (dataResponse) {
-            if (dataResponse.data.result) {
-                $records = dataResponse.data.records;
-                if ($records.length > 0) {
-                    $scope.minNombrePDV = $records[0].nombre;
-                    $scope.minSellOutPDV = $records[0].sellout;
-                } else {
-                    $scope.minNombrePDV = "Sin datos";
-                    $scope.minSellOutPDV = "0";
-                }
-            }
-            else {
-                showAlert("red", "Espera!", dataResponse.data.message);
-            }
-        });
-        dashboardService.getTop15ModelSellout().then(function (dataResponse) {
-            $scope.datatopmodelsellout = dataResponse.data.records;
-        });
-        dashboardService.getTop15PDVSellout().then(function (dataResponse) {
-            $scope.datatoppdvsellout = dataResponse.data.records;
-        });
+        $scope.item.anio=new Date().getFullYear();
     }
+    $scope.cargarTop5 = function (item) {
+        item.orden='DESC';
+        dashboardService.getTop5Model(item).then(function (dataResponse) {
+            $scope.datatopmodelsellout = dataResponse.data.records;
+            $scope.cargarTop5Baja(item);
+        });
+        //$scope.cargarTop5Baja(item);
+    };
+    $scope.cargarTop5Baja = function (item) {
+        item.orden='ASC';
+        dashboardService.getTop5Model(item).then(function (dataResponse) {
+            $scope.datatopbajamodel = dataResponse.data.records;
+            $scope.cargar_grafica(item);
+        });
+    };
     $scope.cargar_datos();
-    $scope.cargar_grafica = function () {
-        dashboardService.getVentasPorSemana().then(function (dataResponse) {
+    $scope.cargar_grafica = function (item) {
+        dashboardService.getVentasPorSemana(item).then(function (dataResponse) {
             if (dataResponse.data.result) {
                 records = dataResponse.data.records;
                 if (records.length > 0) {
@@ -236,7 +216,7 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
             }
         });
     }//Fin function cargar_grafica
-    $scope.cargar_grafica();
+    
 });
 app.controller('reportesController', function ($scope, $window, reportesService, localStorageService) {
     $scope.data = [];
@@ -514,6 +494,18 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
         });
 
     };
+
+    $scope.exportarexcel = function (item) {
+        $window.open('ws/exportarexcelcobertura?' + serializeObj(item), '_blank');
+    };
+    function serializeObj(obj) {
+        var result = [];
+
+        for (var property in obj)
+            result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
+
+        return result.join("&");
+    }
     function obtenerInfoVentas(pdvs, indice) {
         if(indice<pdvs.length){
             var puntoventa= pdvs[indice];
@@ -699,6 +691,7 @@ app.controller('inventariosController', function ($scope, $window, inventariosSe
     $scope.uploadFile = function (files) {
 
         $scope.cargando = 1;
+         showAlert("green", "Procesando!", "Espera un momento.. ");
 
         var fd = new FormData();
 

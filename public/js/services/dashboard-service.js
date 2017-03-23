@@ -6,8 +6,8 @@ app.service('dashboardService',['$http', 'APP',  function($http, APP) {
         return $http.post(APP.api + 'obtenerselloutpuntoventa?orden='+orden);
     };
 
-    this.getVentasPorSemana = function() {
-        return $http.post(APP.api + 'obtenerventasporsemana');
+    this.getVentasPorSemana = function(item) {
+        return $http.post(APP.api + 'obtenerventasporsemana',item);
     };
 
     this.getTop15ModelSellout= function () {
@@ -15,6 +15,9 @@ app.service('dashboardService',['$http', 'APP',  function($http, APP) {
     }
     this.getTop15PDVSellout= function () {
         return $http.get(APP.api +'top15pdvsellout');
+    }
+    this.getTop5Model= function(item){
+        return $http.post(APP.api +'obtenerTop5Model', item);
     }
 
 }]);

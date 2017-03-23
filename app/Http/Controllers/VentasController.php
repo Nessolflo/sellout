@@ -235,13 +235,15 @@ class VentasController extends Controller
         }
     }
 
-    public function ventas_por_semana()
+    public function ventas_por_semana(Request $request)
     {
         try {
-
+            $semanadesde= $request->input("semanadesde");
+            $semanahasta= $request->input("semanahasta");
+            $anio= $request->input("anio");
             $this->message = "Consulta exitosa";
             $this->result = true;
-            $this->records = VistaVentasPorSemana::orderBy('fecha', 'asc')->get();
+            $this->records = VistaVentasPorSemana::orderBy('fecha', 'asc')->whereBetween('semana', array($semanadesde,$semanahasta))->where('anio', $anio)->get();
 
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro";
@@ -442,6 +444,7 @@ class VentasController extends Controller
     {
         \DB::beginTransaction();
         try {
+            $contador=0;
             $store_name = $request->input('store_name');
             $year = $request->input('anio');
             $week = $request->input('semana');
@@ -544,13 +547,13 @@ class VentasController extends Controller
                                 $existeerror = false;
                                 $puntoventa = null;
 
-
-                                $sinonimo = Sinonimos::where('nombre', $fila->model)->first();
+                                
+                                $sinonimo = Sinonimos::where('nombre', trim($fila->model))->first();
                                 if (!$sinonimo) {
                                     $mensajeerror .= " Verifica el nombre del modelo, la linea " . $contador;
                                     $existeerror = true;
                                 }
-                                $puntoventa = PuntosVentas::where('nombre', $fila->store_name)->first();
+                                $puntoventa = PuntosVentas::where('nombre', trim($fila->store_name))->first();
                                 if (!$puntoventa) {
                                     $mensajeerror .= " Verifica el nombre del punto de venta, la linea " . $contador;
                                     $existeerror = true;

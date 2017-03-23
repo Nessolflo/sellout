@@ -78,35 +78,7 @@ class DashCoberturaController extends Controller
           where pdv.idsucursal=1
           group by pdv.id
          */
-        /*
-        try {
-            $this->semana= $request->input('semana');
-            $this->modelo= $request->input('idmodelo');
-            $sucursal= $request->input('idsucursal');
-            $registros = PuntosVentas::
-            selectRaw('puntosventas.nombre as nombre, ifnull(sum(vistaventas.sellout),0) as sellout, ifnull(sum(vistaventas.inventory),0) as inventory, ifnull((select cp.cantidad from categoriasplantillas cp inner join plantillas p ON p.idcategoria_plantilla=cp.id where p.idpuntoventa=puntosventas.id),0) as plantilla')
-                ->leftJoin('vistaventas', function ($join) {
-                    $join->on('vistaventas.idpuntoventa', '=', 'puntosventas.id')
-                        ->where('vistaventas.semana', '=', $this->semana)
-                        ->where('vistaventas.idmodelo', '=', $this->modelo);
-                })
-                ->where('puntosventas.idsucursal', $sucursal)
-                ->groupBy('puntosventas.id')
-                ->get();
-            $this->message = "Consulta realizada con exito";
-            $this->result = true;
-            $this->records = $registros;
-        } catch (\Exception $e) {
-            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
-            $this->result = false;
-        } finally {
-            $response = [
-                "message" => $this->message,
-                "result" => $this->result,
-                "records" => $this->records
-            ];
-            return response()->json($response);
-        }*/
+        
 
         try {
 
@@ -153,5 +125,22 @@ class DashCoberturaController extends Controller
             return response()->json($response);
         }
 
+    }
+
+    public function exportarexcel()
+    {
+        try {
+            \Excel::create('Reporte', function ($excel) {
+
+                $excel->sheet('reporte', function ($sheet) {
+
+                    $sheet->loadView('reportecobertura');
+
+                });
+
+            })->export('xls');
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
 }

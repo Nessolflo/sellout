@@ -1,151 +1,176 @@
-<div class="panel-content">
-    <div class="welcome-patti">
+    <div class="panel-content">
+        <div class="welcome-patti">
 
-        <ul class="breadcrumbs">
-            <li><a href="#" title=""><i class="fa fa-home"></i></a></li>
-            <li><a href="#" title="">Dashboard</a></li>
-        </ul>
-    </div><!-- Welcome Patti -->
-    <div class="heading-sec">
-        <div class="row">
-            <div class="col-md-4 column">
-                <div class="heading-profile">
-                    <h2>Dashboard</h2>
+            <ul class="breadcrumbs">
+                <li><a href="#" title=""><i class="fa fa-home"></i></a></li>
+                <li><a href="#" title="">Dashboard</a></li>
+            </ul>
+        </div><!-- Welcome Patti -->
+        <div class="heading-sec">
+            <div class="row">
+                <div class="col-md-4 column">
+                    <div class="heading-profile">
+                        <h2>Dashboard</h2>
 
+                    </div>
                 </div>
             </div>
-        </div>
-    </div><!-- Heading Sec -->
-    <div class="main-content-area">
-        <div class="row">
+        </div><!-- Heading Sec -->
+        <div class="main-content-area">
+            <div class="row">
 
-            <div class="quick-stats-boxes">
+                <div class="row" ng-show="mostrar == 0">
+                <div class="col-md-12">
+                    <div class="widget with-padding">
+                        <form name="form" class="form-validation">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="inline-form">
+                                        <label class="c-label">Semana Desde</label><input class="input-style" type="number"
+                                                                                    placeholder="Semana"
+                                                                                    ng-model="item.semanadesde">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="inline-form">
+                                        <label class="c-label">Semana Hasta</label><input class="input-style" type="number"
+                                                                                    placeholder="Semana"
+                                                                                    ng-model="item.semanahasta">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="inline-form">
+                                        <label class="c-label">Año</label><input class="input-style" type="number"
+                                                                                    placeholder="Año"
+                                                                                    ng-model="item.anio">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 30px;">
+                                <div class="col-md-6" ng-show="msg.mostrar == 1">
+                                    <div class="notification">
+                                        <div role="alert" class="alert color" ng-class="msg.color">
+                                            <strong>{{msg.title}}</strong> {{msg.message}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 pull-right">
+                                    <button href="#" title="" class="c-btn large green pop pull-right"
+                                            ng-click="cargarTop5(item)" ng-disabled="form.$invalid">Filtrar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="quick-total-earning widget">
-                            <div class="widget-controls">
-                                <span class="refresh-content"><i class="fa fa-refresh"></i></span>
-                            </div><!-- Widget Controls -->
-                            <i class="red fa fa-usd"></i>
-                            <div class="quick-total-ern-info">
-                                <i>PDV: {{maxNombrePDV}}</i>
-                                <h5>Total: {{maxSellOutPDV}}</h5>
-                                <span>PDV con mayor recaudación</span>
+                        <div class="widget no-padding blank">
+                            <div class="panel panel-default work-progress-table">
+                                <div class="panel-heading">
+                                    Top seller <i>Modelos</i>
+                                    <div class="dropdown rounded">
+                                        <div class="form-group">
+                                            <input type="text" placeholder="Buscar" class="form-control"
+                                                   ng-model="search.$">
+                                        </div>
+                                    </div>
+                                </div>
+                                <table id="dataTableModel" class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Modelo</th>
+                                        <th>OH</th>
+                                        <th>SELL OUT</th>
+                                        <th>DOI</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in datatopmodelsellout | filter:search">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{item.modelo}}</td>
+                                        <td>{{item.inventory}}</td>
+                                        <td>{{item.sellout}}</td>
+                                        <td>{{item.doi}}</td>
+                                    </tr>
+                                    <tr ng-if="datatopmodelsellout.length == 0">
+                                        <td>No hay registros</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div><!-- Quick Total Earning -->
                     </div>
+
                     <div class="col-md-6">
-                        <div class="quick-total-earning widget">
-                            <div class="widget-controls">
-                                <span class="refresh-content"><i class="fa fa-refresh"></i></span>
-                            </div><!-- Widget Controls -->
-                            <i class="red fa fa-usd"></i>
-                            <div class="quick-total-ern-info">
-                                <i>PDV: {{minNombrePDV}}</i>
-                                <h5>Total: {{minSellOutPDV}}</h5>
-                                <span>PDV con menor recaudación</span>
+                        <div class="widget no-padding blank">
+                            <div class="panel panel-default work-progress-table">
+                                <div class="panel-heading">
+                                    Low rotation <i>Modelos</i>
+                                    <div class="dropdown rounded">
+                                        <div class="form-group">
+                                            <input type="text" placeholder="Buscar" class="form-control"
+                                                   ng-model="search.$">
+                                        </div>
+                                    </div>
+                                </div>
+                                <table id="dataTableModelASC" class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Modelo</th>
+                                        <th>OH</th>
+                                        <th>SELL OUT</th>
+                                        <th>DOI</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item1 in datatopbajamodel | filter:search">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{item1.modelo}}</td>
+                                        <td>{{item1.inventory}}</td>
+                                        <td>{{item1.sellout}}</td>
+                                        <td>{{item1.doi}}</td>
+                                    </tr>
+                                    <tr ng-if="datatopbajamodel.length == 0">
+                                        <td>No hay registros</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
+                        </div><!-- Quick Total Earning -->
                     </div>
+                    
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="widget no-padding blank">
-                        <div class="panel panel-default work-progress-table">
-                            <div class="panel-heading">
-                                TOP 15 <i>Modelos</i>
-                                <div class="dropdown rounded">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Buscar" class="form-control"
-                                               ng-model="search.$">
-                                    </div>
-                                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h3>Ventas por semana</h3>
                             </div>
-                            <table id="dataTableModel" class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Modelo</th>
-                                    <th>$</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="item in datatopmodelsellout | filter:search">
-                                    <td>{{$index + 1}}</td>
-                                    <td>{{item.modelo}}</td>
-                                    <td>{{item.sellout}}</td>
-                                </tr>
-                                <tr ng-if="datatopmodelsellout.length == 0">
-                                    <td>No hay registros</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- Quick Total Earning -->
-                </div>
-                <div class="col-md-6">
-                    <div class="widget no-padding blank">
-                        <div class="panel panel-default work-progress-table">
-                            <div class="panel-heading">
-                                TOP 15  <i>Puntos de venta</i>
-                                <div class="dropdown rounded">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Buscar" class="form-control"
-                                               ng-model="search.$">
+                            <div class="statistic-chart">
+                                <div class="graph-container">
+                                    <div id="chart" style="height:290px">
+                                        <canvas id="line" class="chart chart-line" chart-data="data"
+                                                chart-labels="labels"
+                                                chart-series="series" chart-options="options"
+                                                chart-dataset-override="datasetOverride"
+                                                chart-click="onClick"></canvas>
                                     </div>
-                                </div>
-                            </div>
-                            <table id="dataTablePuntoVenta" class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Sucursal</th>
-                                    <th>Punto de venta</th>
-                                    <th>$</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="item in datatoppdvsellout | filter:search">
-                                    <td>{{$index + 1}}</td>
-                                    <td>{{item.sucursal}}</td>
-                                    <td>{{item.puntoventa}}</td>
-                                    <td>{{item.sellout}}</td>
-                                </tr>
-                                <tr ng-if="datatoppdvsellout.length == 0">
-                                    <td>No hay registros</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- Quick Total Earning -->
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="widget">
-                        <div class="widget-title">
-                            <h3>Ventas por semana</h3>
-                        </div>
-                        <div class="statistic-chart">
-                            <div class="graph-container">
-                                <div id="chart" style="height:290px">
-                                    <canvas id="line" class="chart chart-line" chart-data="data"
-                                            chart-labels="labels"
-                                            chart-series="series" chart-options="options"
-                                            chart-dataset-override="datasetOverride"
-                                            chart-click="onClick"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
-
-
     </div>
-</div>
-</div><!-- Panel Content -->
-<script type="text/javascript">
-</script>
+    </div><!-- Panel Content -->
+    <script type="text/javascript">
+    </script>
