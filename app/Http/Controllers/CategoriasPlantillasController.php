@@ -150,7 +150,8 @@ class CategoriasPlantillasController extends Controller
         try {
             $this->message = "Consulta exitosa";
             $this->result = true;
-            $this->records = CategoriasPlantillas::where('idsucursal',$request->input('idsucursal'))->get();
+            //$this->records = CategoriasPlantillas::where('idsucursal',$request->input('idsucursal'))->get();
+            $this->records = CategoriasPlantillas::all();
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
             $this->result = false;

@@ -25,12 +25,15 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::any('sucursalesporpais', 'SucursalesController@sucursales_por_pais');
 	Route::any('puntosventasporsucursal', 'PuntosVentasController@puntosventas_por_sucursal');
 	Route::any('puntosventasporplantilla', 'PuntosVentasController@puntosventas_por_plantilla');
-
 	Route::any('seriesporcategoria', 'SeriesController@series_por_categoria');
 	Route::any('modelosporserie','ModelosController@modelos_por_serie');
 	Route::any('filtro','VentasController@filtro');
 	Route::any('exportarexcel','VentasController@exportarexcel');
+	Route::any('exportarexcelTopSeller', 'VentasController@exportarexcelTopSeller');
 	Route::any('obtenerregistros', 'VentasController@obtenerregistros');
+	Route::any('obtenersemanaventa','VentasController@semana_consulta');
+	//Route::any('obtenerconsultaventasemana','VentasController@semana_venta_consulta');///mi controlador
+	Route::resource('obtenersucursal', 'SucursalesController');
 	Route::any('obtenerselloutpuntoventa','VentasController@sell_out_punto_ventas');
 	Route::any('obtenerventasporsemana','VentasController@ventas_por_semana');
 	Route::any('actualizarregistro','VentasController@agregarItem');

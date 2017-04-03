@@ -235,15 +235,36 @@ class VentasController extends Controller
         }
     }
 
-    public function ventas_por_semana(Request $request)
+     public function ventas_por_semana()
     {
-        try {
-            $semanadesde= $request->input("semanadesde");
-            $semanahasta= $request->input("semanahasta");
-            $anio= $request->input("anio");
+       /* try {
+            $semana= DB::select('CALL  graficaporsemana('.$semanasI.','.$semanasF.')'); 
             $this->message = "Consulta exitosa";
             $this->result = true;
-            $this->records = VistaVentasPorSemana::orderBy('fecha', 'asc')->whereBetween('semana', array($semanadesde,$semanahasta))->where('anio', $anio)->get();
+            //$this->records = VistaVentasPorSemansa::orderBy('fecha', 'asc')->get();
+            $this->records = $semana;
+        } catch (\Exception $e) {
+            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro wilson";
+            $this->result = false;
+        } finally {
+            $response = [
+                "message" => $this->message,
+                "result" => $this->result,
+                "records" => $this->records
+            ];
+            return response()->json($response);
+        }
+        
+
+
+
+
+
+        try {
+
+            $this->message = "Consulta exitosa";
+            $this->result = true;
+            $this->records = DB::select('CALL  graficaporsemana(1,1)'); 
 
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro";
@@ -255,9 +276,63 @@ class VentasController extends Controller
                 "records" => $this->records
             ];
             return response()->json($response);
-        }
+        }*/
     }
+//////////////////////WIL//////////////////////////////////////////////////////////
+    public function semana_consulta(Request $request)
+    {
+        try {
+            //$dias= ($request->input('semanaI')-$request->input('semanaF'))+1;
+            $semana= DB::select('CALL DOI('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('sucursal').')'); 
+            //$semana2= DB::select('CALL mindoi('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('sucursal').')'); 
+            $this->message = "Consulta exitosa";
+            $this->result = true;
+            $this->records = $semana;
+            //$this->records2 = $semana2;
+            
+            
 
+        } catch (\Exception $e) {
+            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro";
+            $this->result = false;
+        } finally {
+            $response = [
+                "message" => $this->message,
+                "result" => $this->result,
+                "records" => $this->records
+                //"records2" => $this->records2
+
+            ];
+            return response()->json($response);
+
+        }
+        
+    }
+ 
+   /* public function semana_venta_consulta(Request $request)
+    {
+        try {
+             $semana= DB::select('CALL top_15_semana('.$request->input('semana').')'); 
+            $this->message = "Consulta exitosa";
+            $this->result = true;
+            $this->records = $semana;
+ 
+        } catch (\Exception $e) {
+            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro";
+            $this->result = false;
+        } finally {
+            $response = [
+                "message" => $this->message,
+                "result" => $this->result,
+                "records" => $this->records
+            ];
+            return response()->json($response);
+        }
+    }*/
+ 
+ 
+ 
+///////////////////////////////////////////////////////////////////////////////////////////
     public function sell_out_punto_ventas(Request $request)
     {
         try {
@@ -637,6 +712,40 @@ class VentasController extends Controller
                 $excel->sheet('reporte', function ($sheet) {
 
                     $sheet->loadView('reporte');
+
+                });
+
+            })->export('xls');
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function exportarexcel()
+    {
+        try {
+            \Excel::create('Reporte', function ($excel) {
+
+                $excel->sheet('reporte', function ($sheet) {
+
+                    $sheet->loadView('reporte');
+
+                });
+
+            })->export('xls');
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function exportarexcelTopSeller()
+    {
+        try {
+            \Excel::create('Reporte', function ($excel) {
+
+                $excel->sheet('TopSeller', function ($sheet) {
+
+                    $sheet->loadView('wilson');
 
                 });
 

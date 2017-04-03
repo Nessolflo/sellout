@@ -15,6 +15,7 @@ app.service('dashcoberturaService',['$http', 'APP',  function($http, APP) {
     };
 
     this.filtrar= function (parametros) {
+        console.log(APP.api+ 'calcularcobertura?'+parametros);
         return $http.post(APP.api+ 'calcularcobertura', parametros);
     }
 

@@ -48,6 +48,8 @@ var app = angular.module('myAppClient', [
 
 }]);
 
+
+
 function iniciar() {
     $("#progressBar").css({
         "opacity": 1,
@@ -157,7 +159,57 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
         color: ""
     }
     $scope.mostrar = 0;
+/////////////////////Wilson functions/////////////////////////////////////////
+    $scope.getScoreData = function (dataI,dataF,dataA,dataS) {
+        dashboardService.getConsultaSemana(dataI,dataF,dataA,dataS).then(function (dataResponse) {
+            if (dataResponse.data.result) {
+                //console.log(dataResponse.data);
+                $scope.datatopmodelsellout = dataResponse.data.records;
+                //$scope.datatoppdvsellout= dataResponse.data.records2;
+                $scope.item.desde = dataI;
+                $scope.item.hasta = dataF;
+                $scope.item.aniodesde = dataA;
+                $scope.item.sucursal = dataS;
+            }
+            else {
+                showAlert("red", "Espera!", dataResponse.data.message);
+            }
+        });
+    }
 
+    $scope.exportarexcel = function (item) {
+        console.log(item);
+        $window.open('ws/exportarexcelTopSeller?' + serializeObj(item), '_blank');
+    };
+    function serializeObj(obj) {
+        var result = [];
+
+        for (var property in obj)
+            result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
+
+        return result.join("&");
+    }
+
+   
+
+
+
+
+/*
+     $scope.getScoreData2 = function (data) {
+        dashboardService.getConsultaVentaSemana(data).then(function (dataResponse) {
+            if (dataResponse.data.result) {
+                //console.log(dataResponse.data);
+                $scope.datatoppdvsellout= dataResponse.data.records;
+            }
+            else {
+                showAlert("red", "Espera!", dataResponse.data.message);
+            }
+        });
+    }*/
+
+    //console.log('si');
+////////////////////////////////////////////////////////////////////////////////
     $scope.cargar_datos = function () {
         $scope.mostrar = 0;
         $scope.msg = {
@@ -166,26 +218,52 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
             message: "",
             color: ""
         }
-        $scope.item.anio=new Date().getFullYear();
+        dashboardService.getSellOutPDV(1).then(function (dataResponse) {
+            if (dataResponse.data.result) {
+                $records = dataResponse.data.records;
+                if ($records.length > 0) {
+                    $scope.maxNombrePDV = $records[0].nombre;
+                    $scope.maxSellOutPDV = $records[0].sellout;
+                } else {
+                    $scope.maxNombrePDV = "Sin datos";
+                    $scope.maxSellOutPDV = "0";
+                }
+            }
+            else {
+                showAlert("red", "Espera!", dataResponse.data.message);
+            }
+        });
+        dashboardService.getSellOutPDV(2).then(function (dataResponse) {
+            if (dataResponse.data.result) {
+                $records = dataResponse.data.records;
+                if ($records.length > 0) {
+                    $scope.minNombrePDV = $records[0].nombre;
+                    $scope.minSellOutPDV = $records[0].sellout;
+                } else {
+                    $scope.minNombrePDV = "Sin datos";
+                    $scope.minSellOutPDV = "0";
+                }
+            }
+            else {
+                showAlert("red", "Espera!", dataResponse.data.message);
+            }
+        });
+        dashboardService.getTop15ModelSellout().then(function (dataResponse) {
+            $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
+        });
+        dashboardService.getTop15PDVSellout().then(function (dataResponse) {
+            $scope.datatoppdvsellout = dataResponse.data.records;
+        });
+        /////////
+        dashboardService.getSucursales().then(function (dataResponse) {
+            $scope.paises = dataResponse.data.records;
+        });
+
+        /////
     }
-    $scope.cargarTop5 = function (item) {
-        item.orden='DESC';
-        dashboardService.getTop5Model(item).then(function (dataResponse) {
-            $scope.datatopmodelsellout = dataResponse.data.records;
-            $scope.cargarTop5Baja(item);
-        });
-        //$scope.cargarTop5Baja(item);
-    };
-    $scope.cargarTop5Baja = function (item) {
-        item.orden='ASC';
-        dashboardService.getTop5Model(item).then(function (dataResponse) {
-            $scope.datatopbajamodel = dataResponse.data.records;
-            $scope.cargar_grafica(item);
-        });
-    };
     $scope.cargar_datos();
-    $scope.cargar_grafica = function (item) {
-        dashboardService.getVentasPorSemana(item).then(function (dataResponse) {
+    $scope.cargar_grafica = function () {
+        dashboardService.getVentasPorSemana().then(function (dataResponse) {
             if (dataResponse.data.result) {
                 records = dataResponse.data.records;
                 if (records.length > 0) {
@@ -216,7 +294,7 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
             }
         });
     }//Fin function cargar_grafica
-    
+    $scope.cargar_grafica();
 });
 app.controller('reportesController', function ($scope, $window, reportesService, localStorageService) {
     $scope.data = [];
@@ -413,7 +491,7 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
             }else if ($scope.columnas[temp].indexOf("Plantilla ") !== -1) {
                 $scope.plantilla= item;
             }
-            if ($scope.columnas[temp].indexOf("Vender ") !== -1) {
+            if ($scope.columnas[temp].indexOf("Comprar ") !== -1) {
                 var comprar = $scope.plantilla- $scope.inventario;
                 if (comprar > 0)
                     return comprar;
@@ -467,13 +545,14 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
             $scope.columnas.push("Sell out "+idtemp.nombre);
             $scope.columnas.push("Inventory "+idtemp.nombre);
             $scope.columnas.push("Plantilla "+idtemp.nombre);
-            $scope.columnas.push("Vender "+idtemp.nombre);
+            $scope.columnas.push("Comprar "+idtemp.nombre);
             $scope.columnas.push("Dias Exhibición "+idtemp.nombre);
             $scope.columnas.push("Dias Venta "+idtemp.nombre);
         }
     }
 
     $scope.filtrar = function (item) {
+        console.log(item);
         $scope.mostrarDatos=0;
         $scope.columnas=[];
         item['modelos']=$scope.idsmodelos;
