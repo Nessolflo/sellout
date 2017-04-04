@@ -721,22 +721,6 @@ class VentasController extends Controller
         }
     }
 
-    public function exportarexcel()
-    {
-        try {
-            \Excel::create('Reporte', function ($excel) {
-
-                $excel->sheet('reporte', function ($sheet) {
-
-                    $sheet->loadView('reporte');
-
-                });
-
-            })->export('xls');
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
-    }
 
     public function exportarexcelTopSeller()
     {
