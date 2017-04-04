@@ -19,8 +19,8 @@
                             <div class="col-md-4">
                                 <div class="inline-form">
                                     <label class="c-label">Semana</label><input class="input-style" type="number"
-                                                                                placeholder="Semana"
-                                                                                ng-model="item.semana">
+                                    placeholder="Semana"
+                                    ng-model="item.semana">
                                 </div>
                             </div>
 
@@ -28,24 +28,24 @@
                                 <div class="inline-form">
                                     <label class="c-label">Pais</label>
                                     <select ng-model="item.idpais"
-                                            ng-options="pais.id as pais.nombre for pais in paises"
-                                            ng-change="cargarcuentas(item.idpais)"></select>
+                                    ng-options="pais.id as pais.nombre for pais in paises"
+                                    ng-change="cargarcuentas(item.idpais)"></select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="inline-form">
                                     <label class="c-label">Cuenta</label>
                                     <select ng-model="item.idsucursal"
-                                            ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales"
-                                            ></select>
+                                    ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales"
+                                    ></select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="inline-form">
                                     <label class="c-label">Modelo</label>
                                     <select ng-model="modeloselected"
-                                            ng-options="modelo as modelo.nombre for modelo in modelos"
-                                            ng-change="agregarmodelo()"
+                                    ng-options="modelo as modelo.nombre for modelo in modelos"
+                                    ng-change="agregarmodelo()"
                                     ></select>
                                 </div>
                             </div>
@@ -66,59 +66,75 @@
                             </div>
                             <div class="col-md-6 pull-right">
                                 <button href="#" title="" class="c-btn large green pop pull-right"
-                                        ng-click="filtrar(item)" ng-disabled="form.$invalid">Filtrar
-                                </button>
-                                <button href="#" title="" class="c-btn large red pop pull-right"
-                                        ng-click="cargar_datos()" ng-disabled="form.$invalid">Limpiar
-                                </button>
-                            </div>
+                                ng-click="filtrar(item)" ng-disabled="form.$invalid">Filtrar
+                            </button>
+                            <button href="#" title="" class="c-btn large red pop pull-right"
+                            ng-click="cargar_datos()" ng-disabled="form.$invalid">Limpiar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="mostrarDatos == 1">
+    <div class="col-md-12">
+        <div class="widget no-padding blank">
+            <button href="#" title="" class="c-btn medium green pop" ng-click="exportarexcel(item)">Exportar Excel</button>
+            <div class="widget with-padding">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="inline-form">
+                        <label class="c-label">Cobertura Display</label><input class="input-style" type="number"
+                            ng-model="item.coberturaDisplay" disabled>
                         </div>
-                    </form>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="inline-form">
+                            <label class="c-label">Cobertura Venta</label><input class="input-style" type="number"
+                            ng-model="item.coberturaVenta" disabled>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row" ng-show="mostrarDatos == 1">
-            <div class="col-md-12">
-                <div class="widget no-padding blank">
-                <button href="#" title="" class="c-btn medium green pop" ng-click="exportarexcel(item)">Exportar Excel</button>
-                    <div class="panel panel-default work-progress-table">
-                        <div class="panel-heading">
-                            Cobertura<i>Dashboard</i>
-                            <div class="dropdown rounded">
-                                <div class="form-group">
-                                    <input type="text" placeholder="Buscar" class="form-control"
-                                           ng-model="search.$">
-                                </div>
-                            </div>
+            <div class="panel panel-default work-progress-table">
+                <div class="panel-heading">
+                    Cobertura<i>Dashboard</i>
+                    <div class="dropdown rounded">
+                        <div class="form-group">
+                            <input type="text" placeholder="Buscar" class="form-control"
+                            ng-model="search.$">
                         </div>
-                        <div class="horizontal">
-	                        <table id="dataTableModel" class="table table-striped">
-	                            <thead>
-	                            <tr >
-	                                <th>Punto de venta</th>
-	                                <th ng-repeat="columna in columnas">{{columna}}</th>
-	                            </tr>
-	                            </thead>
-	                            <tbody>
-
-	                            <tr  ng-repeat="fila in datoscobertura" >
-	                                <td ng-repeat-start="item in fila" ng-repeat-end >{{calcularsuma(item, $index)}}</td>
-	                            </tr>
-	                            <tr ng-if="dataPorCategoria.length == 0">
-	                                <td>No hay registros</td>
-	                            </tr>
-	                            </tbody>
-	                        </table>
-	                    </div>
                     </div>
-                </div><!-- Quick Total Earning -->
-            </div>
+                </div>
+                <div class="horizontal">
+                   <table id="dataTableModel" class="table table-striped">
+                       <thead>
+                           <tr >
+                               <th>Punto de venta</th>
+                               <th ng-repeat="columna in columnas">{{columna}}</th>
+                           </tr>
+                       </thead>
+                       <tbody>
 
-        </div>
+                           <tr  ng-repeat="fila in datoscobertura" >
+                               <td ng-repeat-start="item in fila" ng-repeat-end >{{calcularsuma(item, $index)}}</td>
+                           </tr>
+                           <tr ng-if="dataPorCategoria.length == 0">
+                               <td>No hay registros</td>
+                           </tr>
+                       </tbody>
+                   </table>
+               </div>
+           </div>
+       </div><!-- Quick Total Earning -->
+   </div>
+
+</div>
 
 
-    </div>
+</div>
 
 </div><!-- Panel Content -->
 <script type="text/javascript">

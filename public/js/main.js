@@ -560,6 +560,8 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
         dashcoberturaService.filtrar(item).then(function (dataResponse){
             $scope.ordenarColumnas();
             $scope.datoscobertura=dataResponse.data.records;
+            $scope.item.coberturaDisplay=dataResponse.data.cde;
+            $scope.item.coberturaVenta = dataResponse.data.cdv;
             showAlert("green", "Exito!", dataResponse.data.message);
             setTimeout(function () {
                 $scope.msg = {

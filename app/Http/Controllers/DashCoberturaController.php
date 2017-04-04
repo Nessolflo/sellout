@@ -13,6 +13,9 @@ class DashCoberturaController extends Controller
     public $message = "houston tenemos un problema!";
     public $result = false;
     public $records = [];
+    public $cdh=0;
+    public $cdv=0;
+    public $total=0;
     public $modelo="";
     public $semana=0;
 
@@ -27,9 +30,9 @@ class DashCoberturaController extends Controller
             $this->result = false;
         } finally {
             $response = [
-                "message" => $this->message,
-                "result" => $this->result,
-                "records" => $this->records
+            "message" => $this->message,
+            "result" => $this->result,
+            "records" => $this->records
             ];
             return response()->json($response);
         }
@@ -99,26 +102,40 @@ class DashCoberturaController extends Controller
             }
             $registros = PuntosVentas::
             selectRaw($consulta)
-                ->leftJoin('vistaventas', function ($join) {
-                    $join->on('vistaventas.idpuntoventa', '=', 'puntosventas.id')
-                        ->where('vistaventas.semana', '=', $this->semana);
-                })
-                ->where('puntosventas.idsucursal', $sucursal)
-                ->groupBy('puntosventas.id')
-                ->get();
+            ->leftJoin('vistaventas', function ($join) {
+                $join->on('vistaventas.idpuntoventa', '=', 'puntosventas.id')
+                ->where('vistaventas.semana', '=', $this->semana);
+            })
+            ->where('puntosventas.idsucursal', $sucursal)
+            ->groupBy('puntosventas.id')
+            ->get();
             $temp= array();
+            $cantidadDiasExhibicion=0;
+            $cantidadDiasVentas=0;
+            $cantidadTiendas=count($registros);
             foreach ($registros as $key => $tregistro) {
                 for ($i = 0; $i < count($modelos); $i++) {
                     $modelo=$modelos[$i];
-                    if($tregistro['inventory_'.$modelo]>0 && $tregistro['sellout_'.$modelo]>0)
-                        $tregistro['diasexhibicion_'.$modelo]=  round(($tregistro['sellout_'.$modelo] / $tregistro['inventory_'.$modelo])*7,2);
-                    else
-                        $tregistro['diasexhibicion_'.$modelo]= 0;
+                    if($tregistro['inventory_'.$modelo]>0 && $tregistro['sellout_'.$modelo]>0){
+                        $tempDiasExhibicion= (($tregistro['sellout_'.$modelo] / $tregistro['inventory_'.$modelo])*7);
+                        $tregistro['diasexhibicion_'.$modelo]=  $tempDiasExhibicion>0?'Si':'No';
+                        if($tempDiasExhibicion>0)
+                            $cantidadDiasExhibicion++;
+                        
+                    }
+                    else{
+                        $tregistro['diasexhibicion_'.$modelo]= 'No';
+                    }
 
-                    if($tregistro['inventory_'.$modelo]>1 && $tregistro['sellout_'.$modelo]>0)
-                        $tregistro['diasventas_'.$modelo]=  round(($tregistro['sellout_'.$modelo] / $tregistro['inventory_'.$modelo])*7,2);
-                    else
-                        $tregistro['diasventas_'.$modelo]= 0;
+                    if($tregistro['inventory_'.$modelo]>1 && $tregistro['sellout_'.$modelo]>0){
+                        $tempDiasCobertura = (($tregistro['sellout_'.$modelo] / $tregistro['inventory_'.$modelo])*7);
+                        $tregistro['diasventas_'.$modelo]=      $tempDiasCobertura>1?'Si':'No';
+                        if($tempDiasCobertura>1)
+                            $cantidadDiasVentas++;
+                    }
+                    else{
+                        $tregistro['diasventas_'.$modelo]= 'No';
+                    }
                     if($tregistro['plantilla_'.$modelo]>0){
                         $calculo = $tregistro['plantilla_'.$modelo] - $tregistro['inventory_'.$modelo];
                         if($calculo>0)
@@ -127,7 +144,10 @@ class DashCoberturaController extends Controller
                 }
                 array_push($temp, $tregistro);
             }
-
+            $coberturaDisponible= round(($cantidadDiasExhibicion/$cantidadTiendas)*100,2);
+            $coberturaVentas= round(($cantidadDiasVentas/$cantidadTiendas)*100,2);
+            $this->cdh=$coberturaDisponible;
+            $this->cdv=$coberturaVentas;
             $this->message = "Consulta realizada con exito";
             $this->result = true;
             $this->records = $temp;
@@ -136,9 +156,11 @@ class DashCoberturaController extends Controller
             $this->result = false;
         } finally {
             $response = [
-                "message" => $this->message,
-                "result" => $this->result,
-                "records" => $this->records
+            "message" => $this->message,
+            "result" => $this->result,
+            "records" => $this->records,
+            "cde" => $this->cdh,
+            "cdv" => $this->cdv,
             ];
             return response()->json($response);
         }
