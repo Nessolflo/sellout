@@ -1,3 +1,3 @@
 angular.module('app.constants', [])
 
-.constant('APP', { version: '1', api: 'http://localhost/blog/public/ws/' });
+.constant('APP', { version: '1', api: '/huawei/public/ws/' });
