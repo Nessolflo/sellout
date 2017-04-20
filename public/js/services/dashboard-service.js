@@ -13,10 +13,13 @@ app.service('dashboardService',['$http', 'APP',  function($http, APP) {
  
     this.getTop15ModelSellout= function () {
         return $http.get(APP.api +'top15modelsellout');
-    }
+    };
+    this.getsemanamaximaporsucursal = function($id){
+        return $http.get(APP.api + 'top15modelsellout/'+$id);
+    };
     this.getTop15PDVSellout= function () {
         return $http.get(APP.api +'top15pdvsellout');
-    }
+    };
  
  
     this.getConsultaSemana = function(semanaI,semanaF,anio,sucursal) {

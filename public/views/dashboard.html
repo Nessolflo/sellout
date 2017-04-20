@@ -18,136 +18,61 @@
     </div><!-- Heading Sec -->
     <div class="main-content-area">
         <div class="row">
-
-            <!--div class="quick-stats-boxes">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="quick-total-earning widget">
-                            <div class="widget-controls">
-                                <span class="refresh-content"><i class="fa fa-refresh"></i></span>
-                            </div><!- Widget Controls ->
-                            <i class="red fa fa-usd"></i>
-                            <div class="quick-total-ern-info">
-                                <i>PDV: {{maxNombrePDV}}</i>
-                                <h5>Total: {{maxSellOutPDV}}</h5>
-                                <span>PDV con mayor recaudación</span>
-                            </div>
-                        </div><!- Quick Total Earning ->
-                    </div>
-                    <div class="col-md-6">
-                        <div class="quick-total-earning widget">
-                            <div class="widget-controls">
-                                <span class="refresh-content"><i class="fa fa-refresh"></i></span>
-                            </div><!-- Widget Controls ->
-                            <i class="red fa fa-usd"></i>
-                            <div class="quick-total-ern-info">
-                                <i>PDV: {{minNombrePDV}}</i>
-                                <h5>Total: {{minSellOutPDV}}</h5>
-                                <span>PDV con menor recaudación</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div-->
             <div class="row">
-                <!--div class=" container">
-                    <div class="quick-total-earning widget col-md-12">
-                        
-                 
-                        <select ng-model="ScoreI">
-                            <option value="1">Semana #1</option>
-                            <option value="2">Semana #2</option>
-                            <option value="3">Semana #3</option>
-                            <option value="4">Semana #4</option>
-                            <option value="5">Semana #5</option>
-                            <option value="6">Semana #6</option>
-                            <option value="7">Semana #7</option>
-                            <option value="8">Semana #8</option>
-                            <option value="9">Semana #9</option>
-                            <option value="10">Semana #10</option>
-                        </select>
-                        A
-                        <select ng-model="ScoreF">
-                            <option value="1">Semana #1</option>
-                            <option value="2">Semana #2</option>
-                            <option value="3">Semana #3</option>
-                            <option value="4">Semana #4</option>
-                            <option value="5">Semana #5</option>
-                            <option value="6">Semana #6</option>
-                            <option value="7">Semana #7</option>
-                            <option value="8">Semana #8</option>
-                            <option value="9">Semana #9</option>
-                            <option value="10">Semana #10</option>
-                        </select>
 
-                    
-                    
-                        <select ng-model="ScoreA">
-                            <option value="2016">Año 2016</option>
-                            <option value="2017">Año 2017</option>
-                        </select>
-                        <select ng-model="ScoreS">
-                            <option value="5">Sucursal1</option>
-                            <option value="12">sucursal2</option>
-                        </select>
+                <div class="row" ng-show="mostrar == 0">
+                    <div class="col-md-12">
+                        <div class="widget with-padding">
+                            <form name="form" class="form-validation">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="inline-form">
 
-                        <button ng-click="getScoreData(ScoreI,ScoreF,ScoreA,ScoreS)">Ver</button>
-                       </div>
-                </div-->
-
-<div class="row" ng-show="mostrar == 0">
-                <div class="col-md-12">
-                    <div class="widget with-padding">
-                        <form name="form" class="form-validation">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="inline-form">
-                                        
                                         <h4 ng-repeat="item in datatopmodelsellout2">Semana Actual: <strong>{{item.maximo}}</strong> </h4> 
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="inline-form">
+                                            <label class="c-label">Semana Desde</label><input class="input-style" type="number"
+                                            placeholder="Semana" ng-model="ScoreI">
+                                        </div>
                                     </div>
 
-                                  
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="inline-form">
-                                        <label class="c-label">Semana Desde</label><input class="input-style" type="number"
-                                        placeholder="Semana" ng-model="ScoreI">
+                                    <div class="col-md-3">
+                                        <div class="inline-form">
+                                            <label class="c-label">Semana Hasta</label><input class="input-style" type="number"
+                                            placeholder="Semana"  ng-model="ScoreF">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-3">
-                                    <div class="inline-form">
-                                        <label class="c-label">Semana Hasta</label><input class="input-style" type="number"
-                                        placeholder="Semana"  ng-model="ScoreF">
+                                    <div class="col-md-3">
+                                        <div class="inline-form">
+                                            <label class="c-label">Año</label><input class="input-style" type="number"
+                                            placeholder="Año" ng-model="ScoreA">
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="inline-form">
-                                        <label class="c-label">Año</label><input class="input-style" type="number"
-                                        placeholder="Año" ng-model="ScoreA">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="inline-form">
-                                        <label class="c-label">Sucursal</label>
-                                        <select ng-model="ScoreS" ng-options="pais.id as pais.nombre for pais in paises"  ></select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top: 30px;">
-                                <div class="col-md-6" ng-show="msg.mostrar == 1">
-                                    <div class="notification">
-                                        <div role="alert" class="alert color" ng-class="msg.color">
-                                            <strong>{{msg.title}}</strong> {{msg.message}}
+                                    <div class="col-md-3">
+                                        <div class="inline-form">
+                                            <label class="c-label">Sucursal</label>
+                                            <select ng-model="ScoreS" ng-options="pais.id as pais.nombre for pais in paises"  ></select>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 pull-right">
-                                    <button href="#" title="" class="c-btn large green pop pull-right"
-                                            ng-click="getScoreData(ScoreI,ScoreF,ScoreA,ScoreS)" ng-disabled="form.$invalid">Filtrar
+                                <div class="row" style="margin-top: 30px;">
+                                    <div class="col-md-6" ng-show="msg.mostrar == 1">
+                                        <div class="notification">
+                                            <div role="alert" class="alert color" ng-class="msg.color">
+                                                <strong>{{msg.title}}</strong> {{msg.message}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 pull-right">
+                                        <button href="#" title="" class="c-btn large green pop pull-right"
+                                        ng-click="getScoreData(ScoreI,ScoreF,ScoreA,ScoreS)" ng-disabled="form.$invalid">Filtrar
                                     </button>
                                 </div>
                             </div>
@@ -157,115 +82,55 @@
             </div>
 
 
-                <div class="col-md-12">
-                    <div class="widget no-padding blank">
-                        <button href="#" title="" class="c-btn medium green pop" ng-click="exportarexcel(item)">Exportar Excel</button>
-                        <div class="panel panel-default work-progress-table">
-                        
-                            <div class="panel-heading">
-                                TOP Seller <i>Modelos</i>
-                                <div class="dropdown rounded">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Buscar" class="form-control"
-                                               ng-model="search.$">
-                                    </div>
-                                    
+            <div class="col-md-12">
+                <div class="widget no-padding blank">
+                    <button href="#" title="" class="c-btn medium green pop" ng-click="exportarexcel(item)">Exportar Excel</button>
+                    <div class="panel panel-default work-progress-table">
+
+                        <div class="panel-heading">
+                            TOP Seller <i>Modelos</i>
+                            <div class="dropdown rounded">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Buscar" class="form-control"
+                                    ng-model="search.$">
                                 </div>
+
                             </div>
-                            <table id="dataTableModel" class="table table-striped">
-                                <thead>
+                        </div>
+                        <table id="dataTableModel" class="table table-striped">
+                            <thead>
                                 <tr>
                                    <th>#</th>
-                                    <th>Modelo</th>
-                                    <th>OH</th>
-                                    <th>SELL OUT</th>
-                                    <th>PDS</th>
-                                     <th>DOI</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="item in datatopmodelsellout | filter:search">
-                                    <td>{{$index + 1}}</td>
-                                    <td>{{item.modelo}}</td>
-                                    <td>{{item.inventory}}</td>
-                                    <td>{{item.sellout}}</td>
-                                    <td >{{item.pdS}}</td>
-                                    <td >{{item.DOI}}</td>
+                                   <th>Modelo</th>
+                                   <th>OH</th>
+                                   <th>SELL OUT</th>
+                                   <th>PDS</th>
+                                   <th>DOI</th>
+                               </tr>
+                           </thead>
+                           <tbody>
+                            <tr ng-repeat="item in datatopmodelsellout | filter:search">
+                                <td>{{$index + 1}}</td>
+                                <td>{{item.modelo}}</td>
+                                <td>{{item.inventory}}</td>
+                                <td>{{item.sellout}}</td>
+                                <td >{{item.pdS}}</td>
+                                <td >{{item.DOI}}</td>
 
-                                </tr>
-                                <tr ng-if="datatopmodelsellout.length == 0">
-                                    <td>No hay registros</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- Quick Total Earning -->
+                            </tr>
+                            <tr ng-if="datatopmodelsellout.length == 0">
+                                <td>No hay registros</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <!--div class="col-md-6">
-                    <div class="widget no-padding blank">
-                        <div class="panel panel-default work-progress-table">
-                            <div class="panel-heading">
-                                Low Rotation  <i>Modelos</i>
-                                <div class="dropdown rounded">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Buscar" class="form-control"
-                                               ng-model="search.$">
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <table id="dataTablePuntoVenta" class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Modelo</th>
-                                    <th>OH</th>
-                                    <th>SELL OUT</th>
-                                    <th>DOI</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="item in datatoppdvsellout | filter:search">
-                                   <td>{{$index + 1}}</td>
-                                    <td>{{item.modelo}}</td>
-                                    <td>{{item.inventory}}</td>
-                                    <td>{{item.sellout}}</td>
-                                    <td >{{item.doi}}</td>
-                                </tr>
-                                <tr ng-if="datatoppdvsellout.length == 0">
-                                    <td>No hay registros</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- Quick Total Earning ->
-                </div-->
-            </div>
-            <!--<div class="row">
-                <div class="col-md-12">
-                    <div class="widget">
-                        <div class="widget-title">
-                            <h3>Ventas por semana</h3>
-                        </div>
-                        <div class="statistic-chart">
-                            <div class="graph-container">
-                                <div id="chart" style="height:290px">
-                                    <canvas id="line" class="chart chart-line" chart-data="data"
-                                            chart-labels="labels"
-                                            chart-series="series" chart-options="options"
-                                            chart-dataset-override="datasetOverride"
-                                            chart-click="onClick"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
+            </div><!-- Quick Total Earning -->
         </div>
-
-
     </div>
+</div>
+
+
+</div>
 </div>
 </div><!-- Panel Content -->
 <script type="text/javascript">

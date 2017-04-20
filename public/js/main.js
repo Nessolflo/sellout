@@ -10,14 +10,14 @@
 /**
  * Configure the Routes
  */
-var app = angular.module('myAppClient', [
+ var app = angular.module('myAppClient', [
     'ngRoute',
     'LocalStorageModule',
     'ngTable',
     'app.constants',
     'chart.js'
-]).config(['$routeProvider', function ($routeProvider) {
-    $routeProvider
+    ]).config(['$routeProvider', function ($routeProvider) {
+        $routeProvider
         .when("/", {templateUrl: "views/dashboard.html", controller: "DashboardController"})
         .when("/usuarios", {templateUrl: "views/usuarios.html", controller: "UsuariosController"})
         .when("/categorias", {templateUrl: "views/categorias.html", controller: "CategoriasController"})
@@ -46,49 +46,49 @@ var app = angular.module('myAppClient', [
             redirectTo: '/404'
         })
 
-}]);
+    }]);
 
 
 
-function iniciar() {
-    $("#progressBar").css({
-        "opacity": 1,
-        "width": "10%"
-    });
-}
-
-function loader() {
-    $(document).scrollTop(0);
-
-    var loaded = 0;
-    var imgCounter = $(".main-content img").length;
-    if (imgCounter > 0) {
-        function doProgress() {
-            $(".main-content img").load(function () {
-                loaded++;
-                var newWidthPercentage = (loaded / imgCounter) * 100;
-                animateLoader(newWidthPercentage + '%');
-            })
-        }
-
-        function animateLoader(newWidth) {
-            $("#progressBar").width(newWidth);
-            if (imgCounter === loaded) {
-                setTimeout(function () {
-                    $("#progressBar").animate({opacity: 0});
-                }, 500);
-            }
-        }
-
-        doProgress();
-    } else {
-        setTimeout(function () {
-            $("#progressBar").css({
-                "opacity": 0,
-                "width": "100%"
-            });
-        }, 500);
+    function iniciar() {
+        $("#progressBar").css({
+            "opacity": 1,
+            "width": "10%"
+        });
     }
+
+    function loader() {
+        $(document).scrollTop(0);
+
+        var loaded = 0;
+        var imgCounter = $(".main-content img").length;
+        if (imgCounter > 0) {
+            function doProgress() {
+                $(".main-content img").load(function () {
+                    loaded++;
+                    var newWidthPercentage = (loaded / imgCounter) * 100;
+                    animateLoader(newWidthPercentage + '%');
+                })
+            }
+
+            function animateLoader(newWidth) {
+                $("#progressBar").width(newWidth);
+                if (imgCounter === loaded) {
+                    setTimeout(function () {
+                        $("#progressBar").animate({opacity: 0});
+                    }, 500);
+                }
+            }
+
+            doProgress();
+        } else {
+            setTimeout(function () {
+                $("#progressBar").css({
+                    "opacity": 0,
+                    "width": "100%"
+                });
+            }, 500);
+        }
 
     // Activates Tooltips for Social Links
     $('[data-toggle="tooltip"]').tooltip();
@@ -143,7 +143,12 @@ app.controller('MainController', function ($scope, $window, localStorageService)
 
 });
 
-app.controller('DashboardController', function ($scope, $window, dashboardService, $http, APP) {
+app.controller('DashboardController', function ($scope, $window, dashboardService, $http, APP, localStorageService) {
+
+    $scope.id = localStorageService.cookie.get('login').id;
+    $scope.usuario = localStorageService.cookie.get('login').usuario;
+    $scope.tipo = localStorageService.cookie.get('login').idtipo;
+
     $scope.data = [];
     $scope.item = {};
     $scope.contador = 0;
@@ -160,9 +165,9 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
     }
     $scope.mostrar = 0;
 /////////////////////Wilson functions/////////////////////////////////////////
-    $scope.getScoreData = function (dataI,dataF,dataA,dataS) {
-        dashboardService.getConsultaSemana(dataI,dataF,dataA,dataS).then(function (dataResponse) {
-            if (dataResponse.data.result) {
+$scope.getScoreData = function (dataI,dataF,dataA,dataS) {
+    dashboardService.getConsultaSemana(dataI,dataF,dataA,dataS).then(function (dataResponse) {
+        if (dataResponse.data.result) {
                 //console.log(dataResponse.data);
                 $scope.datatopmodelsellout = dataResponse.data.records;
                 //$scope.datatoppdvsellout= dataResponse.data.records2;
@@ -175,85 +180,72 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
                 showAlert("red", "Espera!", dataResponse.data.message);
             }
         });
-    }
+}
 
-    $scope.exportarexcel = function (item) {
-        console.log(item);
-        $window.open('ws/exportarexcelTopSeller?' + serializeObj(item), '_blank');
-    };
-    function serializeObj(obj) {
-        var result = [];
+$scope.exportarexcel = function (item) {
+    console.log(item);
+    $window.open('ws/exportarexcelTopSeller?' + serializeObj(item), '_blank');
+};
+function serializeObj(obj) {
+    var result = [];
 
-        for (var property in obj)
-            result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
+    for (var property in obj)
+        result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
 
-        return result.join("&");
-    }
-
-   
-
-
-
-
-/*
-     $scope.getScoreData2 = function (data) {
-        dashboardService.getConsultaVentaSemana(data).then(function (dataResponse) {
-            if (dataResponse.data.result) {
-                //console.log(dataResponse.data);
-                $scope.datatoppdvsellout= dataResponse.data.records;
-            }
-            else {
-                showAlert("red", "Espera!", dataResponse.data.message);
-            }
-        });
-    }*/
-
-    //console.log('si');
+    return result.join("&");
+}
 ////////////////////////////////////////////////////////////////////////////////
-    $scope.cargar_datos = function () {
-        $scope.mostrar = 0;
-        $scope.msg = {
-            mostrar: 0,
-            title: "",
-            message: "",
-            color: ""
+$scope.cargar_datos = function () {
+    $scope.mostrar = 0;
+    $scope.msg = {
+        mostrar: 0,
+        title: "",
+        message: "",
+        color: ""
+    }
+    dashboardService.getSellOutPDV(1).then(function (dataResponse) {
+        if (dataResponse.data.result) {
+            $records = dataResponse.data.records;
+            if ($records.length > 0) {
+                $scope.maxNombrePDV = $records[0].nombre;
+                $scope.maxSellOutPDV = $records[0].sellout;
+            } else {
+                $scope.maxNombrePDV = "Sin datos";
+                $scope.maxSellOutPDV = "0";
+            }
         }
-        dashboardService.getSellOutPDV(1).then(function (dataResponse) {
-            if (dataResponse.data.result) {
-                $records = dataResponse.data.records;
-                if ($records.length > 0) {
-                    $scope.maxNombrePDV = $records[0].nombre;
-                    $scope.maxSellOutPDV = $records[0].sellout;
-                } else {
-                    $scope.maxNombrePDV = "Sin datos";
-                    $scope.maxSellOutPDV = "0";
-                }
+        else {
+            showAlert("red", "Espera!", dataResponse.data.message);
+        }
+    });
+    dashboardService.getSellOutPDV(2).then(function (dataResponse) {
+        if (dataResponse.data.result) {
+            $records = dataResponse.data.records;
+            if ($records.length > 0) {
+                $scope.minNombrePDV = $records[0].nombre;
+                $scope.minSellOutPDV = $records[0].sellout;
+            } else {
+                $scope.minNombrePDV = "Sin datos";
+                $scope.minSellOutPDV = "0";
             }
-            else {
-                showAlert("red", "Espera!", dataResponse.data.message);
-            }
-        });
-        dashboardService.getSellOutPDV(2).then(function (dataResponse) {
-            if (dataResponse.data.result) {
-                $records = dataResponse.data.records;
-                if ($records.length > 0) {
-                    $scope.minNombrePDV = $records[0].nombre;
-                    $scope.minSellOutPDV = $records[0].sellout;
-                } else {
-                    $scope.minNombrePDV = "Sin datos";
-                    $scope.minSellOutPDV = "0";
-                }
-            }
-            else {
-                showAlert("red", "Espera!", dataResponse.data.message);
-            }
-        });
+        }
+        else {
+            showAlert("red", "Espera!", dataResponse.data.message);
+        }
+    });
+    if($scope.tipo==1)
+    {
         dashboardService.getTop15ModelSellout().then(function (dataResponse) {
             $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
         });
-        dashboardService.getTop15PDVSellout().then(function (dataResponse) {
-            $scope.datatoppdvsellout = dataResponse.data.records;
+    }else{
+        dashboardService.getsemanamaximaporsucursal($scope.id).then(function (dataResponse) {
+            $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
         });
+    }
+    dashboardService.getTop15PDVSellout().then(function (dataResponse) {
+        $scope.datatoppdvsellout = dataResponse.data.records;
+    });
         /////////
         dashboardService.getSucursales().then(function (dataResponse) {
             $scope.paises = dataResponse.data.records;
@@ -280,12 +272,12 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
                     $scope.options = {
                         scales: {
                             yAxes: [
-                                {
-                                    id: 'y-axis-1',
-                                    type: 'linear',
-                                    display: true,
-                                    position: 'left'
-                                }
+                            {
+                                id: 'y-axis-1',
+                                type: 'linear',
+                                display: true,
+                                position: 'left'
+                            }
                             ]
                         }
                     };
@@ -294,7 +286,7 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
             }
         });
     }//Fin function cargar_grafica
-    $scope.cargar_grafica();
+    //$scope.cargar_grafica();
 });
 app.controller('reportesController', function ($scope, $window, reportesService, localStorageService) {
     $scope.data = [];
@@ -325,7 +317,7 @@ app.controller('reportesController', function ($scope, $window, reportesService,
         $scope.item.aniodesde = 2016;
         $scope.item.aniohasta = 2017;
     }
-     reportesService.getTop15ModelSellout().then(function (dataResponse) {
+    reportesService.getTop15ModelSellout().then(function (dataResponse) {
             $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
         });
     $scope.cargar_datos();
@@ -403,7 +395,7 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
     $scope.item = {};
     $scope.item2 = {};
     $scope.item3 = {};
- 
+
     //variable para guardar el arreglo de los ids de los modelos seleccionados
     $scope.idsmodelos=[];
     //variable para guardar los objetos como tal de los modelos seleccionados.
@@ -416,8 +408,8 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
      *variable para guardar temporalmente el valor de la columna plantilla, junto con la anterior se restan para saber
      * que producto comprar
      */
-    $scope.plantilla=0;
-    $scope.settings = {
+     $scope.plantilla=0;
+     $scope.settings = {
         singular: 'Reporte',
         plural: 'Reportes',
         accion: 'Filtrar'
@@ -430,7 +422,7 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
     }
     $scope.mostrar = 0;
     $scope.mostrarDatos=0;
- 
+
     $scope.cargar_datos = function () {
         $scope.mostrar = 0;
         $scope.msg = {
@@ -450,8 +442,8 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
         $scope.columnas=[];
         $scope.inventario=0;
         $scope.plantilla=0;
- 
- 
+
+
     }
     dashcoberturaService.getTop15ModelSellout().then(function (dataResponse) {
             $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
@@ -460,43 +452,43 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
     /**
      * Método para limpiar e inicializar las variables
      */
-    $scope.cargar_datos();
- 
- 
+     $scope.cargar_datos();
+
+
     /**
      * Método para obtener los paises
      */
-    dashcoberturaService.getPaises().then(function (dataResponse) {
+     dashcoberturaService.getPaises().then(function (dataResponse) {
         $scope.paises = dataResponse.data.records;
     });
- 
-    $scope.cargarcuentas = function (idpais) {
+
+     $scope.cargarcuentas = function (idpais) {
         dashcoberturaService.getSucursales(idpais).then(function (dataResponse) {
             $scope.sucursales = dataResponse.data.records;
         });
     };
- 
+
     dashcoberturaService.getModelos().then(function (dataResponse) {
         $scope.modelos = dataResponse.data.records;
     });
- 
- 
+
+
     $scope.cargarpuntosventas = function (idsucursal) {
         dashcoberturaService.getPuntosVentas(idsucursal).then(function (dataResponse) {
             $scope.puntosventas = dataResponse.data.records;
         });
     };
- 
+
     /**
      * Método para calcular la operación por vender, las tiendas que tengan plantillas tienen un limite de inventario
      * @param item El valor
      * @param indice El indice de la columna
      * @returns {*}
      */
-    $scope.calcularsuma=function (item, indice) {
- 
+     $scope.calcularsuma=function (item, indice) {
+
         var temp= indice-1;
- 
+
         if(temp>=0 && temp<$scope.columnas.length) {
             if($scope.columnas[temp].indexOf("Inventory ")!== -1){
                 $scope.inventario=item;
@@ -513,12 +505,12 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
         }
         return item;
     }
- 
- 
+
+
     /**
      * Método para agregar modelos a los arreglos.
      */
-    $scope.agregarmodelo=function () {
+     $scope.agregarmodelo=function () {
         var obModelo = $scope.modeloselected;
         if(!$scope.buscarmodelo(obModelo.id)) {
             obModelo['posicion'] = $scope.nombresmodelos.length;
@@ -530,28 +522,28 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
      * Método para eliminar un modelo del arreglo
      * @param modelo
      */
-    $scope.eliminarmodelo= function (modelo) {
+     $scope.eliminarmodelo= function (modelo) {
         $scope.nombresmodelos.splice(modelo.posicion,1);
         $scope.idsmodelos.splice(modelo.posicion,1);
     }
- 
+
     /**
      * Método para buscar un modelo
      * @param modelo_id
      * @returns {boolean}
      */
-    $scope.buscarmodelo=function(modelo_id) {
+     $scope.buscarmodelo=function(modelo_id) {
         for (var i=0; i<$scope.idsmodelos.length; i++){
             var idtemp=$scope.idsmodelos[i];
             if(idtemp==modelo_id)
                 return true;
-            }
+        }
         return false;
     }
     /**
      * Método para agregar al arreglo las columnas de la tabla, generadas por medio de los modelos seleccionados
      */
-    $scope.ordenarColumnas= function () {
+     $scope.ordenarColumnas= function () {
         for (var i=0; i<$scope.nombresmodelos.length; i++){
             var idtemp=$scope.nombresmodelos[i];
             $scope.columnas.push("Sell out "+idtemp.nombre);
@@ -562,7 +554,7 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
             $scope.columnas.push("Dias Venta "+idtemp.nombre);
         }
     }
- 
+
     $scope.filtrar = function (item,item2,item3) {
         console.log(item);
         $scope.mostrarDatos=0;
@@ -581,7 +573,7 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
             }
             //$scope.item3 = dataResponse.data.tmodelos;
             console.log('wilson');
-              console.log(  $scope.item3);
+            console.log(  $scope.item3);
             showAlert("green", "Exito!", dataResponse.data.message);
             setTimeout(function () {
                 $scope.msg = {
@@ -593,18 +585,18 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
             }, 3000);
             $scope.mostrarDatos=1;
         });
- 
+
     };
- 
+
     $scope.exportarexcel = function (item) {
         $window.open('ws/exportarexcelcobertura?' + serializeObj(item), '_blank');
     };
     function serializeObj(obj) {
         var result = [];
- 
+
         for (var property in obj)
             result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
- 
+
         return result.join("&");
     }
     function obtenerInfoVentas(pdvs, indice) {
@@ -623,8 +615,8 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
             color: color
         }
     }
- 
- 
+
+
 });
 app.controller('dashselloutController', function ($scope, $window, dashselloutService, localStorageService) {
     $scope.data = [];
@@ -716,12 +708,12 @@ app.controller('dashselloutController', function ($scope, $window, dashselloutSe
                 $scope.optionsCategoria = {
                     scales: {
                         yAxes: [
-                            {
-                                id: 'y-axis-1',
-                                type: 'linear',
-                                display: true,
-                                position: 'left'
-                            }
+                        {
+                            id: 'y-axis-1',
+                            type: 'linear',
+                            display: true,
+                            position: 'left'
+                        }
                         ]
                     }
                 };
@@ -780,55 +772,55 @@ app.controller('inventariosController', function ($scope, $window, inventariosSe
         /*inventariosService.getData("GET", {}).then(function(dataResponse)
          {
          $scope.data = dataResponse.data.records;
-         });*/
-    }
+     });*/
+ }
 
-    $scope.cargar_datos();
-    $scope.crear = function () {
-        $scope.settings.accion = 'Crear';
-        $scope.mostrar = 1;
-        $scope.item = {};
-    }
-    $scope.uploadFile = function (files) {
+ $scope.cargar_datos();
+ $scope.crear = function () {
+    $scope.settings.accion = 'Crear';
+    $scope.mostrar = 1;
+    $scope.item = {};
+}
+$scope.uploadFile = function (files) {
 
-        $scope.cargando = 1;
-         showAlert("green", "Procesando!", "Espera un momento.. ");
+    $scope.cargando = 1;
+    showAlert("green", "Procesando!", "Espera un momento.. ");
 
-        var fd = new FormData();
+    var fd = new FormData();
 
-        fd.append("file", files[0]);
-        fd.append("idusuario", localStorageService.cookie.get('login').id);
+    fd.append("file", files[0]);
+    fd.append("idusuario", localStorageService.cookie.get('login').id);
 
-        inventariosService.upload(fd).then(function (dataResponse) {
-            if (dataResponse.data.result) {
-                showAlert("green", "Exito!", dataResponse.data.message);
-                setTimeout(function () {
-                    $scope.cargar_datos();
-                    angular.element("input[type='file']").val(null);
-                }, 3000);
-            }
-            else {
-                setTimeout(function () {
-                    angular.element("input[type='file']").val(null);
-                }, 3000);
-                showAlert("red", "Espera!", dataResponse.data.message);
-            }
-        });
-
-    };
-    $scope.cancelar = function () {
-        $scope.mostrar = 0;
-    }
-
-
-    function showAlert(color, title, message) {
-        $scope.msg = {
-            mostrar: 1,
-            title: title,
-            message: message,
-            color: color
+    inventariosService.upload(fd).then(function (dataResponse) {
+        if (dataResponse.data.result) {
+            showAlert("green", "Exito!", dataResponse.data.message);
+            setTimeout(function () {
+                $scope.cargar_datos();
+                angular.element("input[type='file']").val(null);
+            }, 3000);
         }
+        else {
+            setTimeout(function () {
+                angular.element("input[type='file']").val(null);
+            }, 3000);
+            showAlert("red", "Espera!", dataResponse.data.message);
+        }
+    });
+
+};
+$scope.cancelar = function () {
+    $scope.mostrar = 0;
+}
+
+
+function showAlert(color, title, message) {
+    $scope.msg = {
+        mostrar: 1,
+        title: title,
+        message: message,
+        color: color
     }
+}
 });
 
 
