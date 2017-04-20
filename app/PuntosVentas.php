@@ -11,4 +11,8 @@ class PuntosVentas extends Model
     public function sucursal(){
     	return $this->hasOne('App\Sucursales','id','idsucursal');
     }
+
+    protected $casts = [
+        'idsucursal' => 'int',
+    ];
 }

@@ -18,7 +18,7 @@ class PermisosController extends Controller
 		try{
 			$this->message = "Consulta exitosa";
 			$this->result = true;
-			$this->records = Permisos::with('usuario','puntoventa')->get();
+			$this->records = Permisos::with('usuario','sucursal')->get();
 		}catch(\Exception $e){
 			$this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
 			$this->result = false;
@@ -38,7 +38,7 @@ class PermisosController extends Controller
 				$registro = Permisos::create(
 					[
 					"idusuario" => $request->input("idusuario"),
-					"idpuntoventa" => $request->input("idpuntoventa")
+					"idsucursal" => $request->input("idsucursal")
 					]);
 				if(!$registro)
 					throw new Exception("Ocurrio un problema al crear el registro");
@@ -46,7 +46,7 @@ class PermisosController extends Controller
 					return $registro;
 			});
 			$nuevoRegistro->usuario;
-			$nuevoRegistro->puntoventa;
+			$nuevoRegistro->sucursal;
             $this->message = "Registro creado";
             $this->result = true;
             $this->records = $nuevoRegistro;
@@ -98,13 +98,13 @@ class PermisosController extends Controller
 				if(!$registro) throw new Exception("El registro no existe");
                 else{
                     $registro->idusuario = $request->input("idusuario", $registro->idusuario);
-                    $registro->idpuntoventa = $request->input("idpuntoventa", $registro->idpuntoventa);
+                    $registro->idsucursal = $request->input("idsucursal", $registro->idsucursal);
                     $registro->save();
 					return $registro;  
                 }
             });
             $actualizarRegistro->usuario;
-            $actualizarRegistro->puntoventa;
+            $actualizarRegistro->sucursal;
 			$this->message = "Registro actualizado";
             $this->result = true;
             $this->records = $actualizarRegistro;

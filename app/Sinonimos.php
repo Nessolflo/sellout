@@ -11,4 +11,8 @@ class Sinonimos extends Model
     public function modelo(){
     	return $this->hasOne('App\Modelos','id','idmodelo');
     }
+
+    protected $casts = [
+        'idmodelo' => 'int',
+    ];
 }
