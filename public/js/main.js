@@ -325,7 +325,9 @@ app.controller('reportesController', function ($scope, $window, reportesService,
         $scope.item.aniodesde = 2016;
         $scope.item.aniohasta = 2017;
     }
-
+     reportesService.getTop15ModelSellout().then(function (dataResponse) {
+            $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
+        });
     $scope.cargar_datos();
 
     $scope.exportarexcel = function (item) {
@@ -399,6 +401,9 @@ app.controller('reportesController', function ($scope, $window, reportesService,
 app.controller('coberturaEspecialController', function ($scope, $window, dashcoberturaService, localStorageService) {
     $scope.data = [];
     $scope.item = {};
+    $scope.item2 = {};
+    $scope.item3 = {};
+ 
     //variable para guardar el arreglo de los ids de los modelos seleccionados
     $scope.idsmodelos=[];
     //variable para guardar los objetos como tal de los modelos seleccionados.
@@ -425,7 +430,7 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
     }
     $scope.mostrar = 0;
     $scope.mostrarDatos=0;
-
+ 
     $scope.cargar_datos = function () {
         $scope.mostrar = 0;
         $scope.msg = {
@@ -436,6 +441,8 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
         }
         $scope.mostrarDatos=0;
         $scope.item = {};
+        $scope.item2 = {};
+        $scope.item3 = {};
         $scope.data = [];
         $scope.item.semana = 1;
         $scope.idsmodelos=[];
@@ -443,38 +450,43 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
         $scope.columnas=[];
         $scope.inventario=0;
         $scope.plantilla=0;
+ 
+ 
     }
-
+    dashcoberturaService.getTop15ModelSellout().then(function (dataResponse) {
+            $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
+            console.log(dataResponse.data);
+        });
     /**
      * Método para limpiar e inicializar las variables
      */
     $scope.cargar_datos();
-
-
+ 
+ 
     /**
      * Método para obtener los paises
      */
     dashcoberturaService.getPaises().then(function (dataResponse) {
         $scope.paises = dataResponse.data.records;
     });
-
+ 
     $scope.cargarcuentas = function (idpais) {
         dashcoberturaService.getSucursales(idpais).then(function (dataResponse) {
             $scope.sucursales = dataResponse.data.records;
         });
     };
-
+ 
     dashcoberturaService.getModelos().then(function (dataResponse) {
         $scope.modelos = dataResponse.data.records;
     });
-
-
+ 
+ 
     $scope.cargarpuntosventas = function (idsucursal) {
         dashcoberturaService.getPuntosVentas(idsucursal).then(function (dataResponse) {
             $scope.puntosventas = dataResponse.data.records;
         });
     };
-
+ 
     /**
      * Método para calcular la operación por vender, las tiendas que tengan plantillas tienen un limite de inventario
      * @param item El valor
@@ -482,9 +494,9 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
      * @returns {*}
      */
     $scope.calcularsuma=function (item, indice) {
-
+ 
         var temp= indice-1;
-
+ 
         if(temp>=0 && temp<$scope.columnas.length) {
             if($scope.columnas[temp].indexOf("Inventory ")!== -1){
                 $scope.inventario=item;
@@ -501,8 +513,8 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
         }
         return item;
     }
-
-
+ 
+ 
     /**
      * Método para agregar modelos a los arreglos.
      */
@@ -522,7 +534,7 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
         $scope.nombresmodelos.splice(modelo.posicion,1);
         $scope.idsmodelos.splice(modelo.posicion,1);
     }
-
+ 
     /**
      * Método para buscar un modelo
      * @param modelo_id
@@ -550,18 +562,26 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
             $scope.columnas.push("Dias Venta "+idtemp.nombre);
         }
     }
-
-    $scope.filtrar = function (item) {
+ 
+    $scope.filtrar = function (item,item2,item3) {
         console.log(item);
         $scope.mostrarDatos=0;
         $scope.columnas=[];
         item['modelos']=$scope.idsmodelos;
         showAlert("green", "Consultando, ", "espera un momento por favor..");
-        dashcoberturaService.filtrar(item).then(function (dataResponse){
+        dashcoberturaService.filtrar(item,item2,item3).then(function (dataResponse){
             $scope.ordenarColumnas();
             $scope.datoscobertura=dataResponse.data.records;
-            $scope.item.coberturaDisplay=dataResponse.data.cde;
-            $scope.item.coberturaVenta = dataResponse.data.cdv;
+            $scope.item2.coberturaDisplay=dataResponse.data.cde;
+            $scope.item2.coberturaVenta = dataResponse.data.cdv;
+            $scope.item.tmodelos = dataResponse.data.tmodelos;
+            $scope.item2.tmodelo = dataResponse.data.tmodelo;
+            for (var i = 0; i < $scope.item.tmodelos; i++) {
+                $scope.item3[i]=i;
+            }
+            //$scope.item3 = dataResponse.data.tmodelos;
+            console.log('wilson');
+              console.log(  $scope.item3);
             showAlert("green", "Exito!", dataResponse.data.message);
             setTimeout(function () {
                 $scope.msg = {
@@ -573,18 +593,18 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
             }, 3000);
             $scope.mostrarDatos=1;
         });
-
+ 
     };
-
+ 
     $scope.exportarexcel = function (item) {
         $window.open('ws/exportarexcelcobertura?' + serializeObj(item), '_blank');
     };
     function serializeObj(obj) {
         var result = [];
-
+ 
         for (var property in obj)
             result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
-
+ 
         return result.join("&");
     }
     function obtenerInfoVentas(pdvs, indice) {
@@ -603,8 +623,8 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
             color: color
         }
     }
-
-
+ 
+ 
 });
 app.controller('dashselloutController', function ($scope, $window, dashselloutService, localStorageService) {
     $scope.data = [];

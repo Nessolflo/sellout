@@ -42,5 +42,8 @@ app.service('dashcoberturaService',['$http', 'APP',  function($http, APP) {
     {
         return $http.get(APP.api + 'puntosventasporsucursal?idsucursal='+idsucursal);
     }
+    this.getTop15ModelSellout= function () {
+        return $http.get(APP.api +'top15modelsellout');
+    }
 
 }]);

@@ -14,6 +14,14 @@
             <div class="col-md-12">
                 <div class="widget with-padding">
                     <form name="form" class="form-validation">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="inline-form">
+                                    
+                                    <h4 ng-repeat="item in datatopmodelsellout2">Semana Actual: <strong>{{item.maximo}}</strong> </h4> 
+                                </div>
+                            </div>
+                        </div>
                         <h4>{{settings.accion}} {{settings.singular}}</h4>
                         <div class="row">
                             <div class="col-md-4">
@@ -83,20 +91,26 @@
         <div class="widget no-padding blank">
             <button href="#" title="" class="c-btn medium green pop" ng-click="exportarexcel(item)">Exportar Excel</button>
             <div class="widget with-padding">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="inline-form">
-                        <label class="c-label">Cobertura Display</label><input class="input-style" type="number"
-                            ng-model="item.coberturaDisplay" disabled>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="inline-form">
-                            <label class="c-label">Cobertura Venta</label><input class="input-style" type="number"
-                            ng-model="item.coberturaVenta" disabled>
-                        </div>
-                    </div>
-                </div>
+                <table id="dataTableModel4" class="table table-striped">
+                   <thead>
+                       <tr >
+                           <th>#</th>
+                           <th>Modelo</th>
+                           <th>Cobertura Display</th>
+                           <th>Cobertura Venta</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                         <tr ng-repeat="j in item3 ">
+                            <td>{{$index + 1}}</td>
+                            <td>{{item2.tmodelo[$index]}}</td>
+                            <td>{{item2.coberturaDisplay[$index]}}</td>
+                            <td>{{item2.coberturaVenta[$index]}}</td>
+                         </tr>
+
+                    </tbody>
+                </table>
+
             </div>
             <div class="panel panel-default work-progress-table">
                 <div class="panel-heading">
