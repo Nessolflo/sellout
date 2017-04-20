@@ -17,4 +17,10 @@ class Ventas extends Model
     public function usuariocreo(){
     	return $this->hasOne('App\Usuarios','id','idusuariocreo');
     }
+
+    protected $casts = [
+        'idsinonimo' => 'int',
+        'idpuntoventa' => 'int',
+        'idusuariocreo' => 'int',
+    ];
 }

@@ -11,4 +11,7 @@ class Series extends Model
     public function categoria(){
     	return $this->hasOne('App\Categorias','id','idcategoria');
     }
+    protected $casts = [
+        'idcategoria' => 'int',
+    ];
 }

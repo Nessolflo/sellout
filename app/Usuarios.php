@@ -12,4 +12,7 @@ class Usuarios extends Model
     public function tipoUsuario(){
     	return $this->hasOne('App\TiposUsuarios','id','idtipo');
     }
+    protected $casts = [
+        'idtipo' => 'int',
+    ];
 }

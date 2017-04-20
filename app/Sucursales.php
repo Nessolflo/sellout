@@ -14,4 +14,8 @@ class Sucursales extends Model
     public function cuenta(){
         return $this->hasOne('App\Cuentas','id','idcuenta');
     }
+    protected $casts = [
+        'idpais' => 'int',
+        'idcuenta' => 'int',
+    ];
 }

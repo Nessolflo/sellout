@@ -8,4 +8,5 @@ class VistaVentasPorSemana extends Model
 {
     protected $table = 'ventasporsemana';
     protected $fillable = ['fecha', 'sellout', 'semana','anio'];
+
 }

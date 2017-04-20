@@ -1412,6 +1412,7 @@ app.controller('PermisosController', function ($scope, $window, permisosService)
     }
 
     $scope.editar = function (item) {
+        console.log(item);
         $scope.settings.accion = 'Editar';
         $scope.mostrar = 1;
         $scope.item = item;

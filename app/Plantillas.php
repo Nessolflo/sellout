@@ -27,4 +27,10 @@ class Plantillas extends Model
         return $this->hasOne('App\Modelos','id','idmodelo');
     }
 
+    protected $casts = [
+        'idcategoria_plantilla' => 'int',
+        'idpuntoventa' => 'int',
+        'idmodelo' => 'int',
+    ];
+
 }

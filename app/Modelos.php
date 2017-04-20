@@ -12,4 +12,8 @@ class Modelos extends Model
     public function serie(){
     	return $this->hasOne('App\Series','id','idserie');
     }
+
+    protected $casts = [
+        'idserie' => 'int',
+    ];
 }
