@@ -44,6 +44,7 @@ Route::group(['prefix'=>'ws'],function(){
     Route::any('calcularcobertura', 'DashCoberturaController@calcularCobertura');
     Route::any('exportarexcelcobertura', 'DashCoberturaController@exportarexcel');
     Route::any('obtenerTop5Model','Top15ModelSelloutController@obtenerTop5Model');
+	Route::any('sucursales_por_usuario', 'SucursalesController@sucursales_por_usuario');
 	Route::resource('usuarios', 'UsuariosController');
 	Route::resource('tiposusuarios', 'TiposUsuariosController');
 	Route::resource('categorias', 'CategoriasController');

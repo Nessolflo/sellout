@@ -174,4 +174,27 @@ class SucursalesController extends Controller
             return response()->json($response);
         }
     }
+
+    public function sucursales_por_usuario(Request $request)
+    {
+        try {
+            
+            $this->message = "Consulta exitosa";
+            $this->result = true;
+            $this->records = DB::select("CALL sucursalporusuario(".$request['id'].")");
+
+
+        } catch (\Exception $e) {
+            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al cargar registros";
+            $this->result = false;
+
+        } finally {
+            $response = [
+                "message" => $this->message,
+                "result" => $this->result,
+                "records" => $this->records
+            ];
+            return response()->json($response);
+        }
+    }
 }

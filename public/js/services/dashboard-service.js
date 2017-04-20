@@ -35,4 +35,9 @@ app.service('dashboardService',['$http', 'APP',  function($http, APP) {
     {
         return $http.get(APP.api + 'obtenersucursal');
     }
+
+    this.getSucursalesPorUsuario = function(id)
+    {
+        return $http.get(APP.api + 'sucursales_por_usuario?id='+id);
+    }
 }]);

@@ -203,6 +203,7 @@ $scope.cargar_datos = function () {
         message: "",
         color: ""
     }
+    /*
     dashboardService.getSellOutPDV(1).then(function (dataResponse) {
         if (dataResponse.data.result) {
             $records = dataResponse.data.records;
@@ -233,25 +234,27 @@ $scope.cargar_datos = function () {
             showAlert("red", "Espera!", dataResponse.data.message);
         }
     });
+    */
     if($scope.tipo==1)
     {
         dashboardService.getTop15ModelSellout().then(function (dataResponse) {
             $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
         });
+        dashboardService.getSucursales().then(function (dataResponse) {
+            $scope.paises = dataResponse.data.records;
+        });
     }else{
         dashboardService.getsemanamaximaporsucursal($scope.id).then(function (dataResponse) {
             $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
+        });
+        dashboardService.getSucursalesPorUsuario($scope.id).then(function (dataResponse) {
+            $scope.paises = dataResponse.data.records;
         });
     }
     dashboardService.getTop15PDVSellout().then(function (dataResponse) {
         $scope.datatoppdvsellout = dataResponse.data.records;
     });
-        /////////
-        dashboardService.getSucursales().then(function (dataResponse) {
-            $scope.paises = dataResponse.data.records;
-        });
-
-        /////
+        
     }
     $scope.cargar_datos();
     $scope.cargar_grafica = function () {
