@@ -320,9 +320,7 @@ app.controller('reportesController', function ($scope, $window, reportesService,
         $scope.item.aniodesde = 2016;
         $scope.item.aniohasta = 2017;
     }
-    reportesService.getTop15ModelSellout().then(function (dataResponse) {
-            $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
-        });
+    
     $scope.cargar_datos();
 
     $scope.exportarexcel = function (item) {

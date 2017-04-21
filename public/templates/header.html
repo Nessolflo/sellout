@@ -84,14 +84,16 @@
                     <li ng-show="tipo == 1" >
                          <a href="#/sucursales"><i class="ti-layout-grid3"></i><span>Cuentas</span></a>
                     </li>
-                    <li ng-show="tipo == 1" >
-                         <a href="#/cobertura"><i class="ti-filter"></i><span>Cobertura</span></a>
-                    </li>
-                    <li ng-show="tipo == 1" >
-                         <a href="#/reportes"><i class="fa fa-bar-chart"></i><span>Reportes</span></a>
-                    </li>
-                    <li ng-show="tipo == 1" >
-                         <a href="#/dashsellout"><i class="fa fa-bar-chart"></i><span>DashSellout</span></a>
+                   
+                    
+                    <li ng-show="tipo == 1"  class="menu-item-has-children">
+                         <a title=""><i class="ti-pencil"></i><span>Reportes</span></a>
+                         <ul class="mega">
+                              <li><a href="#/cobertura">Cobertura</a></li>
+                              <li><a href="#/reportes">Filtro de Datos</a></li>
+                              <li><a href="#/dashsellout">Sellout</a></li>
+
+                         </ul>
                     </li>
                     <!--<li class="menu-item-has-children">
                          <a title=""><i class="ti-pencil"></i><span>Pages</span></a>
