@@ -28,7 +28,7 @@
                                 <div class="inline-form">
                                     <label class="c-label">Semana</label><input class="input-style" type="number"
                                     placeholder="Semana"
-                                    ng-model="item.semana">
+                                    ng-model="item.semana" required="required">
                                 </div>
                             </div>
 
@@ -37,7 +37,7 @@
                                     <label class="c-label">Pais</label>
                                     <select ng-model="item.idpais"
                                     ng-options="pais.id as pais.nombre for pais in paises"
-                                    ng-change="cargarcuentas(item.idpais)"></select>
+                                    ng-change="cargarcuentas(item.idpais)" required="required"></select>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -45,7 +45,7 @@
                                     <label class="c-label">Cuenta</label>
                                     <select ng-model="item.idsucursal"
                                     ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales"
-                                    ></select>
+                                    required="required"></select>
                                 </div>
                             </div>
                             <div class="col-md-4">
