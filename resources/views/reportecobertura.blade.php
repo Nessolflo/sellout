@@ -73,7 +73,7 @@ for ($i = 0; $i < count($modelos); $i++) {
      }
                     $calculo1[$i]= round(($cantidadDiasExhibicion/$cantidadTiendas)*100,2);
                     $calculo2[$i]= round(($cantidadDiasVentas/$cantidadTiendas)*100,2);
-                    $nombrem[$i]   =  DB::table('VistaVentas')->where('idmodelo', $modelos[$i])->value('modelo');
+                    $nombrem[$i]   =  DB::table('vistaventas')->where('idmodelo', $modelos[$i])->value('modelo');
                    
                     array_push($temp, $tregistro);
     }
