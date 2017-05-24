@@ -85,7 +85,7 @@ for ($i = 0; $i < count($modelos); $i++) {
 <table >
         <thead>
             <tr>
-                <th>Modelo</th>
+                <th>Modelosss</th>
                 <th>Cobertura Display</th>
                 <th>Cobertura Venta</th>
             </tr>
@@ -103,7 +103,17 @@ for ($i = 0; $i < count($modelos); $i++) {
     </table>
  
     <table >
-        <thead>
+             <tr>
+                <th></th>
+                
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Mayor a 0</th>
+                <th>Mayor a 1</th>
+                
+            </tr>
             <tr>
                 <th>Punto de venta</th>
                 @for ($i = 0; $i < count($modelos); $i++)
@@ -115,7 +125,7 @@ for ($i = 0; $i < count($modelos); $i++) {
                 <th>Días Ventas {{$nModelos[$i]}}</th>
                 @endfor
             </tr>
-        </thead>
+        
         <tbody>
         @foreach($temp as $item)
             <tr>

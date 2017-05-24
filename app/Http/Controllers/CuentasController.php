@@ -18,9 +18,17 @@ class CuentasController extends Controller
     public function index()
     {
         try {
+            $todos = Cuentas::find(1);
+            $todos->id = 0;
+            $todos->nombre = 'Todos';
+            //dd($todos);
+            $registros=Cuentas::all();
+            $registros->prepend($todos);
+
+
             $this->message = "Consulta exitosa";
             $this->result = true;
-            $this->records = Cuentas::all();
+            $this->records = $registros;
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
             $this->result = false;

@@ -21,6 +21,10 @@ use App\Permisos;
 use App\Usuarios;
 use DB;
 use Exception;
+//
+use App\CategoriasPlantillas;
+use App\Plantillas;
+
 
 class VentasController extends Controller
 {
@@ -281,10 +285,37 @@ class VentasController extends Controller
 //////////////////////WIL//////////////////////////////////////////////////////////
     public function semana_consulta(Request $request)
     {
+        //http://localhost/sellout/public/ws/obtenersemanaventa?semanaI=1&semanaF=9&anio=2017&idgrupo=1&idsucursal=1&idpuntoventa=1&idmodelo=1
+
         try {
-            //$dias= ($request->input('semanaI')-$request->input('semanaF'))+1;
-            $semana= DB::select('CALL DOI('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('sucursal').')'); 
-            //$semana2= DB::select('CALL mindoi('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('sucursal').')'); 
+            if($request->input('idgrupo')==0 && $request->input('idmodelo')==0){
+                $semana= DB::select('CALL doigtmt('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').')'); 
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idmodelo')==0){
+                $semana= DB::select('CALL doigsmt('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').')');    
+            }
+            if($request->input('idgrupo')==0  && $request->input('idmodelo')!=0){
+                $semana= DB::select('CALL doigtms('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idmodelo').')');    
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idmodelo')!=0){
+                $semana= DB::select('CALL doigsms('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idmodelo').')');    
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idmodelo')==0){
+                $semana= DB::select('CALL doigscsmt('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').')');    
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idmodelo')!=0){
+                $semana= DB::select('CALL doigscsms('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idmodelo').')');    
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idpuntoventa')!=0){
+                $semana= DB::select('CALL doigscspsmt('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').')');    
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idpuntoventa')!=0 && $request->input('idmodelo')!=0){
+                $semana= DB::select('CALL doigscspsms('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').','.$request->input('idmodelo').')');    
+            }
+
+
+
+
             $this->message = "Consulta exitosa";
             $this->result = true;
             $this->records = $semana;
@@ -737,5 +768,67 @@ class VentasController extends Controller
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
+    }
+
+
+    public function joinwilson()
+    {
+       
+        //arrays
+        $idscategoriasplantillas= array();
+        $idspuntosdeventas = array();
+        $idsmodelos = array();
+        //
+        $union = array();
+        ///   
+        $categoriasplantillas= CategoriasPlantillas::all();
+        $puntosdeventas = PuntosVentas::all();
+        $modelos = Modelos::all();
+        //dd($modelos);
+
+        //
+        foreach($categoriasplantillas as $categoriaplantilla){
+           array_push($idscategoriasplantillas,$categoriaplantilla->id);
+        }
+        foreach($puntosdeventas as $puntodeventa){
+            array_push($idspuntosdeventas,$puntodeventa->id);
+        }
+        foreach($modelos as $modelo){
+            array_push($idsmodelos,$modelo->id);
+        }
+        set_time_limit(300000);
+        for ($i=0; $i < count($idscategoriasplantillas) ; $i++) {
+            for ($j=0; $j <count($idspuntosdeventas) ;  $j++) { 
+                
+                for ($k=0; $k < count($idsmodelos) ; $k++) { 
+                   try {
+
+                        $plantilla = new Plantillas;
+                        DB::beginTransaction();
+                        $plantilla->idcategoria_plantilla   = $idscategoriasplantillas[$i];
+                        $plantilla->idpuntoventa            = $idspuntosdeventas[$j];
+                        $plantilla->idmodelo                = $idsmodelos[$k];
+                        if($plantilla->save()){
+                            DB::commit();
+                            
+                          // dd('cargado con exito');
+                        }
+           
+                   } catch (Exception $e) {
+                       DB::rollback();
+                      // dd('error');
+                   }
+                   //array_push($union,'insert into '.$idscategoriasplantillas[$i].','.$idspuntosdeventas[$j].','.$idsmodelos[$k]);
+                }
+                
+            }
+
+
+
+            
+        }
+        //dd(count($union));
+        //dd(count($idscategoriasplantillas));
+        
     }
 }

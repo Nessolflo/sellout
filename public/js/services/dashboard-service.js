@@ -22,22 +22,50 @@ app.service('dashboardService',['$http', 'APP',  function($http, APP) {
     };
  
  
-    this.getConsultaSemana = function(semanaI,semanaF,anio,sucursal) {
-        return $http.post(APP.api + 'obtenersemanaventa?semanaI='+semanaI+'&semanaF='+semanaF+'&anio='+anio+'&sucursal='+sucursal);
+    this.getConsultaSemana = function(semanaI,semanaF,anio,idgrupo,idsucursal,idpuntoventa,idmodelo) {
+         console.log('Modificaciones DOI services inicio');
+        return $http.post(APP.api + 'obtenersemanaventa?semanaI='+semanaI+'&semanaF='+semanaF+'&anio='+anio+'&idgrupo='+idgrupo
+            +'&idsucursal='+idsucursal+'&idpuntoventa='+idpuntoventa+'&idmodelo='+idmodelo);
     };
 /*
     this.getConsultaVentaSemana = function(semana) {
         return $http.post(APP.api + 'obtenerconsultaventasemana?semana='+semana);
     };
 */
+/*cambios wilson*/
+
+
+     this.getGrupos = function()
+    {
+        return $http.get(APP.api + 'cuentas');
+    }
+     this.getSucursales = function(idgrupo)
+    {
+
+        return $http.get(APP.api + 'sucursalesporpais2?idgrupo='+idgrupo);
+    }
+
+    this.getPuntosVentas = function(idsucursal)
+    {
+        return $http.get(APP.api + 'puntosventasporsucursal?idsucursal='+idsucursal);
+    }
+     this.getModelos = function()
+    {
+        return $http.get(APP.api + 'modelos');
+    }
+
+/*000*/
+
+/*pendiente de averiguar xq estaba aqui esta funcion
  
     this.getSucursales = function()
     {
         return $http.get(APP.api + 'obtenersucursal');
     }
-
+*/
     this.getSucursalesPorUsuario = function(id)
     {
         return $http.get(APP.api + 'sucursales_por_usuario?id='+id);
     }
+
 }]);

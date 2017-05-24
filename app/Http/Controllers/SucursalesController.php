@@ -151,8 +151,40 @@ class SucursalesController extends Controller
             return response()->json($response);
         }
     }
+    public function sucursales_por_pais2(Request $request)
+    {
+        try {
+            //$registros = array("manzana"=>"verde",'fresa'=>'rojo');
+            //array_push($registros,Sucursales::where('idcuenta', $request->input('idgrupo'))->get());
+            $todos = Sucursales::find(1);
+            $todos->id = 0;
+            $todos->nombre = 'Todos';
+            //dd($todos);
+            $registros=Sucursales::where('idcuenta', $request->input('idgrupo'))->get();
+            $registros->prepend($todos);
 
-    public function sucursales_por_pais(Request $request)
+           
+            $this->message = "Consulta exitosa";
+            $this->result = true;
+            //$this->records = $registros;
+            $this->records = $registros;
+
+
+        } catch (\Exception $e) {
+            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al cargar registros";
+            $this->result = false;
+
+        } finally {
+            $response = [
+                "message" => $this->message,
+                "result" => $this->result,
+                "records" => $this->records
+            ];
+            return response()->json($response);
+        }
+    }
+//funcion original del sucursales por pais
+   public function sucursales_por_pais(Request $request)
     {
         try {
             $registros = Sucursales::where('idpais', $request->input('idpais'))->get();
@@ -174,7 +206,7 @@ class SucursalesController extends Controller
             return response()->json($response);
         }
     }
-
+    
     public function sucursales_por_usuario(Request $request)
     {
         try {

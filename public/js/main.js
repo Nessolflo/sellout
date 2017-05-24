@@ -165,16 +165,27 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
     }
     $scope.mostrar = 0;
 /////////////////////Wilson functions/////////////////////////////////////////
-$scope.getScoreData = function (dataI,dataF,dataA,dataS) {
-    dashboardService.getConsultaSemana(dataI,dataF,dataA,dataS).then(function (dataResponse) {
+$scope.getScoreData = function (dataI,dataF,dataA,idgrupo,idsucursal,idpuntoventa,idmodelo) {
+    
+    console.log('Modificaciones DOI main');
+    console.log('var inicio ='+dataI);
+    console.log('var fin ='+dataF);
+    console.log('var año ='+dataA);
+    console.log('var idgrupo='+idgrupo);
+    console.log('var idsucursal='+idsucursal);
+    console.log('var idpuntoventa='+idpuntoventa);
+    console.log('var idmodelo='+idmodelo);
+
+    dashboardService.getConsultaSemana(dataI,dataF,dataA,idgrupo,idsucursal,idpuntoventa,idmodelo).then(function (dataResponse) {
         if (dataResponse.data.result) {
-                //console.log(dataResponse.data);
+                
+                console.log(dataResponse.data.records);
                 $scope.datatopmodelsellout = dataResponse.data.records;
                 //$scope.datatoppdvsellout= dataResponse.data.records2;
                 $scope.item.desde = dataI;
                 $scope.item.hasta = dataF;
                 $scope.item.aniodesde = dataA;
-                $scope.item.sucursal = dataS;
+                
             }
             else {
                 showAlert("red", "Espera!", dataResponse.data.message);
@@ -203,6 +214,8 @@ $scope.cargar_datos = function () {
         message: "",
         color: ""
     }
+
+    
     /*
     dashboardService.getSellOutPDV(1).then(function (dataResponse) {
         if (dataResponse.data.result) {
@@ -240,16 +253,49 @@ $scope.cargar_datos = function () {
         dashboardService.getTop15ModelSellout().then(function (dataResponse) {
             $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
         });
-        dashboardService.getSucursales().then(function (dataResponse) {
-            $scope.paises = dataResponse.data.records;
+        ////////////////wilson
+        dashboardService.getGrupos().then(function (dataResponse) {
+            $scope.grupos = dataResponse.data.records;
         });
+
+    $scope.cargarCuentas = function (idgrupo) {
+        //console.log("idgrupo "+idgrupo);
+        dashboardService.getSucursales(idgrupo).then(function (dataResponse) {   
+            $scope.sucursales = dataResponse.data.records;
+            //console.log(dataResponse.data.records);
+        });
+        
+    };
+
+
+    $scope.cargarpuntosventas = function (idsucursal) {
+        dashboardService.getPuntosVentas(idsucursal).then(function (dataResponse) {
+            $scope.puntosventas = dataResponse.data.records;
+        });
+    };
+
+    dashboardService.getModelos().then(function (dataResponse) {
+        $scope.modelos = dataResponse.data.records;
+    });
+
+
+
+
+
+        ////cambios wil16-05
+        /*dashboardService.getSucursales().then(function (dataResponse) {
+            $scope.paises = dataResponse.data.records;
+        });*/
+
+        /////////////
     }else{
         dashboardService.getsemanamaximaporsucursal($scope.id).then(function (dataResponse) {
             $scope.datatopmodelsellout2 = dataResponse.data.records;////////Wil
         });
+        /*
         dashboardService.getSucursalesPorUsuario($scope.id).then(function (dataResponse) {
             $scope.paises = dataResponse.data.records;
-        });
+        });*/
     }
     dashboardService.getTop15PDVSellout().then(function (dataResponse) {
         $scope.datatoppdvsellout = dataResponse.data.records;
@@ -551,8 +597,8 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
             $scope.columnas.push("Inventory "+idtemp.nombre);
             $scope.columnas.push("Plantilla "+idtemp.nombre);
             $scope.columnas.push("Comprar "+idtemp.nombre);
-            $scope.columnas.push("Dias Exhibición "+idtemp.nombre);
-            $scope.columnas.push("Dias Venta "+idtemp.nombre);
+            $scope.columnas.push("Cobertura Exhibición "+idtemp.nombre);
+            $scope.columnas.push("Cobertura Venta "+idtemp.nombre);
         }
     }
 

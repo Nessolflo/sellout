@@ -57,8 +57,33 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="inline-form">
-                                            <label class="c-label">Sucursal</label>
-                                            <select ng-model="ScoreS" ng-options="pais.id as pais.nombre for pais in paises"  ></select>
+                                            <label class="c-label">Grupo</label>
+                                            <select ng-model="item.idgrupo" ng-options="grupo.id as grupo.nombre for grupo in grupos" 
+                                            ng-change="cargarCuentas(item.idgrupo)" >
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3">
+                                        <div class="inline-form">
+                                            <label class="c-label">Cuenta</label>
+                                            <select ng-model="item.idsucursal" ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales" 
+                                            ng-change="cargarpuntosventas(item.idsucursal)" ></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="inline-form">
+                                            <label class="c-label">Punto de venta</label>
+                                            <select ng-model="item.idpuntoventa" ng-options="puntoventa.id as puntoventa.nombre for puntoventa in puntosventas"  ></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="inline-form">
+                                            <label class="c-label">Modelo</label>
+                                            <select ng-model="item.idmodelo"
+                                            ng-options="modelo.id as modelo.nombre for modelo in modelos"
+                                            ></select>
                                         </div>
                                     </div>
                                 </div>
@@ -72,7 +97,7 @@
                                     </div>
                                     <div class="col-md-6 pull-right">
                                         <button href="#" title="" class="c-btn large green pop pull-right"
-                                        ng-click="getScoreData(ScoreI,ScoreF,ScoreA,ScoreS)" ng-disabled="form.$invalid">Filtrar
+                                        ng-click="getScoreData(ScoreI,ScoreF,ScoreA,item.idgrupo,item.idsucursal,item.idpuntoventa,item.idmodelo)" ng-disabled="form.$invalid">Filtrar
                                     </button>
                                 </div>
                             </div>

@@ -22,7 +22,10 @@ Route::get('/reportecobertura', function () {
 });
 Route::group(['prefix'=>'ws'],function(){
 	Route::any('login', 'UsuariosController@login');
+
 	Route::any('sucursalesporpais', 'SucursalesController@sucursales_por_pais');
+	Route::any('sucursalesporpais2', 'SucursalesController@sucursales_por_pais2');//problem
+
 	Route::any('puntosventasporsucursal', 'PuntosVentasController@puntosventas_por_sucursal');
 	Route::any('puntosventasporplantilla', 'PuntosVentasController@puntosventas_por_plantilla');
 	Route::any('seriesporcategoria', 'SeriesController@series_por_categoria');
@@ -36,6 +39,7 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::resource('obtenersucursal', 'SucursalesController');
 	Route::any('obtenerselloutpuntoventa','VentasController@sell_out_punto_ventas');
 	Route::any('obtenerventasporsemana','VentasController@ventas_por_semana');
+	Route::any('rutawilson','VentasController@joinwilson');//ruta para hacer lo de plantillas y categorias pantillas
 	Route::any('actualizarregistro','VentasController@agregarItem');
 	Route::any('tendenciaPorCategoria', 'DashboardSelloutVentasController@tendenciaPorCategoria');
     Route::any('tendenciaPorSerie', 'DashboardSelloutVentasController@tendenciaPorSerie');
@@ -45,6 +49,8 @@ Route::group(['prefix'=>'ws'],function(){
     Route::any('exportarexcelcobertura', 'DashCoberturaController@exportarexcel');
     Route::any('obtenerTop5Model','Top15ModelSelloutController@obtenerTop5Model');
 	Route::any('sucursales_por_usuario', 'SucursalesController@sucursales_por_usuario');
+
+
 	Route::resource('usuarios', 'UsuariosController');
 	Route::resource('tiposusuarios', 'TiposUsuariosController');
 	Route::resource('categorias', 'CategoriasController');

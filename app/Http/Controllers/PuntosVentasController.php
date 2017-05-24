@@ -155,7 +155,19 @@ class PuntosVentasController extends Controller
     public function puntosventas_por_sucursal(Request $request)
     {
         try {
-            $registros = PuntosVentas::where('idsucursal', $request->input('idsucursal'))->with("sucursal")->orderBy('id','asc')->get();
+
+            //$registros = PuntosVentas::where('idsucursal', $request->input('idsucursal'))->with("sucursal")->orderBy('id','asc')->get();
+
+            $todos = PuntosVentas::find(1);
+            $todos->id = 0;
+            $todos->nombre = 'Todos';
+            //dd($todos);
+            $registros= PuntosVentas::where('idsucursal', $request->input('idsucursal'))->with("sucursal")->orderBy('id','asc')->get();
+            $registros->prepend($todos);
+
+
+
+
             $this->count = PuntosVentas::where('idsucursal', $request->input('idsucursal'))->with("sucursal")->count();
             $this->message = "Consulta exitosa";
             $this->result = true;
