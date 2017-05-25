@@ -191,6 +191,14 @@ $scope.getScoreData = function (datai,dataf,dataa,idgrupo,idsucursal,idpuntovent
                 showAlert("red", "Espera!", dataResponse.data.message);
             }
         });
+    function showAlert(color, title, message) {
+        $scope.msg = {
+            mostrar: 1,
+            title: title,
+            message: message,
+            color: color
+        }
+    }
 }
 
 $scope.exportarexcel = function (item) {
