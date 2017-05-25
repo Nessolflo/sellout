@@ -289,28 +289,28 @@ class VentasController extends Controller
 
         try {
             if($request->input('idgrupo')==0 && $request->input('idmodelo')==0){
-                $semana= DB::select('CALL doigtmt('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').')'); 
+                $semana= DB::select('CALL doigtmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').')'); 
             }
             if($request->input('idgrupo')!=0  && $request->input('idmodelo')==0){
-                $semana= DB::select('CALL doigsmt('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').')');    
+                $semana= DB::select('CALL doigsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').')');    
             }
             if($request->input('idgrupo')==0  && $request->input('idmodelo')!=0){
-                $semana= DB::select('CALL doigtms('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idmodelo').')');    
+                $semana= DB::select('CALL doigtms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idmodelo').')');    
             }
             if($request->input('idgrupo')!=0  && $request->input('idmodelo')!=0){
-                $semana= DB::select('CALL doigsms('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idmodelo').')');    
+                $semana= DB::select('CALL doigsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idmodelo').')');    
             }
             if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idmodelo')==0){
-                $semana= DB::select('CALL doigscsmt('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').')');    
+                $semana= DB::select('CALL doigscsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').')');    
             }
             if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idmodelo')!=0){
-                $semana= DB::select('CALL doigscsms('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idmodelo').')');    
+                $semana= DB::select('CALL doigscsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idmodelo').')');    
             }
             if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idpuntoventa')!=0){
-                $semana= DB::select('CALL doigscspsmt('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').')');    
+                $semana= DB::select('CALL doigscspsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').')');    
             }
             if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idpuntoventa')!=0 && $request->input('idmodelo')!=0){
-                $semana= DB::select('CALL doigscspsms('.$request->input('semanaI').','.$request->input('semanaF').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').','.$request->input('idmodelo').')');    
+                $semana= DB::select('CALL doigscspsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').','.$request->input('idmodelo').')');    
             }
 
 
