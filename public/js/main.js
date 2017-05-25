@@ -165,26 +165,26 @@ app.controller('DashboardController', function ($scope, $window, dashboardServic
     }
     $scope.mostrar = 0;
 /////////////////////Wilson functions/////////////////////////////////////////
-$scope.getScoreData = function (dataI,dataF,dataA,idgrupo,idsucursal,idpuntoventa,idmodelo) {
+$scope.getScoreData = function (datai,dataf,dataa,idgrupo,idsucursal,idpuntoventa,idmodelo) {
     
-    console.log('Modificaciones DOI main');
-    console.log('var inicio ='+dataI);
-    console.log('var fin ='+dataF);
-    console.log('var año ='+dataA);
+    console.log('Modificaciones DOI main.js');
+    console.log('var inicio ='+datai);
+    console.log('var fin ='+dataf);
+    console.log('var año ='+dataa);
     console.log('var idgrupo='+idgrupo);
     console.log('var idsucursal='+idsucursal);
     console.log('var idpuntoventa='+idpuntoventa);
     console.log('var idmodelo='+idmodelo);
 
-    dashboardService.getConsultaSemana(dataI,dataF,dataA,idgrupo,idsucursal,idpuntoventa,idmodelo).then(function (dataResponse) {
+    dashboardService.getConsultaSemana(datai,dataf,dataa,idgrupo,idsucursal,idpuntoventa,idmodelo).then(function (dataResponse) {
         if (dataResponse.data.result) {
                 
                 console.log(dataResponse.data.records);
                 $scope.datatopmodelsellout = dataResponse.data.records;
                 //$scope.datatoppdvsellout= dataResponse.data.records2;
-                $scope.item.desde = dataI;
-                $scope.item.hasta = dataF;
-                $scope.item.aniodesde = dataA;
+                $scope.item.desde = datai;
+                $scope.item.hasta = dataf;
+                $scope.item.aniodesde = dataa;
                 
             }
             else {

@@ -22,9 +22,9 @@ app.service('dashboardService',['$http', 'APP',  function($http, APP) {
     };
  
  
-    this.getConsultaSemana = function(semanaI,semanaF,anio,idgrupo,idsucursal,idpuntoventa,idmodelo) {
-         console.log('Modificaciones DOI services inicio');
-        return $http.post(APP.api + 'obtenersemanaventa?semanaI='+semanaI+'&semanaF='+semanaF+'&anio='+anio+'&idgrupo='+idgrupo
+    this.getConsultaSemana = function(semanai,semanaf,anio,idgrupo,idsucursal,idpuntoventa,idmodelo) {
+         console.log('Modificaciones DOI dashboar-services.js');
+        return $http.post(APP.api + 'obtenersemanaventa?semanai='+semanai+'&semanaf='+semanaf+'&anio='+anio+'&idgrupo='+idgrupo
             +'&idsucursal='+idsucursal+'&idpuntoventa='+idpuntoventa+'&idmodelo='+idmodelo);
     };
 /*
