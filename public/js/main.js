@@ -185,6 +185,10 @@ $scope.getScoreData = function (datai,dataf,dataa,idgrupo,idsucursal,idpuntovent
                 $scope.item.desde = datai;
                 $scope.item.hasta = dataf;
                 $scope.item.aniodesde = dataa;
+                $scope.item.idgrupo = idgrupo;
+                $scope.item.idsucursal = idsucursal;
+                $scope.item.idpuntoventa = idpuntoventa;
+                $scope.item.idmodelo = idmodelo;
                 
             }
             else {
