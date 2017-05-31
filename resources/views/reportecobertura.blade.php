@@ -2,6 +2,7 @@
 use App\Http\Requests;
 use App\PuntosVentas;
 use App\Modelos;
+set_time_limit(300000);
             $calculo1 = array();
             $calculo2 = array();
             $nombrem = array();
@@ -17,7 +18,7 @@ for ($i = 0; $i < count($modelos); $i++) {
     $ultimo= count($modelos)-1;
     $consulta.="sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.sellout else 0 end) as sellout_".$modelo.", ";
     $consulta.="sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.inventory else 0 end) as inventory_".$modelo.", ";
-    $consulta.="ifnull((select cp.cantidad from categoriasplantillas cp inner join plantillas p ON p.idcategoria_plantilla=cp.id where p.idpuntoventa=puntosventas.id and p.idmodelo=".$modelo."),0) as plantilla_".$modelo.", ";
+     $consulta.="puntosventas.nombre IN(select cp.cantidad from categoriasplantillas cp inner join plantillas p ON p.idcategoria_plantilla=cp.id where p.idpuntoventa=puntosventas.id and p.idmodelo=".$modelo.") as plantilla_".$modelo.", ";
      
      
     if($ultimo==$i)

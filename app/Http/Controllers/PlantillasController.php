@@ -18,6 +18,7 @@ class PlantillasController extends Controller
     public function index()
     {
         try {
+            set_time_limit(300000);
             $this->message = "Consulta exitosa";
             $this->result = true;
             $this->records = Plantillas::with('categoriasPlantillas')
