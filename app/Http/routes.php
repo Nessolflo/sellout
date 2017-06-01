@@ -45,6 +45,9 @@ Route::group(['prefix'=>'ws'],function(){
     Route::any('tendenciaPorSerie', 'DashboardSelloutVentasController@tendenciaPorSerie');
 	Route::post('upload', 'VentasController@ImportarExcel');
     Route::any('obtenercategoriasplantillasporsucursal', 'CategoriasPlantillasController@obtener_categorias_por_sucursal');
+    
+    Route::any('filtrarplantilla', 'PlantillasController@filtrarplantilla');//filtro de plantilla por sucursal y modelo
+
     Route::any('calcularcobertura', 'DashCoberturaController@calcularCobertura');
     Route::any('exportarexcelcobertura', 'DashCoberturaController@exportarexcel');
     Route::any('obtenerTop5Model','Top15ModelSelloutController@obtenerTop5Model');

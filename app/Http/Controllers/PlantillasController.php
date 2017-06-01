@@ -21,11 +21,51 @@ class PlantillasController extends Controller
             set_time_limit(300000);
             $this->message = "Consulta exitosa";
             $this->result = true;
-            $this->records = Plantillas::with('categoriasPlantillas')
+            $this->records = Plantillas::where('idpuntoventa','=','1')->where('idmodelo','=','1')->with('categoriasPlantillas')
                 ->with('puntosVentas')
                 ->with('sucursales')
                 ->with('modelos')
                 ->get();
+        } catch (\Exception $e) {
+            $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
+            $this->result = false;
+        } finally {
+            $response = [
+                "message" => $this->message,
+                "result" => $this->result,
+                "records" => $this->records
+            ];
+            return response()->json($response);
+        }
+    }
+    public function filtrarplantilla(Request $request)
+    {
+        //dd("wil");
+        //dd($request->input('wil'));
+        try {
+            set_time_limit(300000);
+            $this->message = "Consulta exitosa";
+            $this->result = true;
+
+
+            if($request->input('idmodelo')=='0'||$request->input('idmodelo')==null){
+                $this->records = Plantillas::where('idpuntoventa','=',$request->input('idsucursal'))->with('categoriasPlantillas')
+                ->with('puntosVentas')
+                ->with('sucursales')
+                ->with('modelos')
+                ->get();
+            }else{
+                $this->records = Plantillas::where('idpuntoventa','=',$request->input('idsucursal'))->where('idmodelo','=',$request->input('idmodelo'))
+                ->with('categoriasPlantillas')
+                ->with('puntosVentas')
+                ->with('sucursales')
+                ->with('modelos')
+                ->get();
+            }
+           
+
+
+
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
             $this->result = false;

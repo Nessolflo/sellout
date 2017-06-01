@@ -1882,7 +1882,7 @@ app.controller('SinonimosController', function ($scope, $window, sinonimosServic
 
 });
 app.controller('PlantillasController', function ($scope, $window, plantillasService, NgTableParams) {
-
+console.log('vicky1');
     $scope.data = [];
     $scope.settings = {
         singular: 'Plantilla',
@@ -1898,6 +1898,7 @@ app.controller('PlantillasController', function ($scope, $window, plantillasServ
     $scope.mostrar = 0;
 
     $scope.cargar_datos = function () {
+        console.log('vicky2');
         $scope.mostrar = 0;
         $scope.msg = {
             mostrar: 0,
@@ -1906,6 +1907,7 @@ app.controller('PlantillasController', function ($scope, $window, plantillasServ
             color: ""
         }
         plantillasService.getData("GET", {}).then(function (dataResponse) {
+            //console.log('vicky cargar index tabla');
             $scope.data = dataResponse.data.records;
             $scope.dataTable = new NgTableParams({}, {
                 dataset: dataResponse.data.records
@@ -1914,7 +1916,40 @@ app.controller('PlantillasController', function ($scope, $window, plantillasServ
     }
 
     $scope.cargar_datos();
+////wilplanitlla
+     $scope.filtrar = function (item) {
+        //console.log('antes');
+        //console.log(item['idmodelo']['id']);
+        //console.log('wils');
 
+        showAlert("green", "Consultando, ", "espera un momento por favor..");
+        plantillasService.getFilter(item).then(function (dataResponse){
+            $scope.data = dataResponse.data.records;
+            console.log('datos');
+            console.log(dataResponse.data.records);
+            $scope.dataTable = new NgTableParams({}, {
+                dataset: dataResponse.data.records
+            });
+            
+            console.log('getfilter');
+            
+            showAlert("green", "Exito!", dataResponse.data.message);
+            setTimeout(function () {
+                $scope.msg = {
+                    mostrar: 0,
+                    title: "",
+                    message: "",
+                    color: ""
+                }
+            }, 3000);
+            $scope.mostrarDatos=1;
+        });
+
+    };
+
+
+
+////
     plantillasService.getSucursales().then(function (dataResponse) {
         $scope.sucursales = dataResponse.data.records;
     });

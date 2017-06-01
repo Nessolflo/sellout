@@ -13,6 +13,50 @@
 
         <div class="row" ng-show="mostrar == 0">
             <div class="col-md-12">
+            <div class="widget with-padding">
+                    <form name="form1" class="form-validation">
+                        <!--h4>{{settings.accion}} {{settings.singular}}</h4-->
+                        <h4>Filtrar:</h4>
+                        <div class="row">
+                            
+                            <div class="col-md-4">
+                                <div class="inline-form">
+                                    <label class="c-label">Cuenta</label>
+                                    <select ng-model="item.idsucursal"
+                                    ng-options="sucursal.id as sucursal.nombre for sucursal in sucursales"
+                                    required="required"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="inline-form">
+                                    <label class="c-label">Modelo</label>
+                                    <select ng-model="item.idmodelo"
+                                    ng-options="modelo as modelo.nombre for modelo in modelos"
+                                    required="required"
+                                    ></select>
+                                </div>
+                            </div>
+                          
+                        </div>
+                        <div class="row" style="margin-top: 30px;">
+                            <div class="col-md-6" ng-show="msg.mostrar == 1">
+                                <div class="notification">
+                                    <div role="alert" class="alert color" ng-class="msg.color">
+                                        <strong>{{msg.title}}</strong> {{msg.message}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 pull-right">
+                                <button href="#" title="" class="c-btn large green pop pull-right"
+                                ng-click="filtrar(item)" ng-disabled="form1.$invalid">Filtrar
+                            </button>
+                            <button href="#" title="" class="c-btn large red pop pull-right"
+                            ng-click="cargar_datos()" ng-disabled="form1.$invalid">Limpiar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
                 <div class="widget no-padding blank">
                     <button href="#" title="" class="c-btn medium green pop" ng-click="crear()">Crear</button>
                     <div class="panel panel-default work-progress-table">
@@ -26,7 +70,7 @@
                             </div>-->
                         </div>
                         <table ng-table="dataTable" show-filter="true" class="table table-striped">
-                            <tr ng-repeat="item in $data">
+                            <tr ng-repeat="item in $data" style="text-align: center">
                                 <td data-title="'#'">{{$index + 1}}</td>
                                 <td data-title="'Categoria'" filter="{ 'categorias_plantillas.nombre': 'text' }">{{
                                     item.categorias_plantillas.nombre }}
