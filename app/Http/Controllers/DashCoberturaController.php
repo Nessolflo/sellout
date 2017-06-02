@@ -193,7 +193,7 @@ class DashCoberturaController extends Controller
                     $nombrem = array();
                     $this->semana= $request->input('semana');
                     $sucursal= $request->input('idsucursal');
-                   // $modelos= $request->input('modelos');
+                   $modelos= $request->input('modelos');
                     $consulta="puntosventas.nombre as PDV, ";
                      for ($i = 0; $i < count($modelos); $i++) {
                         $modelo=$modelos[$i];

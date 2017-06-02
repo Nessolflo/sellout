@@ -70,18 +70,18 @@
                             </div>-->
                         </div>
                         <table ng-table="dataTable" show-filter="true" class="table table-striped">
-                            <tr ng-repeat="item in $data" style="text-align: center">
+                            <tr ng-repeat="item in $data" style="text-align: left">
                                 <td data-title="'#'">{{$index + 1}}</td>
                                 <td data-title="'Categoria'" filter="{ 'categorias_plantillas.nombre': 'text' }">{{
-                                    item.categorias_plantillas.nombre }}
+                                    item.categoria }}
                                 </td>
                                 <td data-title="'Sucursal'" filter="{ 'puntos_ventas.sucursal.nombre': 'text' }">{{
-                                    item.puntos_ventas.sucursal.nombre }}
+                                    item.sucursal }}
                                 </td>
                                 <td data-title="'Punto de venta'" filter="{ 'puntos_ventas.nombre': 'text' }">{{
-                                    item.puntos_ventas.nombre }}
+                                    item.pventa }}
                                 </td>
-                                <td data-title="'Modelo'" filter="{ 'modelos.nombre': 'text' }">{{ item.modelos.nombre
+                                <td data-title="'Modelo'" filter="{ 'modelos.nombre': 'text' }">{{ item.modelo
                                     }}
                                 </td>
                                 <td data-title="'Acciones'">

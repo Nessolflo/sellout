@@ -21,11 +21,12 @@ class PlantillasController extends Controller
             set_time_limit(300000);
             $this->message = "Consulta exitosa";
             $this->result = true;
-            $this->records = Plantillas::where('idpuntoventa','=','1')->where('idmodelo','=','1')->with('categoriasPlantillas')
+           /* $this->records = Plantillas::where('idpuntoventa','=','1')->where('idmodelo','=','1')->with('categoriasPlantillas')
                 ->with('puntosVentas')
                 ->with('sucursales')
                 ->with('modelos')
-                ->get();
+                ->get();*/
+            $this->records ="";
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registros";
             $this->result = false;
@@ -42,6 +43,7 @@ class PlantillasController extends Controller
     {
         //dd("wil");
         //dd($request->input('wil'));
+        //dd($request->input('idsucursal'));
         try {
             set_time_limit(300000);
             $this->message = "Consulta exitosa";
@@ -49,18 +51,21 @@ class PlantillasController extends Controller
 
 
             if($request->input('idmodelo')=='0'||$request->input('idmodelo')==null){
-                $this->records = Plantillas::where('idpuntoventa','=',$request->input('idsucursal'))->with('categoriasPlantillas')
+                /*$this->records = Plantillas::where('idpuntoventa','=',$request->input('idsucursal'))->with('categoriasPlantillas')
                 ->with('puntosVentas')
                 ->with('sucursales')
                 ->with('modelos')
-                ->get();
+                ->get();*/
+
+                $this->records =DB::select('Call filtroPlantillassinMod('.$request->input('idsucursal').');');
             }else{
-                $this->records = Plantillas::where('idpuntoventa','=',$request->input('idsucursal'))->where('idmodelo','=',$request->input('idmodelo'))
+               /* $this->records = Plantillas::where('idpuntoventa','=',$request->input('idsucursal'))->where('idmodelo','=',$request->input('idmodelo'))
                 ->with('categoriasPlantillas')
                 ->with('puntosVentas')
                 ->with('sucursales')
                 ->with('modelos')
-                ->get();
+                ->get();*/
+                $this->records=DB::select('Call filtroPlantillas('.$request->input('idsucursal').','.$request->input('idmodelo').');');
             }
            
 
