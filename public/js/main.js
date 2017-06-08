@@ -1882,7 +1882,7 @@ app.controller('SinonimosController', function ($scope, $window, sinonimosServic
 
 });
 app.controller('PlantillasController', function ($scope, $window, plantillasService, NgTableParams) {
-console.log('vicky1');
+//console.log('vicky1');
     $scope.data = [];
     $scope.settings = {
         singular: 'Plantilla',
@@ -1898,7 +1898,7 @@ console.log('vicky1');
     $scope.mostrar = 0;
 
     $scope.cargar_datos = function () {
-        console.log('vicky2');
+        //console.log('vicky2');
         $scope.mostrar = 0;
         $scope.msg = {
             mostrar: 0,
@@ -1925,13 +1925,13 @@ console.log('vicky1');
         showAlert("green", "Consultando, ", "espera un momento por favor..");
         plantillasService.getFilter(item).then(function (dataResponse){
             $scope.data = dataResponse.data.records;
-            console.log('datos');
-            console.log(dataResponse.data.records);
+            //console.log('datos');
+           // console.log(dataResponse.data.records);
             $scope.dataTable = new NgTableParams({}, {
                 dataset: dataResponse.data.records
             });
             
-            console.log('getfilter');
+            //console.log('getfilterSelects');
             
             showAlert("green", "Exito!", dataResponse.data.message);
             setTimeout(function () {

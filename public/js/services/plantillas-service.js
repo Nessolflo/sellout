@@ -17,7 +17,7 @@ app.service('plantillasService',['$http', 'APP',  function($http, APP) {
 //////////wil
 this.getFilter= function (parametros) {
         console.log('getfilterfunc');
-        console.log(APP.api+ 'filtrarplantilla?idsucursal='+parametros['idsucursal']+'&idmodelo='+parametros['idmodelo']['id']);
+        //console.log(APP.api+ 'filtrarplantilla?idsucursal='+parametros['idsucursal']+'&idmodelo='+parametros['idmodelo']['id']);
         return $http.get(APP.api+ 'filtrarplantilla?idsucursal='+parametros['idsucursal']+'&idmodelo='+parametros['idmodelo']['id']);
     };
 
