@@ -189,6 +189,44 @@ $scope.getScoreData = function (datai,dataf,dataa,idgrupo,idsucursal,idpuntovent
                 $scope.item.idsucursal = idsucursal;
                 $scope.item.idpuntoventa = idpuntoventa;
                 $scope.item.idmodelo = idmodelo;
+                ////////////////grafica///////////////////
+
+                $scope.cargar_grafica = function () {
+                    dashboardService.getVentasPorSemana(datai,dataf,dataa,idgrupo,idsucursal,idpuntoventa,idmodelo).then(function (dataResponse) {
+                        if (dataResponse.data.result) {
+                            records = dataResponse.data.records;
+                            if (records.length > 0) {
+                                $scope.labels = [];//semanas
+                                $scope.series = ['Sellout'];//serie
+                                $scope.data = [];//datos
+                                data = [];
+                                for (var record in records) {
+                                    $scope.labels.push('Semana ' + records[record].semana);
+                                    data.push(records[record].sellout);
+                                }
+                                $scope.data.push(data);
+                                $scope.datasetOverride = [{yAxisID: 'y-axis-1'}];
+                                $scope.options = {
+                                    scales: {
+                                        yAxes: [
+                                        {
+                                            id: 'y-axis-1',
+                                            type: 'linear',
+                                            display: true,
+                                            position: 'left'
+                                        }
+                                        ]
+                                    }
+                                };
+
+                            }
+                        }
+                    });
+                }//Fin function cargar_grafica
+                $scope.cargar_grafica();
+
+                ////////////////////////////////////////////
+
                 
             }
             else {
@@ -315,40 +353,7 @@ $scope.cargar_datos = function () {
         
     }
     $scope.cargar_datos();
-    $scope.cargar_grafica = function () {
-        dashboardService.getVentasPorSemana().then(function (dataResponse) {
-            if (dataResponse.data.result) {
-                records = dataResponse.data.records;
-                if (records.length > 0) {
-                    $scope.labels = [];//semanas
-                    $scope.series = ['Sellout'];//serie
-                    $scope.data = [];//datos
-                    data = [];
-                    for (var record in records) {
-                        $scope.labels.push('Semana ' + records[record].semana);
-                        data.push(records[record].sellout);
-                    }
-                    $scope.data.push(data);
-                    $scope.datasetOverride = [{yAxisID: 'y-axis-1'}];
-                    $scope.options = {
-                        scales: {
-                            yAxes: [
-                            {
-                                id: 'y-axis-1',
-                                type: 'linear',
-                                display: true,
-                                position: 'left'
-                            }
-                            ]
-                        }
-                    };
-
-                }
-            }
-        });
-    }//Fin function cargar_grafica
-    //$scope.cargar_grafica();
-});
+    });
 app.controller('reportesController', function ($scope, $window, reportesService, localStorageService) {
     $scope.data = [];
     $scope.item = {};

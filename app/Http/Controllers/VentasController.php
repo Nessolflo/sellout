@@ -239,10 +239,38 @@ class VentasController extends Controller
         }
     }
 
-     public function ventas_por_semana()
+     public function ventas_por_semana(Request $request)
     {
-       /* try {
-            $semana= DB::select('CALL  graficaporsemana('.$semanasI.','.$semanasF.')'); 
+       try {
+             if($request->input('idgrupo')==0 && $request->input('idmodelo')==0){
+                $semana= DB::select('CALL graficagtmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').')'); 
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idmodelo')==0){
+                $semana= DB::select('CALL graficagsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').')');    
+            }
+            if($request->input('idgrupo')==0  && $request->input('idmodelo')!=0){
+                $semana= DB::select('CALL graficagtms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idmodelo').')');    
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idmodelo')!=0){
+                $semana= DB::select('CALL graficagsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idmodelo').')');    
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idmodelo')==0){
+                $semana= DB::select('CALL graficagscsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').')');    
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idmodelo')!=0){
+                $semana= DB::select('CALL graficagscsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idmodelo').')');    
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idpuntoventa')!=0){
+                $semana= DB::select('CALL graficagscspsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').')');    
+            }
+            if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idpuntoventa')!=0 && $request->input('idmodelo')!=0){
+                $semana= DB::select('CALL graficagscspsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').','.$request->input('idmodelo').')');    
+            }
+
+
+
+
+            //$semana= DB::select('CALL  graficaporsemana('.$request->input('semanai').','.$request->input('semanaf').')'); 
             $this->message = "Consulta exitosa";
             $this->result = true;
             //$this->records = VistaVentasPorSemansa::orderBy('fecha', 'asc')->get();
@@ -263,12 +291,12 @@ class VentasController extends Controller
 
 
 
-
+/*
         try {
 
             $this->message = "Consulta exitosa";
             $this->result = true;
-            $this->records = DB::select('CALL  graficaporsemana(1,1)'); 
+            $this->records = DB::select('CALL  graficaporsemana(1,15)'); 
 
         } catch (\Exception $e) {
             $this->message = env("APP_DEBUG") ? $e->getMessage() : "Error al consultar registro";

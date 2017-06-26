@@ -7,8 +7,9 @@ app.service('dashboardService',['$http', 'APP',  function($http, APP) {
     };
  
  
-    this.getVentasPorSemana = function() {
-        return $http.post(APP.api + 'obtenerventasporsemana');
+    this.getVentasPorSemana = function(semanai,semanaf,anio,idgrupo,idsucursal,idpuntoventa,idmodelo) {
+        return $http.post(APP.api + 'obtenerventasporsemana?semanai='+semanai+'&semanaf='+semanaf+'&anio='+anio+'&idgrupo='+idgrupo
+            +'&idsucursal='+idsucursal+'&idpuntoventa='+idpuntoventa+'&idmodelo='+idmodelo);
     };
  
     this.getTop15ModelSellout= function () {
@@ -27,11 +28,11 @@ app.service('dashboardService',['$http', 'APP',  function($http, APP) {
         return $http.post(APP.api + 'obtenersemanaventa?semanai='+semanai+'&semanaf='+semanaf+'&anio='+anio+'&idgrupo='+idgrupo
             +'&idsucursal='+idsucursal+'&idpuntoventa='+idpuntoventa+'&idmodelo='+idmodelo);
     };
-/*
+
     this.getConsultaVentaSemana = function(semana) {
         return $http.post(APP.api + 'obtenerconsultaventasemana?semana='+semana);
     };
-*/
+
 /*cambios wilson*/
 
 
