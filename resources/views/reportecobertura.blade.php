@@ -86,7 +86,7 @@ for ($i = 0; $i < count($modelos); $i++) {
 <table >
         <thead>
             <tr>
-                <th>Modelosss</th>
+                <th>Modelos</th>
                 <th>Cobertura Display</th>
                 <th>Cobertura Venta</th>
             </tr>

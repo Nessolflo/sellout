@@ -32,7 +32,8 @@ Route::group(['prefix'=>'ws'],function(){
 	Route::any('modelosporserie','ModelosController@modelos_por_serie');
 	Route::any('filtro','VentasController@filtro');
 	Route::any('exportarexcel','VentasController@exportarexcel');
-	Route::any('exportarexcelTopSeller', 'VentasController@exportarexcelTopSeller');
+	Route::any('exportarexcelTopSeller', 'VentasController@exportarexcelTopSeller');//exporta dashboard excel
+	Route::any('exportarpdfTopSeller', 'VentasController@exportarpdfTopSeller');//exporta dashboard pdf
 	Route::any('obtenerregistros', 'VentasController@obtenerregistros');
 	Route::any('obtenersemanaventa','VentasController@semana_consulta');
 	//Route::any('obtenerconsultaventasemana','VentasController@semana_venta_consulta');///mi controlador

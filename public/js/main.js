@@ -247,6 +247,11 @@ $scope.exportarexcel = function (item) {
     console.log(item);
     $window.open('ws/exportarexcelTopSeller?' + serializeObj(item), '_blank');
 };
+$scope.exportarpdf = function (item) {
+    console.log(item);
+    $window.open('ws/exportarpdfTopSeller?' + serializeObj(item), '_blank');
+};
+
 function serializeObj(obj) {
     var result = [];
 

@@ -24,7 +24,7 @@ use Exception;
 //
 use App\CategoriasPlantillas;
 use App\Plantillas;
-
+use PDF;
 
 class VentasController extends Controller
 {
@@ -793,6 +793,27 @@ class VentasController extends Controller
                 });
 
             })->export('xls');
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function exportarpdfTopSeller()
+    {
+        try {
+            /*\Excel::create('Reporte', function ($excel) {
+
+                $excel->sheet('TopSeller', function ($sheet) {
+
+                    $sheet->loadView('selloutpdf');
+
+                });
+
+            })->export('xls');*/
+            $pdf = PDF::loadView('selloutpdf');
+            //steam para visualizar el pdf en el navegador
+            //download para descargar el pdf
+            return $pdf->stream('reporte_sellout.pdf');
         } catch (\Exception $e) {
             echo $e->getMessage();
         }

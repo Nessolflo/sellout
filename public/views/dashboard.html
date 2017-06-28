@@ -99,6 +99,7 @@
                                         <button href="#" title="" class="c-btn large green pop pull-right"
                                         ng-click="getScoreData(ScoreI,ScoreF,ScoreA,item.idgrupo,item.idsucursal,item.idpuntoventa,item.idmodelo)" ng-disabled="form.$invalid">Filtrar
                                     </button>
+
                                 </div>
                             </div>
                         </form>
@@ -110,6 +111,7 @@
             <div class="col-md-12">
                 <div class="widget no-padding blank">
                     <button href="#" title="" class="c-btn medium green pop" ng-click="exportarexcel(item)">Exportar Excel</button>
+                    <button href="#" title="" class="c-btn medium blue pop" ng-click="exportarpdf(item)" target="_blank">Exportar PDF</button>
                     <div class="panel panel-default work-progress-table">
 
                         <div class="panel-heading">
@@ -164,7 +166,8 @@
                                             chart-labels="labels"
                                             chart-series="series" chart-options="options"
                                             chart-dataset-override="datasetOverride"
-                                            chart-click="onClick"></canvas>
+                                            chart-click="onClick">
+                                    </canvas>
                                 </div>
                             </div>
                         </div>
