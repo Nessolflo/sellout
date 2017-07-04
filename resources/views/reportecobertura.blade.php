@@ -47,7 +47,7 @@ for ($i = 0; $i < count($modelos); $i++) {
     $cantidadTiendas=count($registros); 
     foreach ($registros as $key => $tregistro) {
         $modelo=$modelos[$i];
-        if($tregistro['inventory_'.$modelo]>0 && $tregistro['sellout_'.$modelo]>0){
+        if($tregistro['inventory_'.$modelo]>0 ){
            $tempDiasExhibicion= (($tregistro['sellout_'.$modelo] / $tregistro['inventory_'.$modelo])*7);
            $tregistro['diasexhibicion_'.$modelo]=  $tempDiasExhibicion>0?'Si':'No';
                         if($tempDiasExhibicion>0){
@@ -58,9 +58,9 @@ for ($i = 0; $i < count($modelos); $i++) {
             $tregistro['diasexhibicion_'.$modelo]= 'No';
         }
  
-        if($tregistro['inventory_'.$modelo]>1 && $tregistro['sellout_'.$modelo]>0){
+        if($tregistro['inventory_'.$modelo]>1 ){
              $tempDiasCobertura = (($tregistro['sellout_'.$modelo] / $tregistro['inventory_'.$modelo])*7);
-                            $tregistro['diasventas_'.$modelo]=      $tempDiasCobertura>1?'Si':'No';
+                            $tregistro['diasventas_'.$modelo]=      $tempDiasCobertura>=1?'Si':'No';
                             if($tempDiasCobertura>1)
                                 $cantidadDiasVentas++;
         }

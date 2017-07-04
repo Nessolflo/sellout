@@ -72,11 +72,11 @@ if($idgrupo!=0  && $idsucursal!=0 && $idpuntoventa!=0 && $idmodelo!=0){
     <thead>
         <tr>
             <th style="width: 50px"> </th>
-            <th style="width: 200px">Modelo</th>
-            <th style="width: 100px">OH</th>
-            <th style="width: 100px">Sell Out</th>
-            <th style="width: 100px">PDS</th>
-            <th style="width: 100px">DOI</th>
+            <th style="width: 200px; text-align: center;">Modelo</th>
+            <th style="width: 100px; text-align: right;">OH</th>
+            <th style="width: 100px; text-align: right;">Sell Out</th>
+            <th style="width: 100px; text-align: right;">PDS</th>
+            <th style="width: 100px; text-align: right;">DOI</th>
         </tr>
     </thead>
     <tbody>
@@ -84,10 +84,10 @@ if($idgrupo!=0  && $idsucursal!=0 && $idpuntoventa!=0 && $idmodelo!=0){
     <tr>
             <td style="width: 50px"> </td>
             <td style="width: 200px">{{$item->modelo}}</td>
-            <td style="width: 100px">{{$item->inventory}}</td>
-            <td style="width: 100px">{{$item->sellout}}</td>
-            <td style="width: 100px">{{$item->pdS}}</td>
-            <td style="width: 100px">{{$item->DOI}}</td>
+            <td style="width: 100px; text-align: right;">{{$item->inventory}}</td>
+            <td style="width: 100px; text-align: right;">{{$item->sellout}}</td>
+            <td style="width: 100px; text-align: right;">{{$item->pdS}}</td>
+            <td style="width: 100px; text-align: right;">{{$item->DOI}}</td>
             
         </tr>
         @endforeach

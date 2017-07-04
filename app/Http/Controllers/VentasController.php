@@ -242,6 +242,8 @@ class VentasController extends Controller
      public function ventas_por_semana(Request $request)
     {
        try {
+            $dias=(($request->input('semanaf')-$request->input("semanai"))+1)*5;
+
              if($request->input('idgrupo')==0 && $request->input('idmodelo')==0){
                 $semana= DB::select('CALL graficagtmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').')'); 
             }
@@ -316,29 +318,30 @@ class VentasController extends Controller
         //http://localhost/sellout/public/ws/obtenersemanaventa?semanaI=1&semanaF=9&anio=2017&idgrupo=1&idsucursal=1&idpuntoventa=1&idmodelo=1
 
         try {
+             $dias=(($request->input('semanaf')-$request->input("semanai"))+1)*5;
             if($request->input('idgrupo')==0 && $request->input('idmodelo')==0){
-                $semana= DB::select('CALL doigtmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').')'); 
+                $semana= DB::select('CALL doigtmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$dias.')'); 
             }
             if($request->input('idgrupo')!=0  && $request->input('idmodelo')==0){
-                $semana= DB::select('CALL doigsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').')');    
+                $semana= DB::select('CALL doigsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$dias.')');    
             }
             if($request->input('idgrupo')==0  && $request->input('idmodelo')!=0){
-                $semana= DB::select('CALL doigtms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idmodelo').')');    
+                $semana= DB::select('CALL doigtms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idmodelo').','.$dias.')');    
             }
             if($request->input('idgrupo')!=0  && $request->input('idmodelo')!=0){
-                $semana= DB::select('CALL doigsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idmodelo').')');    
+                $semana= DB::select('CALL doigsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idmodelo').','.$dias.')');    
             }
             if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idmodelo')==0){
-                $semana= DB::select('CALL doigscsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').')');    
+                $semana= DB::select('CALL doigscsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$dias.')');    
             }
             if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idmodelo')!=0){
-                $semana= DB::select('CALL doigscsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idmodelo').')');    
+                $semana= DB::select('CALL doigscsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idmodelo').','.$dias.')');    
             }
             if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idpuntoventa')!=0){
-                $semana= DB::select('CALL doigscspsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').')');    
+                $semana= DB::select('CALL doigscspsmt('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').','.$dias.')');    
             }
             if($request->input('idgrupo')!=0  && $request->input('idsucursal')!=0 && $request->input('idpuntoventa')!=0 && $request->input('idmodelo')!=0){
-                $semana= DB::select('CALL doigscspsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').','.$request->input('idmodelo').')');    
+                $semana= DB::select('CALL doigscspsms('.$request->input('semanai').','.$request->input('semanaf').','.$request->input('anio').','.$request->input('idgrupo').','.$request->input('idsucursal').','.$request->input('idpuntoventa').','.$request->input('idmodelo').','.$dias.')');    
             }
 
 
