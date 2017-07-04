@@ -217,9 +217,15 @@ class DashCoberturaController extends Controller
                         $cantidadTiendas=count($registros); 
                          foreach ($registros as $key => $tregistro) {                    
                             $modelo=$modelos[$i];
-                            if($tregistro['inventory_'.$modelo]>0 && $tregistro['sellout_'.$modelo]>0){
+                            if($tregistro['inventory_'.$modelo]>0 ){
                                 $tempDiasExhibicion= (($tregistro['sellout_'.$modelo] / $tregistro['inventory_'.$modelo])*7);
-                                $tregistro['diasexhibicion_'.$modelo]=  $tempDiasExhibicion>0?'Si':'No';
+                                 //$tregistro['diasexhibicion_'.$modelo]=  $tempDiasExhibicion>0?'Si':'No';
+                                 //if($tempDiasExhibicion>0){
+                                    $tregistro['diasexhibicion_'.$modelo]="Si";
+                                 /*}else{
+                                    $tregistro['diasexhibicion_'.$modelo]="Niet";
+                                 }*/
+
                                 if($tempDiasExhibicion>0){
                                     $cantidadDiasExhibicion++;
                                      
@@ -231,9 +237,14 @@ class DashCoberturaController extends Controller
                             else{
                                 $tregistro['diasexhibicion_'.$modelo]= 'No';
                             }
-                            if($tregistro['inventory_'.$modelo]>1 && $tregistro['sellout_'.$modelo]>0){
+                            if($tregistro['inventory_'.$modelo]>1 ){
                                 $tempDiasCobertura = (($tregistro['sellout_'.$modelo] / $tregistro['inventory_'.$modelo])*7);
-                                $tregistro['diasventas_'.$modelo]=      $tempDiasCobertura>1?'Si':'No';
+                               // $tregistro['diasventas_'.$modelo]=      $tempDiasCobertura>1?'Si':'No';
+                                //if ($tempDiasCobertura>1) {
+                                    $tregistro['diasventas_'.$modelo]="Si";
+                               /* }else{
+                                    $tregistro['diasventas_'.$modelo]="NOT";
+                                }*/
                                 if($tempDiasCobertura>1)
                                     $cantidadDiasVentas++;
                                 
