@@ -99,14 +99,9 @@ class DashCoberturaController extends Controller
                      for ($i = 0; $i < count($modelos); $i++) {
                         $modelo=$modelos[$i]->id;
                         $ultimo= count($modelos)-1;
-                        $consulta.="sum(case when vistaventas.idmodelo=".$modelo." ) as sellout_".$modelo.", ";
-                        $consulta.="sum(case when vistaventas.idmodelo=".$modelo." ) as inventory_".$modelo.", ";
-                        $consulta.="(select cp.nombre from categoriasplantillas cp where cp.id=1) as plantilla_A_".$modelo.", ";
-                        $consulta.="(select cp.cantidad from categoriasplantillas cp where cp.id=1) as Cantidadplantilla_A_".$modelo.", ";
-                        $consulta.="(select cp.nombre from categoriasplantillas cp where cp.id=2) as plantilla_B_".$modelo.", ";
-                        $consulta.="(select cp.cantidad from categoriasplantillas cp where cp.id=2) as Cantidadplantilla_B_".$modelo.", ";
-                        $consulta.="(select cp.nombre from categoriasplantillas cp where cp.id=3) as plantilla_C_".$modelo.", ";
-                        $consulta.="(select cp.cantidad from categoriasplantillas cp where cp.id=3) as Cantidadplantilla_C_".$modelo.", ";
+                        $consulta.="sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.sellout else 0 end) as sellout_".$modelo.", ";
+                        $consulta.="sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.inventory else 0 end) as inventory_".$modelo.", ";
+                        $consulta.="puntosventas.nombre IN(select cp.cantidad from categoriasplantillas cp inner join plantillas p ON p.idcategoria_plantilla=cp.id where p.idpuntoventa=puntosventas.id and p.idmodelo=".$modelo.") as plantilla_".$modelo.", ";
                         if($ultimo==$i)
                             $consulta.="0 as xvender_".$modelo."";
                         else
@@ -128,7 +123,11 @@ class DashCoberturaController extends Controller
                                 $tregistro['diasexhibicion_'.$modelo]=  $tempDiasExhibicion>0?'Si':'No';
                                 if($tempDiasExhibicion>0){
                                     $cantidadDiasExhibicion++;
+                                     
+         
                                 }
+         
+                                 
                             }
                             else{
                                 $tregistro['diasexhibicion_'.$modelo]= 'No';
@@ -138,11 +137,16 @@ class DashCoberturaController extends Controller
                                 $tregistro['diasventas_'.$modelo]=      $tempDiasCobertura>1?'Si':'No';
                                 if($tempDiasCobertura>1)
                                     $cantidadDiasVentas++;
+                                
                             }
                             else{
                                 $tregistro['diasventas_'.$modelo]= 'No';
                             }
-                            
+                            if($tregistro['plantilla_'.$modelo]>0){
+                                $calculo = $tregistro['plantilla_'.$modelo] - $tregistro['inventory_'.$modelo];
+                                if($calculo>0)
+                                    $tregistro['xvender_'.$modelo]=$calculo;
+                            }
                             $calculo1[$i]= round(($cantidadDiasExhibicion/$cantidadTiendas)*100,2);
                             $calculo2[$i]= round(($cantidadDiasVentas/$cantidadTiendas)*100,2);
                             $nombrem[$i]   =  DB::table('vistaventas')->where('idmodelo', $modelos[$i]->id)->value('modelo');
@@ -192,31 +196,16 @@ class DashCoberturaController extends Controller
                    $modelos= $request->input('modelos');
                     $consulta="puntosventas.nombre as PDV, ";
                      for ($i = 0; $i < count($modelos); $i++) {
-                         $modelo=$modelos[$i];
+                        $modelo=$modelos[$i];
                         $ultimo= count($modelos)-1;
                         $consulta.="sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.sellout else 0 end) as sellout_".$modelo.", ";
-
                         $consulta.="sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.inventory else 0 end) as inventory_".$modelo.", ";
-
-                        $consulta.="(select cp.nombre from categoriasplantillas cp where cp.id=1) as plantilla_A_".$modelo.", ";
-
-                        $consulta.="(select cp.cantidad from categoriasplantillas cp where cp.id=1) as Cantidadplantilla_A_".$modelo.", ";
-
-
-                        $consulta.="if(((select cp.cantidad from categoriasplantillas cp where cp.id=1) - sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.sellout else 0 end)) >=0, ((select cp.cantidad from categoriasplantillas cp where cp.id=1) - sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.sellout else 0 end)), 'wil')   as Comprar_A_".$modelo.", ";
-
-                        $consulta.="(select cp.nombre from categoriasplantillas cp where cp.id=2) as plantilla_B_".$modelo.", ";
-
-                        $consulta.="(select cp.cantidad from categoriasplantillas cp where cp.id=2) as Cantidadplantilla_B_".$modelo.", ";
-
-                        $consulta.="if((select cp.cantidad from categoriasplantillas cp where cp.id=2)- sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.sellout else 0 end) >=0,(select cp.cantidad from categoriasplantillas cp where cp.id=2) - sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.sellout else 0 end),0)   as Comprar_B_".$modelo.", ";
-
-                        $consulta.="(select cp.nombre from categoriasplantillas cp where cp.id=3) as plantilla_C_".$modelo.", ";
-
-                        $consulta.="(select cp.cantidad from categoriasplantillas cp where cp.id=3) as Cantidadplantilla_C_".$modelo.", ";
-
-                        $consulta.="if((select cp.cantidad from categoriasplantillas cp where cp.id=3)- sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.sellout else 0 end) >=0,(select cp.cantidad from categoriasplantillas cp where cp.id=3) - sum(case when vistaventas.idmodelo=".$modelo." then vistaventas.sellout else 0 end),0)   as Comprar_C_".$modelo." ";
-                        
+                        $consulta.="puntosventas.nombre IN(select cp.cantidad from categoriasplantillas cp inner join plantillas p ON p.idcategoria_plantilla=cp.id where p.idpuntoventa=puntosventas.id and p.idmodelo=".$modelo.") as plantilla_".$modelo.", ";
+                        if($ultimo==$i)
+                            $consulta.="0 as xvender_".$modelo."";
+                        else
+                            $consulta.="0 as xvender_".$modelo.", ";
+                         
                     }
                     $registros = PuntosVentas::selectRaw($consulta)->leftJoin('vistaventas', function ($join) {
                         $join->on('vistaventas.idpuntoventa', '=', 'puntosventas.id')->where('vistaventas.semana', '=', $this->semana);
@@ -263,8 +252,8 @@ class DashCoberturaController extends Controller
                             else{
                                 $tregistro['diasventas_'.$modelo]= 'No';
                             }
-                            if($tregistro['plantilla_A_'.$modelo]>0){
-                                $calculo = $tregistro['plantilla_A_'.$modelo] - $tregistro['inventory_'.$modelo];
+                            if($tregistro['plantilla_'.$modelo]>0){
+                                $calculo = $tregistro['plantilla_'.$modelo] - $tregistro['inventory_'.$modelo];
                                 if($calculo>0)
                                     $tregistro['xvender_'.$modelo]=$calculo;
                             }

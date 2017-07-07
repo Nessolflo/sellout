@@ -615,10 +615,19 @@ app.controller('coberturaEspecialController', function ($scope, $window, dashcob
      $scope.ordenarColumnas= function () {
         for (var i=0; i<$scope.nombresmodelos.length; i++){
             var idtemp=$scope.nombresmodelos[i];
+            
             $scope.columnas.push("Sell out "+idtemp.nombre);
             $scope.columnas.push("Inventory "+idtemp.nombre);
-            $scope.columnas.push("Plantilla "+idtemp.nombre);
-            $scope.columnas.push("Comprar "+idtemp.nombre);
+            $scope.columnas.push("Plantilla A "+idtemp.nombre);
+            $scope.columnas.push("Cantidad Plantilla A "+idtemp.nombre);
+            $scope.columnas.push("Comprar A "+idtemp.nombre);
+            $scope.columnas.push("Plantilla B "+idtemp.nombre);
+            $scope.columnas.push("Cantidad Plantilla B "+idtemp.nombre);
+            $scope.columnas.push("Comprar B "+idtemp.nombre);
+            $scope.columnas.push("Plantilla C "+idtemp.nombre);
+            $scope.columnas.push("Cantidad Plantilla C "+idtemp.nombre);
+            $scope.columnas.push("Comprar C "+idtemp.nombre);
+            
             $scope.columnas.push("Cobertura Exhibición "+idtemp.nombre);
             $scope.columnas.push("Cobertura Venta "+idtemp.nombre);
         }
